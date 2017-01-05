@@ -4,6 +4,8 @@
 public class Source extends Case {
 
     private double m_nourriture;
+    
+    
 
     public Source(double m_nourriture) {
         this.m_nourriture = m_nourriture;
