@@ -11,7 +11,12 @@ public class Source extends Case {
     	super();
     	this.m_nourriture=0;
     }
-    
+
+    public Source(int m_abcisse, int m_ordonnee, double m_pheromone, Case[] m_case_adj, double m_nourriture) {
+        super(m_abcisse, m_ordonnee, m_pheromone, m_case_adj);
+        this.m_nourriture = m_nourriture;
+    }
+
     public Source(double m_nourriture) {
     	super();
         this.m_nourriture = m_nourriture;
