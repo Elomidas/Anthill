@@ -1,16 +1,19 @@
+import java.awt.List;
+import java.util.ArrayList;
+
 /**
  * Created by Martial TARDY on 05/01/2017.
  */
 public class Fourmi {
 
-    protected int m_chemin[];
+    protected List<Integer> m_chemin;
     protected double m_nourr_transp;
     protected enum m_etat {AVANCE , ARRET, TRANSPORTE } ;
 
 
 
     public Fourmi(int[] m_chemin, double m_nourr_transp) {
-        this.m_chemin = m_chemin;
+        this.m_chemin = new ArrayList<Integer>;
         this.m_nourr_transp = m_nourr_transp;
         m_etat m_e = m_etat.ARRET;
     }
@@ -30,4 +33,6 @@ public class Fourmi {
     public void setM_nourr_transp(double m_nourr_transp) {
         this.m_nourr_transp = m_nourr_transp;
     }
+    
+    public void IncrementeNourriture(double nbr)
 }
