@@ -75,38 +75,35 @@ public class Case {
         {
             case 1:
                 return m_case_adj[5];
-                break;
 
             case 2:
                 return m_case_adj[3];
-                break;
 
             case 3:
                 return m_case_adj[0];
-                break;
 
             case 4:
                 return m_case_adj[1];
-                break;
 
             case -1:
                 return m_case_adj[2];
-                break;
 
             case -2:
                 return m_case_adj[4];
-                break;
 
             case -3:
                 return m_case_adj[7];
-                break;
 
             case -4:
                 return m_case_adj[6];
-                break;
 
             default: return this;
         }
+    }
+
+    public void Afficher ()
+    {
+        System.out.print(" ");
     }
 
 }

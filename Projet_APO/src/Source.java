@@ -35,17 +35,22 @@ public class Source extends Case {
         if (d >= nourr)
         {
             this.setM_nourriture(0);
-            return d - nourr;
+            return nourr;
         }
         else
         {
-            this.setM_nourriture(d - nourr);
-            return this.getM_nourriture();
+            this.setM_nourriture(nourr - d);
+            return d;
         }
 
     }
 
     public boolean Penetrable() {
         return true;
+    }
+
+    @Override
+    public void Afficher() {
+        System.out.print("S");
     }
 }
