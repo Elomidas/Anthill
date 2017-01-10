@@ -1,38 +1,64 @@
-import java.awt.List;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
 
 /**
  * Created by Martial TARDY on 05/01/2017.
  */
 public class Fourmi {
 
-    protected List<Integer> m_chemin;
+    protected LinkedList<Integer> m_chemin;
     protected double m_nourr_transp;
-    protected enum m_etat {AVANCE , ARRET, TRANSPORTE } ;
-
-
-
-    public Fourmi(int[] m_chemin, double m_nourr_transp) {
-        this.m_chemin = new ArrayList<Integer>;
-        this.m_nourr_transp = m_nourr_transp;
-        m_etat m_e = m_etat.ARRET;
+    protected enum Etat {ARRET, ALLER, RETOUR};
+    protected Etat m_etat;
+    protected static final double m_capaFourmi = 50.0;
+    protected final static int[] m_poids = new int[] {50, 20, 10, 5, 0};
+    protected Case m_case;
+    
+    public Fourmi()
+    {
+    	this.m_chemin = new LinkedList<Integer>();
+        this.m_nourr_transp = 0;
+        this.m_etat = Etat.ARRET;
     }
 
-    public int[] getM_chemin() {
+    public LinkedList<Integer> getM_chemin() 
+    {
         return m_chemin;
     }
 
-    public void setM_chemin(int[] m_chemin) {
-        this.m_chemin = m_chemin;
+    public void setM_chemin(LinkedList<Integer> chemin) 
+    {
+        this.m_chemin = chemin;
     }
 
-    public double getM_nourr_transp() {
+    public double getM_nourr_transp() 
+    {
         return m_nourr_transp;
     }
 
-    public void setM_nourr_transp(double m_nourr_transp) {
-        this.m_nourr_transp = m_nourr_transp;
+    public void setM_nourr_transp(double nourr_transp) 
+    {
+        this.m_nourr_transp = nourr_transp;
     }
     
+    public Etat GetEtat()
+    {
+    	return this.m_etat;
+    }
+    
+    public void SetEtat()
+    {
+    	
+    }
+    
+    
+    
+    
+    
     public void IncrementeNourriture(double nbr)
+    {
+    	
+    }
 }
