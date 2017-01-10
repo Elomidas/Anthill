@@ -21,6 +21,7 @@ public class Case {
         this.m_ordonnee = m_ordonnee;
         this.m_pheromone = m_pheromone;
         this.m_case_adj = m_case_adj;
+        // [0] : NW, [1]: N, [2]: NE, [3]: W,[4]:  E, SW,[5]:  S,[6]:  SE
     }
 
     public int getM_abcisse() {
@@ -66,6 +67,46 @@ public class Case {
 
     public boolean Penetrable() {
         return true;
+    }
+
+    public Case CaseVoisine(int direc)
+    {
+        switch(direc)
+        {
+            case 1:
+                return m_case_adj[5];
+                break;
+
+            case 2:
+                return m_case_adj[3];
+                break;
+
+            case 3:
+                return m_case_adj[0];
+                break;
+
+            case 4:
+                return m_case_adj[1];
+                break;
+
+            case -1:
+                return m_case_adj[2];
+                break;
+
+            case -2:
+                return m_case_adj[4];
+                break;
+
+            case -3:
+                return m_case_adj[7];
+                break;
+
+            case -4:
+                return m_case_adj[6];
+                break;
+
+            default: return this;
+        }
     }
 
 }
