@@ -5,7 +5,16 @@ public class Case {
     protected int m_abcisse;
     protected int m_ordonnee;
     protected double m_pheromone;
-    protected Case m_case_adj[];
+    protected Case[] m_case_adj;
+
+    final double PHERO = 1;
+
+    public Case() {
+        this.m_abcisse = 0;
+        this.m_ordonnee = 0;
+        this.m_pheromone = 0;
+        this.m_case_adj = new Case[8];
+    }
 
     public Case(int m_abcisse, int m_ordonnee, double m_pheromone, Case[] m_case_adj) {
         this.m_abcisse = m_abcisse;
@@ -46,5 +55,16 @@ public class Case {
         this.m_case_adj = m_case_adj;
     }
 
+
+    public void IncrementePheromone(){
+        setM_pheromone(this.m_pheromone + PHERO);
+    }
+
+    public boolean Penetrable() {
+        if (this instanceof Obstacle ) {
+            return false ;
+        }
+        return true ;
+    }
 
 }

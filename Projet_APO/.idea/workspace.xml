@@ -38,7 +38,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Source.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Source.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Source.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
@@ -62,12 +62,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Case.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Case.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Case.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="39" lean-forward="false" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
-              <folding />
+            <state relative-caret-position="535">
+              <caret line="68" column="0" lean-forward="true" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+              <folding>
+                <element signature="e#1317#1318#0" expanded="true" />
+                <element signature="e#1373#1374#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -108,10 +111,10 @@
         <option value="$PROJECT_DIR$/src/CaseVide.java" />
         <option value="$PROJECT_DIR$/src/Obstacle.java" />
         <option value="$PROJECT_DIR$/src/Fourmi.java" />
-        <option value="$PROJECT_DIR$/src/Case.java" />
         <option value="$PROJECT_DIR$/src/Fourmiliere.java" />
         <option value="$PROJECT_DIR$/src/FourmiSenseur.java" />
         <option value="$PROJECT_DIR$/src/Source.java" />
+        <option value="$PROJECT_DIR$/src/Case.java" />
       </list>
     </option>
   </component>
@@ -470,7 +473,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="17" lean-forward="false" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
-          <folding />
+          <folding>
+            <element signature="e#1317#1318#0" expanded="true" />
+            <element signature="e#1373#1374#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -575,14 +581,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Case.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="39" lean-forward="false" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Fourmiliere.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -630,6 +628,17 @@
         <state relative-caret-position="238">
           <caret line="14" column="110" lean-forward="false" selection-start-line="14" selection-start-column="110" selection-end-line="14" selection-end-column="110" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Case.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="535">
+          <caret line="68" column="0" lean-forward="true" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+          <folding>
+            <element signature="e#1317#1318#0" expanded="true" />
+            <element signature="e#1373#1374#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
