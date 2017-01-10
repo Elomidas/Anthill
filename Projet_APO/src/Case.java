@@ -48,12 +48,12 @@ public class Case {
         this.m_pheromone = pheromone;
     }
 
-    public Case[] getM_case_adj() {
-        return m_case_adj;
+    public Case getM_case_adj(int i) {
+        return m_case_adj[i];
     }
 
-    public void setM_case_adj(Case[] case_adj) {
-        this.m_case_adj = case_adj;
+    public void setM_case_adj(Case case_adj, int i) {
+        this.m_case_adj[i] = case_adj;
     }
 
 
