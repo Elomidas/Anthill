@@ -44,49 +44,49 @@ public class FourmiSenseur extends Fourmi {
     				int d = 0;
     				if(pos[0] > i)
     				{
-    					//On veut une ligne inférieure
-    					if(pos[1] > j)
-    					{
-    						//On veut une colonne plus à gauche
-    						d = 1;
-    						pos[0]--;
-    						pos[1]--;
-    					}
-    					else if(pos[1] < j)
-    					{
-    						//On veut une colonne plus à droite
-    						d = -3;
-    						pos[0]--;
-    						pos[1]++;
-    					}
-    					else
-    					{
-    						//On est sur la bonne colonne
-    						d = -4;
-    						pos[0]--;
-    					}
-    				}
-    				else if(pos[0] < i)
-    				{
     					//On veut une ligne supérieure
     					if(pos[1] > j)
     					{
     						//On veut une colonne plus à gauche
     						d = 3;
-    						pos[0]++;
+    						pos[0]--;
     						pos[1]--;
     					}
     					else if(pos[1] < j)
     					{
     						//On veut une colonne plus à droite
     						d = -1;
-    						pos[0]++;
+    						pos[0]--;
     						pos[1]++;
     					}
     					else
     					{
     						//On est sur la bonne colonne
     						d = 4;
+    						pos[0]--;
+    					}
+    				}
+    				else if(pos[0] < i)
+    				{
+    					//On veut une ligne inférieure
+    					if(pos[1] > j)
+    					{
+    						//On veut une colonne plus à gauche
+    						d = 1;
+    						pos[0]++;
+    						pos[1]--;
+    					}
+    					else if(pos[1] < j)
+    					{
+    						//On veut une colonne plus à droite
+    						d = -3;
+    						pos[0]++;
+    						pos[1]++;
+    					}
+    					else
+    					{
+    						//On est sur la bonne colonne
+    						d = -4;
     						pos[0]++;
     					}
     				}
@@ -137,10 +137,128 @@ public class FourmiSenseur extends Fourmi {
     /*
      * return d : direction choisie (0 si innaccessible)
      */
-    private int Navigation(boolean[][] obs, int i, int j)
+    private int Navigation(boolean[][] obs, int x, int y)
     {
-    	int x, y;
-    	x = y = 1 + (obs.length / 2);
-    	
+    	int i, j;
+    	i = j = 1 + (obs.length / 2);
+    	int test = 0;
+		int d = 0;
+		if(x > i)
+		{
+			//On veut une ligne supérieure
+			if(y > j)
+			{
+				//On veut une colonne plus à gauche
+				//On essaye d'aller sur la case en haut à gauche
+				if(!obs[i-1][j-1] && (Navigation(obs, x-1, y-1) != 0))
+					return 3;
+				if((y - j) > (x - i))
+				{
+					//On essaye d'aller à gauche avant d'aller en haut
+					if(!obs[i][j-1] && (Navigation(obs, x, y-1) != 0))
+						return 2;
+					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
+						return 4;
+				}
+				else
+				{
+					//On essaye d'aller en haut avant d'aller à gauche
+					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
+						return 4;
+					if(!obs[i][j-1] && (Navigation(obs, x, y-1) != 0))
+						return 2;
+				}
+			}
+			else if(y < j)
+			{
+				//On veut une colonne plus à droite
+				//On essaye d'aller sur la case en haut à droite
+				if(!obs[i-1][j+1] && (Navigation(obs, x-1, y+1) != 0))
+					return -1;
+				if((j - y) > (x - i))
+				{
+					//On essaye d'aller à droite avant d'aller en haut
+					if(!obs[i][j+1] && (Navigation(obs, x, y+1) != 0))
+						return -2;
+					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
+						return 4;
+				}
+				else
+				{
+					//On essaye d'aller en haut avant d'aller à droite
+					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
+						return 4;
+					if(!obs[i][j+1] && (Navigation(obs, x, y+1) != 0))
+						return -2;
+				}
+			}
+			else
+			{
+				//On est sur la bonne colonne
+				/*
+				if(!obs[i-1][j+1] && (Navigation(obs, x-1, y+1) != 0))
+					return -1;
+				if((j - y) > (x - i))
+				{
+					//On essaye d'aller à droite avant d'aller en haut
+					if(!obs[i][j+1] && (Navigation(obs, x, y+1) != 0))
+						return -2;
+					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
+						return 4;
+				}
+				else
+				{
+					//On essaye d'aller en haut avant d'aller à droite
+					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
+						return 4;
+					if(!obs[i][j+1] && (Navigation(obs, x, y+1) != 0))
+						return -2;
+				}
+				*/
+				///A CONTINUER ICI
+			}
+		}
+		else if(pos[0] < i)
+		{
+			//On veut une ligne supérieure
+			if(pos[1] > j)
+			{
+				//On veut une colonne plus à gauche
+				d = 3;
+				pos[0]++;
+				pos[1]--;
+			}
+			else if(pos[1] < j)
+			{
+				//On veut une colonne plus à droite
+				d = -1;
+				pos[0]++;
+				pos[1]++;
+			}
+			else
+			{
+				//On est sur la bonne colonne
+				d = 4;
+				pos[0]++;
+			}
+		}
+		else
+		{
+			//Ligne correcte
+			if(pos[1] > j)
+			{
+				//On veut une colonne plus à gauche
+				d = 2;
+				pos[1]--;
+			}
+			else
+			{
+				//On veut une colonne plus à droite
+				d = -2;
+				pos[1]++;
+			}
+		}
+		
+		return 0;
     }
 }
