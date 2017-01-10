@@ -4,7 +4,6 @@
 public class Source extends Case {
 
     private double m_nourriture;
-    private static final double m_capafourmi = 50;
     
     public Source()
     {
@@ -30,5 +29,23 @@ public class Source extends Case {
         this.m_nourriture = m_nourriture;
     }
     
-    
+    public double DecrementeNourriture(double d){
+
+        double nourr = getM_nourriture();
+        if (d >= nourr)
+        {
+            this.setM_nourriture(0);
+            return d - nourr;
+        }
+        else
+        {
+            this.setM_nourriture(d - nourr);
+            return this.getM_nourriture();
+        }
+
+    }
+
+    public boolean Penetrable() {
+        return true;
+    }
 }

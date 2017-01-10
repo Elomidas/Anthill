@@ -6,12 +6,6 @@ public class FourmiSenseur extends Fourmi {
     private int m_portee;
     protected final static int[] m_poids = new int[] {50, 20, 10, 5, 0};
 
-    public FourmiSenseur(int[] m_chemin, double m_nourr_transp, int m_portee) 
-    {
-        super(m_chemin, m_nourr_transp);
-        this.m_portee = m_portee;
-    }
-
     public int getM_portee() 
     {
         return m_portee;
