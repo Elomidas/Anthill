@@ -48,4 +48,9 @@ public class Source extends Case {
     public boolean Penetrable() {
         return true;
     }
+
+    @Override
+    public void Afficher() {
+        System.out.print("S");
+    }
 }
