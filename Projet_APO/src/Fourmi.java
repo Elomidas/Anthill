@@ -12,8 +12,8 @@ public class Fourmi {
     protected double m_nourr_transp;
     protected enum Etat {ARRET, ALLER, RETOUR};
     protected Etat m_etat;
-    protected static final double m_capaFourmi = 50.0;
-    protected final static int[] m_poids = new int[] {50, 20, 10, 5, 0};
+    protected static final double M_CAPAFOURMI = 50.0;
+    protected final static int[] M_POIDS = new int[] {50, 20, 10, 5, 0};
     protected Case m_case;
     
     public Fourmi()
