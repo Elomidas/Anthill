@@ -17,4 +17,6 @@ public class FourmiSenseur extends Fourmi {
     public void setM_portee(int m_portee) {
         this.m_portee = m_portee;
     }
+
+
 }
