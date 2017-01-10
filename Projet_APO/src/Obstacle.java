@@ -14,4 +14,9 @@ public class Obstacle extends Case {
     public boolean Penetrable() {
         return false;
     }
+
+    @Override
+    public void Afficher() {
+        System.out.print("#");
+    }
 }

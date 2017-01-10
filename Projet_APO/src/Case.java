@@ -101,4 +101,9 @@ public class Case {
         }
     }
 
+    public void Afficher ()
+    {
+        System.out.print(" ");
+    }
+
 }

@@ -13,4 +13,9 @@ public class CaseVide extends Case {
     public boolean Penetrable() {
         return true;
     }
+
+    @Override
+    public void Afficher() {
+        super.Afficher();
+    }
 }
