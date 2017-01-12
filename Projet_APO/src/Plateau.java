@@ -71,5 +71,16 @@ public class Plateau {
         }
     }
 
+    public void DecrementePheroPlateau()
+    {
+        for (int i = 0; i< m_tabCase.length ;i++)
+        {
+            for (int j = 0; j< m_tabCase.length ;j++)
+            {
+
+            }
+        }
+    }
+
 
 }
