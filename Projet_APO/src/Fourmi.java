@@ -212,7 +212,15 @@ public class Fourmi {
     
     public boolean FourmTrouvee()
     {
-    	return true;
+    	if(this.GetCase() instanceof Fourmiliere)
+    	{
+    		((Fourmiliere)this.GetCase() ).in;
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
     }
     
     public void Start()
