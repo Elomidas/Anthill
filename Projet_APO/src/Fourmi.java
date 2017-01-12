@@ -101,7 +101,7 @@ public class Fourmi {
     		int lower = -4;
     		int higher = 4;
     		int random = (int)(Math.random() * (higher-lower)) + lower; 
-    		if(random > 0)
+    		if(random >= 0)
     		{
     			random ++;
     		}
@@ -161,7 +161,7 @@ public class Fourmi {
     		{
     			probacum +=proba[h+1];
     		}
-    		// R�cup�ration de la direction � retourner en fonction de l'indice h de la case
+    		// R�cup�ration de la direction � retourner en fonction de l'indice h de la proba Ph
     		switch(h)
     		{
     			case 0 : 
@@ -188,9 +188,10 @@ public class Fourmi {
     
     public void ChercheSource()
     {
-    	while(!SourceTrouvee())
+    	if((this.GetEtat() == Etat.ALLER) && (!SourceTrouvee()))
     	{
-    		Bouger();
+    		this.Bouger();
+    		this.GetCase().IncrementePheromone();
     	}
     }
     
@@ -199,6 +200,7 @@ public class Fourmi {
     	if(this.GetCase() instanceof Source)
     	{
     		this.IncrementeNourriture(((Source)this.GetCase()).DecrementeNourriture(M_CAPAFOURMI));
+    		this.SetEtat(Etat.RETOUR);
     		return true;
     	}
     	else
@@ -209,12 +211,33 @@ public class Fourmi {
     
     public void Retour()
     {
-    	
+    	if((this.GetEtat() == Etat.RETOUR) && (!this.FourmTrouvee()))
+    	{
+    		int dir = - this.getM_chemin().removeLast();
+    		this.SetCase(this.GetCase().CaseVoisine(dir));
+    		this.GetCase().IncrementePheromone();
+    	}
     }
     
     public boolean FourmTrouvee()
     {
-    	return true;
+    	if(this.GetCase() instanceof Fourmiliere)
+    	{
+    		((Fourmiliere)this.GetCase()).IncrementerNourriture(this.DecrementeNourriture());
+    		this.SetEtat(Etat.ALLER);
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    }
+    
+    public void Action()
+    {
+    	this.ChercheSource();
+    	this.Retour();
+    	
     }
     
     public void Start()
