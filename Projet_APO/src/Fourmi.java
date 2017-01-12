@@ -1,6 +1,5 @@
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+
 
 
 /**
@@ -87,12 +86,14 @@ public class Fourmi {
     
     public void Bouger()
     {
-    	
+    	int dir = ChoixDirection();    	
+    	this.SetCase(this.GetCase().CaseVoisine(dir));
+    	this.getM_chemin().addLast(dir);
     }
     
     public int ChoixDirection()
     {
-    	//Si c'est le premier déplacement, on le ais de man
+    	//Si c'est le premier déplacement, on le fais de manière aléatoire
     	if( m_chemin.isEmpty() )
     	{
     		int lower = -4;
@@ -106,8 +107,11 @@ public class Fourmi {
     	}
     	else
     	{
+    		// récupération de la derniere direction puis affectation des poids c[]
     		int dir = m_chemin.getLast();
     		int[] c;
+    		double[] phero = new double[8];
+    		double[] proba = new double[8];
     		switch(dir)
     		{
     			case 1 :  			
@@ -130,24 +134,75 @@ public class Fourmi {
     				break;
     			case 7 :
     				c = new int[] {M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0]};
-    				break;			
+    				break;
+    			default :
+    				c = new int[8];
+    				break;
     		}
+    		// Calcul de la somme (pour les probas)
+    		double somme=0;
+    		for(int j=0;j<8;j++)
+			{
+				somme += c[j] + phero[j]; 				
+			}
+    		// Calcul des probas
     		for(int i=0;i<8;i++)
     		{
-    			pi=
+    			phero[i] = this.GetCase().getM_case_adj(i).getM_pheromone();  			
+    			proba[i] = (c[i] + phero[i])/somme ;
     		}
-    		
+    		// récupération de l'indice de la case suivante
+    		int h=0;
+    		double random = Math.random();
+    		double probacum =proba[0];
+    		for(h = 0 ;random <= probacum;h++)
+    		{
+    			probacum +=proba[h+1];
+    		}
+    		// Récupération de la direction à retourner en fonction de l'indice h de la case
+    		switch(h)
+    		{
+    			case 0 : 
+    				return -4;
+    			case 1 : 
+    				return 1;
+    			case 2 : 
+    				return 2;
+    			case 3 : 
+    				return 3;
+    			case 4 : 
+    				return 4;
+    			case 5 : 
+    				return -1;
+    			case 6 : 
+    				return -2;
+    			case 7 : 
+    				return -3;
+    			default :
+    				return 0;  			
+    		}   		
     	}
     }
     
     public void ChercheSource()
     {
-    	
+    	while(!SourceTrouvee())
+    	{
+    		Bouger();
+    	}
     }
     
     public boolean SourceTrouvee()
     {
-    	return true;
+    	if(this.GetCase() instanceof Source)
+    	{
+    		this.IncrementeNourriture(((Source)this.GetCase()).DecrementeNourriture(M_CAPAFOURMI));
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
     }
     
     public void Retour()
