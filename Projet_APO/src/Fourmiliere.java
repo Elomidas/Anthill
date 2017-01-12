@@ -16,4 +16,18 @@ public class Fourmiliere extends Case{
     public void setM_nourr(double m_nourr) {
         this.m_nourr = m_nourr;
     }
+
+    public boolean Penetrable() {
+        return true;
+    }
+
+    public void IncrementerNourriture(double d)
+    {
+        setM_nourr(getM_nourr() + d);
+    }
+
+    @Override
+    public void Afficher() {
+        System.out.print("F");
+    }
 }

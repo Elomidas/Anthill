@@ -1,3 +1,7 @@
+import java.io.*;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 /**
  * Created by Martial TARDY on 05/01/2017.
  */
@@ -33,4 +37,39 @@ public class Plateau {
             }
         }
     }
+
+    public void Initialisation() {
+        String[] plat = new String[6];
+        int i =0;
+        try {
+            File f = new File("../data/map.txt");
+            Scanner scanner = new Scanner(f);
+
+            String ligne;
+            while(true)
+            {
+
+                try {
+                    ligne = scanner.next();
+                    plat[i] = ligne;
+                    i++;
+                }
+                catch(NoSuchElementException exception)
+                {
+                    break;
+                }
+            }
+            scanner.close();
+        }catch (FileNotFoundException exception)
+        {
+            System.out.println("Le fichier n'a pas été trouvé");
+        }
+
+        for(i = 0; i<6 ; i++)
+        {
+            System.out.println(plat[i]);
+        }
+    }
+
+
 }
