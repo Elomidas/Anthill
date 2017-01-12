@@ -92,7 +92,7 @@ public class Fourmi {
     
     public int ChoixDirection()
     {
-    	//Si c'est le premier déplacement, on le ais de man
+    	//Si c'est le premier dï¿½placement, on le ais de man
     	if( m_chemin.isEmpty() )
     	{
     		int lower = -4;
