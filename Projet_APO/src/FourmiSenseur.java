@@ -135,100 +135,156 @@ public class FourmiSenseur extends Fourmi {
     }
     
     /*
+     * x, y : coordonnées que l'on veut atteindre
+     * i, j : position de la fourmi
      * return d : direction choisie (0 si innaccessible)
      */
-    private int Navigation(boolean[][] obs, int x, int y)
+    private int Navigation(boolean[][] obs, int x, int y, int i, int j)
     {
-    	int i, j;
-    	i = j = 1 + (obs.length / 2);
     	int test = 0;
 		int d = 0;
+		int a, b;
 		if(x > i)
 		{
-			//On veut une ligne supérieure
+			//On veut une ligne inférieure
 			if(y > j)
 			{
-				//On veut une colonne plus à gauche
-				//On essaye d'aller sur la case en haut à gauche
-				if(!obs[i-1][j-1] && (Navigation(obs, x-1, y-1) != 0))
-					return 3;
+				//On veut une colonne plus à droite
+				//On essaye d'aller sur la case en bas à droite
+				a = i + 1;
+				b = j + 1;
+				if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+					return -3;
 				if((y - j) > (x - i))
 				{
-					//On essaye d'aller à gauche avant d'aller en haut
-					if(!obs[i][j-1] && (Navigation(obs, x, y-1) != 0))
-						return 2;
-					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
-						return 4;
+					//On essaye d'aller à droite avant d'aller en bas
+					a = i;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -2;
+					a = i + 1;
+					b = j;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -4;
 				}
 				else
 				{
-					//On essaye d'aller en haut avant d'aller à gauche
-					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
-						return 4;
-					if(!obs[i][j-1] && (Navigation(obs, x, y-1) != 0))
-						return 2;
+					//On essaye d'aller en bas avant d'aller à droite
+					a = i + 1;
+					b = j;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -4;
+					a = i;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -2;
 				}
 			}
 			else if(y < j)
 			{
-				//On veut une colonne plus à droite
-				//On essaye d'aller sur la case en haut à droite
-				if(!obs[i-1][j+1] && (Navigation(obs, x-1, y+1) != 0))
-					return -1;
+				//On veut une colonne plus à gauche
+				//On essaye d'aller sur la case en bas à gauche
+				a = i + 1;
+				b = j - 1;
+				if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+					return 1;
 				if((j - y) > (x - i))
 				{
-					//On essaye d'aller à droite avant d'aller en haut
-					if(!obs[i][j+1] && (Navigation(obs, x, y+1) != 0))
-						return -2;
-					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
-						return 4;
+					//On essaye d'aller à gauche avant d'aller en bas
+					a = i;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 2;
+					a = i + 1;
+					b = j;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -4;
 				}
 				else
 				{
-					//On essaye d'aller en haut avant d'aller à droite
-					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
-						return 4;
-					if(!obs[i][j+1] && (Navigation(obs, x, y+1) != 0))
-						return -2;
+					//On essaye d'aller en bas avant d'aller à gauche
+					a = i + 1;
+					b = j;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -4;
+					a = i;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 2;
 				}
 			}
 			else
 			{
 				//On est sur la bonne colonne
-				/*
-				if(!obs[i-1][j+1] && (Navigation(obs, x-1, y+1) != 0))
+				//On essaye d'abbord d'aller en bas
+				a = i + 1;
+				b = j;
+				if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+					return -4;
+				if(Math.random() < 0.5)
+				{
+					//On essaye d'aller en bas à droite avant d'aller en bas à gauche
+					a = i + 1;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -3;
+					a = i + 1;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 1;
+				}
+				else
+				{
+					//On essaye d'aller en bas à gauche avant d'aller en bas à droite
+					a = i + 1;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 1;
+					a = i + 1;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -3;
+				}
+			}
+		}
+		else if(x < i)
+		{
+			//On veut une ligne supérieure
+			if(y > j)
+			{
+				//On veut une colonne plus à droite
+				//On essaye d'aller sur la case en haut à droite
+				a = i - 1;
+				b = j + 1;
+				if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
 					return -1;
-				if((j - y) > (x - i))
+				if((y - j) > (x - i))
 				{
 					//On essaye d'aller à droite avant d'aller en haut
-					if(!obs[i][j+1] && (Navigation(obs, x, y+1) != 0))
+					a = i;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
 						return -2;
-					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
+					a = i - 1;
+					b = j;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
 						return 4;
 				}
 				else
 				{
-					//On essaye d'aller en haut avant d'aller à droite
-					if(!obs[i-1][j] && (Navigation(obs, x-1, y) != 0))
-						return 4;
-					if(!obs[i][j+1] && (Navigation(obs, x, y+1) != 0))
+					//On essaye d'aller en haut avant d'aller à gauche
+					a = i - 1;
+					b = j;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -4;
+					a = i;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
 						return -2;
 				}
-				*/
-				///A CONTINUER ICI
 			}
-		}
-		else if(pos[0] < i)
-		{
-			//On veut une ligne supérieure
-			if(pos[1] > j)
-			{
-				//On veut une colonne plus à gauche
-				d = 3;
-				pos[0]++;
-				pos[1]--;
-			}
-			else if(pos[1] < j)
+			/*
+			else if(y < j)
 			{
 				//On veut une colonne plus à droite
 				d = -1;
@@ -241,9 +297,11 @@ public class FourmiSenseur extends Fourmi {
 				d = 4;
 				pos[0]++;
 			}
+			*/
 		}
 		else
 		{
+			/*
 			//Ligne correcte
 			if(pos[1] > j)
 			{
@@ -257,7 +315,9 @@ public class FourmiSenseur extends Fourmi {
 				d = -2;
 				pos[1]++;
 			}
+			*/
 		}
+		
 		
 		return 0;
     }
