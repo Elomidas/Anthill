@@ -93,7 +93,9 @@ public class Fourmi {
     
     public int ChoixDirection()
     {
-    	//Si c'est le premier déplacement, on le fais de manière aléatoire
+
+    	//Si c'est le premier dï¿½placement, on le fais de maniï¿½re alï¿½atoire
+
     	if( m_chemin.isEmpty() )
     	{
     		int lower = -4;
@@ -107,7 +109,7 @@ public class Fourmi {
     	}
     	else
     	{
-    		// récupération de la derniere direction puis affectation des poids c[]
+    		// rï¿½cupï¿½ration de la derniere direction puis affectation des poids c[]
     		int dir = m_chemin.getLast();
     		int[] c;
     		double[] phero = new double[8];
@@ -151,7 +153,7 @@ public class Fourmi {
     			phero[i] = this.GetCase().getM_case_adj(i).getM_pheromone();  			
     			proba[i] = (c[i] + phero[i])/somme ;
     		}
-    		// récupération de l'indice de la case suivante
+    		// rï¿½cupï¿½ration de l'indice de la case suivante
     		int h=0;
     		double random = Math.random();
     		double probacum =proba[0];
@@ -159,7 +161,7 @@ public class Fourmi {
     		{
     			probacum +=proba[h+1];
     		}
-    		// Récupération de la direction à retourner en fonction de l'indice h de la case
+    		// Rï¿½cupï¿½ration de la direction ï¿½ retourner en fonction de l'indice h de la case
     		switch(h)
     		{
     			case 0 : 
