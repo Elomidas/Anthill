@@ -39,36 +39,45 @@ public class Plateau {
     }
 
     public void Initialisation() {
-        String[] plat = new String[6];
-        int i =0;
+        char[][] plat = new char[6][10];
+        int i =0, j=0;
+
         try {
-            File f = new File("../data/map.txt");
-            Scanner scanner = new Scanner(f);
-
-            String ligne;
-            while(true)
-            {
-
-                try {
-                    ligne = scanner.next();
-                    plat[i] = ligne;
-                    i++;
-                }
-                catch(NoSuchElementException exception)
+            File f = new File("./data/map.txt");
+            FileReader fr = new FileReader(f);
+            try {
+                int c = fr.read();
+                while (c != -1)
                 {
-                    break;
+                    plat[i][j] = (char)c;
+                    j++;
+                    if (j-1 == 9)
+                    {
+                        i++;
+                        j=0;
+                    }
+                    c = fr.read();
                 }
+
+            } catch (IOException exception) {
+                System.out.println("Erreur lecture caractère");
             }
-            scanner.close();
-        }catch (FileNotFoundException exception)
+        }
+        catch (FileNotFoundException exception)
         {
             System.out.println("Le fichier n'a pas été trouvé");
         }
 
-        for(i = 0; i<6 ; i++)
+        for(i = 0; i<10 ; i++)
         {
-            System.out.println(plat[i]);
+            for( j = 0; j < 6; j++)
+            {
+                System.out.println(plat[i][j]);
+            }
+
         }
+
+
     }
 
     public void DecrementePheroPlateau()
