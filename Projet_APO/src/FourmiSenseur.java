@@ -233,40 +233,7 @@ public class FourmiSenseur extends Fourmi {
     	
     	
     	//On calcul la probabilité d'aller sur chaque case
-
-		int dir = m_chemin.getLast();
-		int[] p;
-		switch(dir)
-		{
-    		case -4 :  			
-				p = new int[] {M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1]};
-				break;
-			case 1 :  			
-				p = new int[] {M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2]};
-				break;
-			case 2:
-				p = new int[] {M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3]};
-				break;
-			case 3 :
-				p = new int[] {M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4]};
-				break;
-			case 4 :
-				p = new int[] {M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3]};
-				break;
-			case -1 :
-				p = new int[] {M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2]};
-				break;
-			case -2 :
-				p = new int[] {M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1]};
-				break;
-			case -3 :
-				p = new int[] {M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0]};
-				break;
-			default :
-				p = new int[8];
-				break;
-		}
-		
+		int[] p = AffectationPoids(m_chemin.getLast());
 		for(int i = 0; i < 8; i++)
 		{
 			int idg = (i < 4) ? i : i + 1;
