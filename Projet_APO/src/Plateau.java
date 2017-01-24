@@ -11,24 +11,34 @@ public class Plateau {
 
     public Plateau()
     {
-        int i = 0;
-        int[] size = new int[2];
+        int i = 1;
+        int j = 0;
+
         try {
             File f = new File("./data/map.txt");
             FileReader fr = new FileReader(f);
             try {
                 int c = fr.read();
                 //System.out.print(c);
-                while ((c != -1) && (i < m_tabCase.length))
+                while (c != -1)
                 {
-                    if ((c != 13 )&& (c!= 10) ) {
-                        size[i] = ;
+                    if (c == 13 ) {
+                        c = fr.read();
+                        if (c== 10)
+                        {
+                            i++;
+                            j = 0;
+                        }
 
-                        System.out.println(size[i]);
-                        i++;
                     }
+                    else
+                    {
+                        j++;
+                    }
+                    c = fr.read();
                 }
-                this.m_tabCase=new Case[ size[0] ][ size[1] ];
+                System.out.println(i + " " + j);
+                this.m_tabCase=new Case[ i ][ j ];
 
 
         } catch (IOException exception) {
