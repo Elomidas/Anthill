@@ -116,6 +116,9 @@ public class Fourmi {
     		double[] proba = new double[8];
     		switch(dir)
     		{
+	    		case -4 :  			
+					c = new int[] {M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1]};
+					break;
     			case 1 :  			
     				c = new int[] {M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2]};
     				break;
@@ -128,13 +131,13 @@ public class Fourmi {
     			case 4 :
     				c = new int[] {M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3]};
     				break;
-    			case 5 :
+    			case -1 :
     				c = new int[] {M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2]};
     				break;
-    			case 6 :
+    			case -2 :
     				c = new int[] {M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1]};
     				break;
-    			case 7 :
+    			case -3 :
     				c = new int[] {M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0]};
     				break;
     			default :
@@ -188,7 +191,7 @@ public class Fourmi {
     
     public void ChercheSource()
     {
-    	if((this.GetEtat() == Etat.ALLER) && (!SourceTrouvee()))
+    	if(!SourceTrouvee())
     	{
     		this.Bouger();
     		this.GetCase().IncrementePheromone();
@@ -211,7 +214,7 @@ public class Fourmi {
     
     public void Retour()
     {
-    	if((this.GetEtat() == Etat.RETOUR) && (!this.FourmTrouvee()))
+    	if(!this.FourmTrouvee())
     	{
     		int dir = - this.getM_chemin().removeLast();
     		this.SetCase(this.GetCase().CaseVoisine(dir));
@@ -235,8 +238,10 @@ public class Fourmi {
     
     public void Action()
     {
-    	this.ChercheSource();
-    	this.Retour();
+    	if(this.GetEtat() == Etat.ALLER)
+    		this.ChercheSource();
+    	else if(this.GetEtat() == Etat.RETOUR)
+    		this.Retour();
     	
     }
     
