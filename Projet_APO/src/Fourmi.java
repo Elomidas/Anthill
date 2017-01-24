@@ -127,6 +127,44 @@ public class Fourmi {
     	return c;
     }
     
+    public double GetPheroAdj(int i)
+    {
+    	return this.GetCase().getM_case_adj(i).getM_pheromone();
+    }
+    
+    public int GetProba(double[] proba)
+    {
+    	int h=0;
+		double random = Math.random();
+		double probacum =proba[0];
+		for(h = 0 ;random <= probacum;h++)
+		{
+			probacum +=proba[h+1];
+		}
+		// R�cup�ration de la direction � retourner en fonction de l'indice h de la proba Ph
+		switch(h)
+		{
+			case 0 : 
+				return -4;
+			case 1 : 
+				return 1;
+			case 2 : 
+				return 2;
+			case 3 : 
+				return 3;
+			case 4 : 
+				return 4;
+			case 5 : 
+				return -1;
+			case 6 : 
+				return -2;
+			case 7 : 
+				return -3;
+			default :
+				return 0;  			
+		}
+    }
+    
     public int ChoixDirection()
     {
 
@@ -160,42 +198,13 @@ public class Fourmi {
     		// Calcul des probas
     		for(int i=0;i<8;i++)
     		{
-    			phero[i] = this.GetCase().getM_case_adj(i).getM_pheromone();
+    			phero[i] = GetPheroAdj(i);
     			if(c[i] != 0)
     				proba[i] = (c[i] + phero[i])/somme ;
     			else
     				proba[i] = 0;
     		}
-    		// r�cup�ration de l'indice de la case suivante
-    		int h=0;
-    		double random = Math.random();
-    		double probacum =proba[0];
-    		for(h = 0 ;random <= probacum;h++)
-    		{
-    			probacum +=proba[h+1];
-    		}
-    		// R�cup�ration de la direction � retourner en fonction de l'indice h de la proba Ph
-    		switch(h)
-    		{
-    			case 0 : 
-    				return -4;
-    			case 1 : 
-    				return 1;
-    			case 2 : 
-    				return 2;
-    			case 3 : 
-    				return 3;
-    			case 4 : 
-    				return 4;
-    			case 5 : 
-    				return -1;
-    			case 6 : 
-    				return -2;
-    			case 7 : 
-    				return -3;
-    			default :
-    				return 0;  			
-    		}   		
+    		return GetProba(proba);  		
     	}
     }
     
