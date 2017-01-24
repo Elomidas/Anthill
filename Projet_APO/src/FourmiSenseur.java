@@ -236,15 +236,15 @@ public class FourmiSenseur extends Fourmi {
 		int[] p = AffectationPoids(m_chemin.getLast());
 		for(int i = 0; i < 8; i++)
 		{
-			int idg = (i < 4) ? i : i + 1;
 			//On adapte les index pour passer des tableaux 3D aux tableaux 2D
+			int idg = (i < 4) ? i : i + 1;
 			int idx = idg / 3;
 			int idy = idg % 3;
-			proba[i] = (p[i] == 0) ? 0 : (p[i] * modif[idx][idy]) + this.GetCase().getM_case_adj(i).getM_pheromone();
+			proba[i] = (p[i] == 0) ? 0 : (p[i] * modif[idx][idy]) + GetPheroAdj(i);
 		}
     	
     	//Fin
-    	return direction;
+    	return GetProba(proba);
     }
     
     /*
