@@ -91,6 +91,42 @@ public class Fourmi {
     	this.getM_chemin().addLast(dir);
     }
     
+    public int[] AffectationPoids(int dir)
+    {
+    	int[] c;
+    	switch(dir)
+		{
+    		case -4 :  			
+				c = new int[] {M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1]};
+				break;
+			case 1 :  			
+				c = new int[] {M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2]};
+				break;
+			case 2:
+				c = new int[] {M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3]};
+				break;
+			case 3 :
+				c = new int[] {M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4]};
+				break;
+			case 4 :
+				c = new int[] {M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3]};
+				break;
+			case -1 :
+				c = new int[] {M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2]};
+				break;
+			case -2 :
+				c = new int[] {M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1]};
+				break;
+			case -3 :
+				c = new int[] {M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0]};
+				break;
+			default :
+				c = new int[8];
+				break;
+		}
+    	return c;
+    }
+    
     public int ChoixDirection()
     {
 
@@ -111,39 +147,10 @@ public class Fourmi {
     	{
     		// r�cup�ration de la derniere direction puis affectation des poids c[]
     		int dir = m_chemin.getLast();
-    		int[] c;
+    		int[] c =AffectationPoids(dir);
     		double[] phero = new double[8];
     		double[] proba = new double[8];
-    		switch(dir)
-    		{
-	    		case -4 :  			
-					c = new int[] {M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1]};
-					break;
-    			case 1 :  			
-    				c = new int[] {M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2]};
-    				break;
-    			case 2:
-    				c = new int[] {M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3]};
-    				break;
-    			case 3 :
-    				c = new int[] {M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4]};
-    				break;
-    			case 4 :
-    				c = new int[] {M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3]};
-    				break;
-    			case -1 :
-    				c = new int[] {M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2]};
-    				break;
-    			case -2 :
-    				c = new int[] {M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1]};
-    				break;
-    			case -3 :
-    				c = new int[] {M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0]};
-    				break;
-    			default :
-    				c = new int[8];
-    				break;
-    		}
+    		
     		// Calcul de la somme (pour les probas)
     		double somme=0;
     		for(int j=0;j<8;j++)
@@ -153,8 +160,11 @@ public class Fourmi {
     		// Calcul des probas
     		for(int i=0;i<8;i++)
     		{
-    			phero[i] = this.GetCase().getM_case_adj(i).getM_pheromone();  			
-    			proba[i] = (c[i] + phero[i])/somme ;
+    			phero[i] = this.GetCase().getM_case_adj(i).getM_pheromone();
+    			if(c[i] != 0)
+    				proba[i] = (c[i] + phero[i])/somme ;
+    			else
+    				proba[i] = 0;
     		}
     		// r�cup�ration de l'indice de la case suivante
     		int h=0;
