@@ -4,6 +4,17 @@
 public class FourmiSenseur extends Fourmi {
 
     private int m_portee;
+    
+    public FourmiSenseur()
+    {
+    	super();
+    	m_portee = 2;
+    }
+    
+    public FourmiSenseur(Case c)
+    {
+    	super(c);
+    }
 
     public int getPortee() 
     {
@@ -15,10 +26,27 @@ public class FourmiSenseur extends Fourmi {
         this.m_portee = m_portee;
     }
     
+    private void Senseur(int taille, int[][] map)
+    {
+    	/*On utilisera les codes suivants pour les cases :
+    	 * 0 -> Inconnue
+    	 * 1 -> Libre
+    	 * 2 -> Source
+    	 * 3 -> Obstacle
+    	 * 
+    	 * On va observer la carte à la "façon démineur"
+    	 * Si une case n'est pas un obstacle, la fourmi peut voir les cases autour.
+    	 * Si une case est un obstacle, la fourmi ne voit pas les cases autour.
+    	 */
+    	
+    }
+    
     public int ChoixDirection()
     {
     	int taille = 1 + (2 * m_portee);
     	int direction = 0;
+    	int px = GetCase().getM_abcisse();
+    	int py = GetCase().getM_ordonnee();
     	double[] proba = new double[8];
     	double[][] modif = new double[3][3];
     	boolean[][] obstacle = new boolean[taille][taille];
@@ -231,18 +259,41 @@ public class FourmiSenseur extends Fourmi {
     		}
     	}
     	
+    	//On évite d'aller sur les murs
+    	for(int i = 0; i < 9; i++)
+    	{
+    		if(i == 4)
+    			i++;
+    		int x = (i / 3) - 1;
+    		int y = (i % 3) - 1;
+    		if(obstacle[pos[0]+x][pos[1]+y])
+    			modif[1+x][x+y] = 0;
+    	}
     	
     	//On calcul la probabilité d'aller sur chaque case
 		int[] p = AffectationPoids(m_chemin.getLast());
+		boolean possible = false;
 		for(int i = 0; i < 8; i++)
 		{
 			//On adapte les index pour passer des tableaux 3D aux tableaux 2D
 			int idg = (i < 4) ? i : i + 1;
 			int idx = idg / 3;
 			int idy = idg % 3;
-			proba[i] = (p[i] == 0) ? 0 : (p[i] * modif[idx][idy]) + GetPheroAdj(i);
+			//On évite d'aller en arrière et on évite les obstacles
+			proba[i] = ((p[i] * modif[idx][idy]) == 0) ? 0 : (p[i] * modif[idx][idy]) + GetPheroAdj(i);
+			if(proba[i] != 0)
+				possible = true;
 		}
+		//Si on est dans une impasse, on fait demi-tour
+		if(!possible)
+			return -m_chemin.getLast();
     	
+		double somme = 0;
+		for(int i = 0; i < 8; i++)
+			somme += proba[i];
+		for(int i = 0; i < 8; i++)
+			proba[i] /= somme;
+		
     	//Fin
     	return GetProba(proba);
     }
