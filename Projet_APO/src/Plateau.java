@@ -9,7 +9,51 @@ public class Plateau {
 
     private Case[][] m_tabCase;
 
-    public Plateau(int h, int l)
+    public Plateau()
+    {
+        int i = 1;
+        int j = 0;
+
+        try {
+            File f = new File("./data/map.txt");
+            FileReader fr = new FileReader(f);
+            try {
+                int c = fr.read();
+                //System.out.print(c);
+                while (c != -1)
+                {
+                    if (c == 13 ) {
+                        c = fr.read();
+                        if (c== 10)
+                        {
+                            i++;
+                            j = 0;
+                        }
+
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                    c = fr.read();
+                }
+                System.out.println(i + " " + j);
+                this.m_tabCase=new Case[ i ][ j ];
+
+
+        } catch (IOException exception) {
+            System.out.println("Erreur lecture caractère");
+        }
+        }
+        catch (FileNotFoundException exception)
+        {
+            System.out.println ("Le fichier n'a pas été trouvé");
+        }
+
+
+    }
+
+    Plateau(int h, int l)
     {
         this.m_tabCase = new Case[h][l];
     }
