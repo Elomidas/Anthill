@@ -8,6 +8,10 @@ public class Fourmiliere extends Case{
         super(m_abcisse, m_ordonnee, m_pheromone, m_case_adj);
         this.m_nourr = m_nourr;
     }
+    public Fourmiliere(double m_nourr) {
+        super();
+        this.m_nourr = m_nourr;
+    }
 
     public double getM_nourr() {
         return m_nourr;
