@@ -21,7 +21,7 @@ public class Case {
         this.m_ordonnee = m_ordonnee;
         this.m_pheromone = m_pheromone;
         this.m_case_adj = m_case_adj;
-        // [0] : NW, [1]: N, [2]: NE, [3]: W,[4]:  E, SW,[5]:  S,[6]:  SE
+        // [0] : NW, [1]: N, [2]: NE, [3]: W,[4]:  E,[5]: SW,[6]:  S,[7]:  SE
     }
 
     public int getM_abcisse() {
