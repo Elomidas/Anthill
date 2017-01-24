@@ -18,7 +18,6 @@ public class FourmiSenseur extends Fourmi {
     public int ChoixDirection()
     {
     	int taille = 1 + (2 * m_portee);
-    	int actu = 1 + m_portee;
     	int direction = 0;
     	int[][] proba = new int[3][3];
     	int[][] modif = new int[3][3];
@@ -38,7 +37,7 @@ public class FourmiSenseur extends Fourmi {
     	    	//On regarde s'il y a des sources ou des obstacles à portée de senseur
     			//On récupère la case
     			Case c = m_case;
-    			int[] pos = new int[] {actu, actu};
+    			int[] pos = new int[] {m_portee, m_portee};
     			while((pos[0] != i) || (pos[1] != j))
     			{
     				int d = 0;
@@ -121,7 +120,11 @@ public class FourmiSenseur extends Fourmi {
     			if(source[i][j])
     			{
     				//Si il y a une source, on regarde si elle est accessible
-    				
+    				if(Navigation(obstacle, i, j, m_portee, m_portee) != 0)
+    				{
+    					//On augmente la proba d'aller dans cette direction.
+    					//CONTINUER ICI
+    				}
     			}
     		}
     	}
@@ -276,49 +279,150 @@ public class FourmiSenseur extends Fourmi {
 					a = i - 1;
 					b = j;
 					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
-						return -4;
+						return 4;
 					a = i;
-					b = j - 1;
+					b = j + 1;
 					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
 						return -2;
 				}
 			}
-			/*
 			else if(y < j)
 			{
-				//On veut une colonne plus à droite
-				d = -1;
-				pos[0]++;
-				pos[1]++;
+				//On veut une colonne plus à gauche
+				//On essaye d'aller en haut à gauche
+				a = i - 1;
+				b = j - 1;
+				if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+					return 3;
+				if((y - j) > (x - i))
+				{
+					//On essaye d'aller à gauche avant d'aller en haut
+					a = i;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 2;
+					a = i - 1;
+					b = j;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 4;
+				}
+				else
+				{
+					//On essaye d'aller en haut avant d'aller à gauche
+					a = i - 1;
+					b = j;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 4;
+					a = i;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 2;
+				}
 			}
 			else
 			{
 				//On est sur la bonne colonne
-				d = 4;
-				pos[0]++;
+				//On essaye d'abbord d'aller en haut
+				a = i - 1;
+				b = j;
+				if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+					return 4;
+				if(Math.random() < 0.5)
+				{
+					//On essaye d'aller en haut à droite avant d'aller en haut à gauche
+					a = i - 1;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -1;
+					a = i - 1;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 3;
+				}
+				else
+				{
+					//On essaye d'aller en haut à gauche avant d'aller en haut à droite
+					a = i - 1;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 3;
+					a = i - 1;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -1;
+				}
 			}
-			*/
 		}
 		else
 		{
-			/*
 			//Ligne correcte
-			if(pos[1] > j)
+			if(y > j)
 			{
-				//On veut une colonne plus à gauche
-				d = 2;
-				pos[1]--;
+				//On veut une colonne plus à droite
+				//On essaye d'abbord d'aller en droite
+				a = i;
+				b = j + 1;
+				if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+					return -2;
+				if(Math.random() < 0.5)
+				{
+					//On essaye d'aller en haut à droite avant d'aller en bas à droite
+					a = i - 1;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -1;
+					a = i + 1;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -3;
+				}
+				else
+				{
+					//On essaye d'aller en bas à droite avant d'aller en haut à droite
+					a = i + 1;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return -3;
+					a = i - 1;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 1;
+				}
 			}
 			else
 			{
-				//On veut une colonne plus à droite
-				d = -2;
-				pos[1]++;
+				//On veut une colonne plus à gauche
+				//On essaye d'abbord d'aller en gauche
+				a = i;
+				b = j - 1;
+				if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+					return -2;
+				if(Math.random() < 0.5)
+				{
+					//On essaye d'aller en haut à gauche avant d'aller en bas à gauche
+					a = i - 1;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 3;
+					a = i + 1;
+					b = j - 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 1;
+				}
+				else
+				{
+					//On essaye d'aller en bas à gauche avant d'aller en haut à gauche
+					a = i + 1;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 1;
+					a = i - 1;
+					b = j + 1;
+					if(!obs[a][b] && (Navigation(obs, x, y, a, b) != 0))
+						return 3;
+				}
 			}
-			*/
 		}
-		
-		
 		return 0;
     }
 }
