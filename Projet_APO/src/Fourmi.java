@@ -20,6 +20,14 @@ public class Fourmi {
     	this.m_chemin = new LinkedList<Integer>();
         this.m_nourr_transp = 0;
         this.m_etat = Etat.ARRET;
+        this.m_case = new Case();
+    }
+    
+    public Fourmi(Case _case)
+    {
+    	this();
+    	if(!(_case instanceof Obstacle))
+    		this.m_case=_case;
     }
 
     public LinkedList<Integer> getM_chemin() 
@@ -86,9 +94,12 @@ public class Fourmi {
     
     public void Bouger()
     {
-    	int dir = ChoixDirection();    	
-    	this.SetCase(this.GetCase().CaseVoisine(dir));
-    	this.getM_chemin().addLast(dir);
+    	int dir = ChoixDirection();
+    	if(!(this.GetCase().CaseVoisine(dir) instanceof Obstacle))
+    	{
+    		this.SetCase(this.GetCase().CaseVoisine(dir));
+        	this.getM_chemin().addLast(dir);
+    	}   	
     }
     
     public int[] AffectationPoids(int dir)
@@ -137,7 +148,7 @@ public class Fourmi {
     	int h=0;
 		double random = Math.random();
 		double probacum =proba[0];
-		for(h = 0 ;random <= probacum;h++)
+		for(h = 0 ;random >= probacum;h++)
 		{
 			probacum +=proba[h+1];
 		}
