@@ -20,9 +20,11 @@ public class FourmiSenseur extends Fourmi {
     	int taille = 1 + (2 * m_portee);
     	int direction = 0;
     	int[][] proba = new int[3][3];
-    	int[][] modif = new int[3][3];
+    	double[][] modif = new double[3][3];
     	boolean[][] obstacle = new boolean[taille][taille];
     	boolean[][] source = new boolean[taille][taille];
+		//Position actuelle de la fourmi dans le tableau
+		int[] pos = new int[] {m_portee, m_portee};
     	//On initialise tous les tableaux
     	for(int i = 0; i < taille; i++)
     	{
@@ -32,12 +34,11 @@ public class FourmiSenseur extends Fourmi {
     			if((i < 3) && (j < 3))
     			{
     				proba[i][j] = 0;
-    				modif[i][j] = 0;
+    				modif[i][j] = 1;
     			}
     	    	//On regarde s'il y a des sources ou des obstacles à portée de senseur
     			//On récupère la case
     			Case c = m_case;
-    			int[] pos = new int[] {m_portee, m_portee};
     			while((pos[0] != i) || (pos[1] != j))
     			{
     				int d = 0;
@@ -111,7 +112,8 @@ public class FourmiSenseur extends Fourmi {
     			source[i][j] = (c instanceof Source);
     		}
     	}
-    	//Une fois qu'on connaît les obstacles et les sources à proximité, on regarde pour se déplacer
+    	
+    	//Une fois qu'on connaît les obstacles et les sources à proximité, on regarde si on a accès aux sources en fonction des obstacles.
 
     	for(int i = 0; i < taille; i++)
     	{
@@ -120,10 +122,111 @@ public class FourmiSenseur extends Fourmi {
     			if(source[i][j])
     			{
     				//Si il y a une source, on regarde si elle est accessible
-    				if(Navigation(obstacle, i, j, m_portee, m_portee) != 0)
+    				if((direction = Navigation(obstacle, i, j, m_portee, m_portee)) != 0)
     				{
     					//On augmente la proba d'aller dans cette direction.
-    					//CONTINUER ICI
+    					//On considère que si une source est accessible, la probabilité d'aller dans cette direction est multipliée par 2.
+    					//On multiplie aussi la probabilité d'aller dans les direction adjacentes par 1.5 s'il n'y a pas d'obstacle.
+    					//Par exemple si une source est disponnible en haut, la fourmi a 2 fois plus de chances d'aller en haut et 1.5 fois 
+    					// plus de chances d'aller en haut à droite et en haut à gauche, sous reserve qu'il n'y ait pas d'obstacle.
+    					
+    					//On effectue un changement d'index afin de déduire de la direction les cases à modifier
+    					int ix, iy, ixa, ixb, iya, iyb;
+    					switch(direction)
+    					{
+    						case 1 :
+    							ix = 2;
+    							iy = 0;
+    							ixa = 1;
+    							iya = 0;
+    							ixb = 2;
+    							iyb = 1;
+    							break;
+    							
+    						case 2 :
+    							ix = 1;
+    							iy = 0;
+    							ixa = 0;
+    							iya = 0;
+    							ixb = 2;
+    							iyb = 0;
+    							break;
+    							
+    						case 3 :
+    							ix = 0;
+    							iy = 0;
+    							ixa = 1;
+    							iya = 0;
+    							ixb = 0;
+    							iyb = 1;
+    							break;
+    							
+    						case 4 :
+    							ix = 0;
+    							iy = 1;
+    							ixa = 0;
+    							iya = 0;
+    							ixb = 0;
+    							iyb = 2;
+    							break;
+    							
+    						case -1 :
+    							ix = 0;
+    							iy = 2;
+    							ixa = 0;
+    							iya = 1;
+    							ixb = 1;
+    							iyb = 1;
+    							break;
+    							
+    						case -2 :
+    							ix = 1;
+    							iy = 2;
+    							ixa = 0;
+    							iya = 2;
+    							ixb = 2;
+    							iyb = 2;
+    							break;
+    							
+    						case -3:
+    							ix = 2;
+    							iy = 2;
+    							ixa = 1;
+    							iya = 2;
+    							ixb = 2;
+    							iyb = 1;
+    							break;
+    							
+    						case -4 :
+    							ix = 2;
+    							iy = 1;
+    							ixa = 2;
+    							iya = 0;
+    							ixb = 2;
+    							iyb = 2;
+    							break;
+    							
+							default :
+    							ix = 0;
+    							iy = 0;
+    							ixa = 0;
+    							iya = 0;
+    							ixb = 0;
+    							iyb = 0;
+    							break;
+    					}
+    					if(!obstacle[pos[0] + ix - 1][pos[1] + iy - 1])
+    					{
+    						modif[ix][iy] *= 2.0;
+    					}
+    					if(!obstacle[pos[0] + ixa - 1][pos[1] + iya - 1])
+    					{
+    						modif[ixa][iya] *= 1.5;
+    					}
+    					if(!obstacle[pos[0] + ixb - 1][pos[1] + iyb - 1])
+    					{
+    						modif[ixb][iyb] *= 1.5;
+    					}
     				}
     			}
     		}
@@ -144,8 +247,6 @@ public class FourmiSenseur extends Fourmi {
      */
     private int Navigation(boolean[][] obs, int x, int y, int i, int j)
     {
-    	int test = 0;
-		int d = 0;
 		int a, b;
 		if(x > i)
 		{
