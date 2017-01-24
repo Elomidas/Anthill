@@ -31,15 +31,16 @@ public class Plateau {
         Case [][] tabCase = getM_tabCase();
         for (int i = 0; i < tabCase.length ; i++)
         {
-            for (int j = 0; j < tabCase.length ; j++)
+            for (int j = 0; j < tabCase[i].length ; j++)
             {
                 getM_tabCase(i,j).Afficher();
             }
+            System.out.println();
         }
     }
 
     public void Initialisation() {
-        char[][] plat = new char[6][10];
+
         int i =0, j=0;
 
         try {
@@ -48,19 +49,29 @@ public class Plateau {
             try {
                 int c = fr.read();
                 //System.out.print(c);
-                while ((c != -1) && (i < 6))
+                while ((c != -1) && (i < m_tabCase.length))
                 {
-                    if ((c != 13) || (c != 10)) {
-                        plat[i][j] = (char) c;
-                        System.out.print(" " + c);
+                    if ((c != 13 )&& (c!= 10) )
+                    {
+
+                        switch (c){
+                            case '#' : m_tabCase[i][j] = new Obstacle();
+                                break;
+                            case 'F' : m_tabCase[i][j] = new Fourmiliere(0);
+                                break;
+                            case 'S' : m_tabCase[i][j] = new Source();
+                                break;
+                            default: m_tabCase[i][j] = new CaseVide();
+
+                        }
                         j++;
-                        if (j == 10) {
+                        if (j == m_tabCase[i].length) {
                             i++;
                             j = 0;
-                            System.out.println();
                         }
-                        c = fr.read();
+
                     }
+                    c = fr.read();
                 }
 
             } catch (IOException exception) {
@@ -71,19 +82,7 @@ public class Plateau {
         {
             System.out.println("Le fichier n'a pas été trouvé");
         }
-
-        for(i = 0; i<6 ; i++)
-        {
-
-            for( j = 0; j < 10; j++)
-            {
-                System.out.print(plat[i][j]);
-            }
-
-        }
-
-
-    }
+}
 
     public void DecrementePheroPlateau()
     {

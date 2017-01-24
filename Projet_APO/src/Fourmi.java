@@ -95,7 +95,7 @@ public class Fourmi {
     {
 
     	//Si c'est le premier d�placement, on le fais de mani�re al�atoire
-		fw
+
     	if( m_chemin.isEmpty() )
     	{
     		int lower = -4;

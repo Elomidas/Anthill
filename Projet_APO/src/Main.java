@@ -4,9 +4,9 @@
 public class Main {
 
     public static void main(String[] args) {
-        Plateau p = new Plateau(10,6);
+        Plateau p = new Plateau(6,10);
 
         p.Initialisation();
-
+        p.Afficher();
     }
 }
