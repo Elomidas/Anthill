@@ -47,16 +47,20 @@ public class Plateau {
             FileReader fr = new FileReader(f);
             try {
                 int c = fr.read();
-                while (c != -1)
+                //System.out.print(c);
+                while ((c != -1) && (i < 6))
                 {
-                    plat[i][j] = (char)c;
-                    j++;
-                    if (j-1 == 9)
-                    {
-                        i++;
-                        j=0;
+                    if ((c != 13) || (c != 10)) {
+                        plat[i][j] = (char) c;
+                        System.out.print(" " + c);
+                        j++;
+                        if (j == 10) {
+                            i++;
+                            j = 0;
+                            System.out.println();
+                        }
+                        c = fr.read();
                     }
-                    c = fr.read();
                 }
 
             } catch (IOException exception) {
@@ -68,11 +72,12 @@ public class Plateau {
             System.out.println("Le fichier n'a pas été trouvé");
         }
 
-        for(i = 0; i<10 ; i++)
+        for(i = 0; i<6 ; i++)
         {
-            for( j = 0; j < 6; j++)
+
+            for( j = 0; j < 10; j++)
             {
-                System.out.println(plat[i][j]);
+                System.out.print(plat[i][j]);
             }
 
         }
