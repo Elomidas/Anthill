@@ -126,6 +126,85 @@ public class Plateau {
         {
             System.out.println("Le fichier n'a pas été trouvé");
         }
+
+        //Pour le coin en haut à gauche, on lui attribue des cases adjacentes à droite, en bas, et en bas à droite :
+        m_tabCase[0][0].setM_case_adj(getM_tabCase(0,0),1);
+
+        for (i=0 ; i<m_tabCase.length ; i++)
+        {
+
+                
+
+
+            for (j=0; j < m_tabCase[i].length; j++)
+            {
+
+                /*
+                if( j==m_tabCase[i].length - 1 )
+                {
+
+                    if (i==m_tabCase.length - 1 )
+                    {
+                        m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j),1);
+                        m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j-1),0);
+                        m_tabCase[i][j].setM_case_adj(getM_tabCase(i,j-1),3);
+                    }
+                    else
+                    {
+                        if ( i == 0)
+                        {
+                            m_tabCase[i][j].setM_case_adj(getM_tabCase(i,j-1),3);
+                            m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j-1),5);
+                            m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j),6);
+                        }
+                        else
+                        {
+
+
+                        }
+                    }
+                }
+                else
+                {
+                   if (i == m_tabCase.length - 1 )
+                   {
+                       if (j == 0)
+                       {
+                           m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j),1);
+                           m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j+1),2);
+                           m_tabCase[i][j].setM_case_adj(getM_tabCase(i,j+1),4);
+                       }
+                       else
+                       {
+
+                       }
+                   }
+                   else
+                   {
+                       if (i == 0)
+                       {
+                           if (j ==0)
+                           {
+                               m_tabCase[i][j].setM_case_adj(getM_tabCase(i,j+1),4);
+                               m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j),6);
+                               m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j+1),7);
+                           }
+                           else
+                           {
+
+                           }
+                       }
+                       else
+                       {
+
+                       }
+                   }
+                    */
+                }
+
+            }
+        }
+        //m_tabCase[0][0].getM_case_adj(4).Afficher();
 }
 
     public void DecrementePheroPlateau()
