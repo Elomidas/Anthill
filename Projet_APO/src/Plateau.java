@@ -86,6 +86,7 @@ public class Plateau {
     public void Initialisation() {
 
         int i =0, j=0;
+        Case[] caseAdj = new Case[8];
 
         try {
             File f = new File("./data/map.txt");
@@ -128,80 +129,73 @@ public class Plateau {
         }
 
         //Pour le coin en haut Ã  gauche, on lui attribue des cases adjacentes Ã  droite, en bas, et en bas Ã  droite :
-        m_tabCase[0][0].setM_case_adj(getM_tabCase(0,0),1);
-
-        for (i=0 ; i<m_tabCase.length ; i++)
+        m_tabCase[0][0].setM_case_adj(getM_tabCase(0,1),4);
+        m_tabCase[0][0].setM_case_adj(getM_tabCase(1,1),7);
+        m_tabCase[0][0].setM_case_adj(getM_tabCase(1,0),6);
+        
+        //Pour le coin en haut à droite, on lui attribue des cases à gauche, en bas, et en bas à gauche
+        m_tabCase[0][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(0,m_tabCase[0].length-2),3);
+        m_tabCase[0][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(1,m_tabCase[0].length-2),5);
+        m_tabCase[0][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(1,m_tabCase[0].length-1),6);
+        
+        //Pour le coin en bas à gauche, ...
+        m_tabCase[m_tabCase.length-1][0].setM_case_adj(getM_tabCase(m_tabCase.length-2,0),1);
+        m_tabCase[m_tabCase.length-1][0].setM_case_adj(getM_tabCase(m_tabCase.length-2,1),2);
+        m_tabCase[m_tabCase.length-1][0].setM_case_adj(getM_tabCase(m_tabCase.length-1,1),4);
+        
+        //Pour le coin en bas à droite, ...
+        m_tabCase[m_tabCase.length-1][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(m_tabCase.length-1,m_tabCase[0].length-2),3);
+        m_tabCase[m_tabCase.length-1][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(m_tabCase.length-2,m_tabCase[0].length-2),0);
+        m_tabCase[m_tabCase.length-1][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(m_tabCase.length-2,m_tabCase[0].length-1),1);
+        
+        //Les lignes
+        for(j=1;j<m_tabCase[0].length-1;j++)
         {
-
-                
-
-
+        	//Ligne du haut
+        	m_tabCase[0][j].setM_case_adj(getM_tabCase(0,j-1),3);
+        	m_tabCase[0][j].setM_case_adj(getM_tabCase(1,j-1),5);
+        	m_tabCase[0][j].setM_case_adj(getM_tabCase(1,j),6);
+        	m_tabCase[0][j].setM_case_adj(getM_tabCase(1,j+1),7);
+        	m_tabCase[0][j].setM_case_adj(getM_tabCase(0,j+1),4);
+        	
+        	//Ligne du bas 
+        	m_tabCase[m_tabCase.length-1][j].setM_case_adj(getM_tabCase(m_tabCase.length-1,j-1),3);
+        	m_tabCase[m_tabCase.length-1][j].setM_case_adj(getM_tabCase(m_tabCase.length-2,j-1),0);
+        	m_tabCase[m_tabCase.length-1][j].setM_case_adj(getM_tabCase(m_tabCase.length-2,j),1);
+        	m_tabCase[m_tabCase.length-1][j].setM_case_adj(getM_tabCase(m_tabCase.length-2,j+1),2);
+        	m_tabCase[m_tabCase.length-1][j].setM_case_adj(getM_tabCase(m_tabCase.length-1,j+1),4);
+        }
+        for(i=0;i<m_tabCase.length;i++)
+        {
+        	//Colonne de gauche
+        	m_tabCase[i][0].setM_case_adj(getM_tabCase(i-1,0),1);
+        	m_tabCase[i][0].setM_case_adj(getM_tabCase(i-1,1),2);
+        	m_tabCase[i][0].setM_case_adj(getM_tabCase(i,1),4);
+        	m_tabCase[i][0].setM_case_adj(getM_tabCase(i+1,1),7);
+        	m_tabCase[i][0].setM_case_adj(getM_tabCase(i+1,0),6);
+        	
+        	
+        	//Colonne de droite 
+        	m_tabCase[i][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(i-1,m_tabCase[0].length-1),1);
+        	m_tabCase[i][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(i-1,m_tabCase[0].length-2),0);
+        	m_tabCase[i][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(i,m_tabCase[0].length-2),3);
+        	m_tabCase[i][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(i+1,m_tabCase[0].length-2),5);
+        	m_tabCase[i][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(i+1,m_tabCase[0].length-1),6);
+        }
+        
+        //Interieur du plateau
+        for (i=0 ; i < m_tabCase.length ; i++)
+        {
             for (j=0; j < m_tabCase[i].length; j++)
             {
-
-                /*
-                if( j==m_tabCase[i].length - 1 )
-                {
-
-                    if (i==m_tabCase.length - 1 )
-                    {
-                        m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j),1);
-                        m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j-1),0);
-                        m_tabCase[i][j].setM_case_adj(getM_tabCase(i,j-1),3);
-                    }
-                    else
-                    {
-                        if ( i == 0)
-                        {
-                            m_tabCase[i][j].setM_case_adj(getM_tabCase(i,j-1),3);
-                            m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j-1),5);
-                            m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j),6);
-                        }
-                        else
-                        {
-
-
-                        }
-                    }
-                }
-                else
-                {
-                   if (i == m_tabCase.length - 1 )
-                   {
-                       if (j == 0)
-                       {
-                           m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j),1);
-                           m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j+1),2);
-                           m_tabCase[i][j].setM_case_adj(getM_tabCase(i,j+1),4);
-                       }
-                       else
-                       {
-
-                       }
-                   }
-                   else
-                   {
-                       if (i == 0)
-                       {
-                           if (j ==0)
-                           {
-                               m_tabCase[i][j].setM_case_adj(getM_tabCase(i,j+1),4);
-                               m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j),6);
-                               m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j+1),7);
-                           }
-                           else
-                           {
-
-                           }
-                       }
-                       else
-                       {
-
-                       }
-                   }
-                    */
-                }
-
+            	m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j-1),0);
+            	m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j),1);
+            	m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j+1),2);
+            	m_tabCase[i][j].setM_case_adj(getM_tabCase(i,j-1),3);
+            	m_tabCase[i][j].setM_case_adj(getM_tabCase(i,j+1),4);
+            	m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j-1),5);
+            	m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j),6);
+            	m_tabCase[i][j].setM_case_adj(getM_tabCase(i+1,j+1),7);
             }
         }
         //m_tabCase[0][0].getM_case_adj(4).Afficher();
