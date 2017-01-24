@@ -19,23 +19,22 @@ public class FourmiSenseur extends Fourmi {
     {
     	int taille = 1 + (2 * m_portee);
     	int direction = 0;
-    	int[][] proba = new int[3][3];
+    	double[] proba = new double[8];
     	double[][] modif = new double[3][3];
     	boolean[][] obstacle = new boolean[taille][taille];
     	boolean[][] source = new boolean[taille][taille];
 		//Position actuelle de la fourmi dans le tableau
 		int[] pos = new int[] {m_portee, m_portee};
     	//On initialise tous les tableaux
+		for(int i = 0; i < 8; i++)
+			proba[i] = 0;
     	for(int i = 0; i < taille; i++)
     	{
     		for(int j = 0; j < taille; j++)
     		{
     			//On initialise les probas à 0
     			if((i < 3) && (j < 3))
-    			{
-    				proba[i][j] = 0;
     				modif[i][j] = 1;
-    			}
     	    	//On regarde s'il y a des sources ou des obstacles à portée de senseur
     			//On récupère la case
     			Case c = m_case;
@@ -234,7 +233,48 @@ public class FourmiSenseur extends Fourmi {
     	
     	
     	//On calcul la probabilité d'aller sur chaque case
-    	
+
+		int dir = m_chemin.getLast();
+		int[] p;
+		switch(dir)
+		{
+    		case -4 :  			
+				p = new int[] {M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1]};
+				break;
+			case 1 :  			
+				p = new int[] {M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2]};
+				break;
+			case 2:
+				p = new int[] {M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3]};
+				break;
+			case 3 :
+				p = new int[] {M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4]};
+				break;
+			case 4 :
+				p = new int[] {M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2],M_POIDS[3]};
+				break;
+			case -1 :
+				p = new int[] {M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1],M_POIDS[2]};
+				break;
+			case -2 :
+				p = new int[] {M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0],M_POIDS[1]};
+				break;
+			case -3 :
+				p = new int[] {M_POIDS[1],M_POIDS[2],M_POIDS[3],M_POIDS[4],M_POIDS[3],M_POIDS[2],M_POIDS[1],M_POIDS[0]};
+				break;
+			default :
+				p = new int[8];
+				break;
+		}
+		
+		for(int i = 0; i < 8; i++)
+		{
+			int idg = (i < 4) ? i : i + 1;
+			//On adapte les index pour passer des tableaux 3D aux tableaux 2D
+			int idx = idg / 3;
+			int idy = idg % 3;
+			proba[i] = (p[i] == 0) ? 0 : (p[i] * modif[idx][idy]) + this.GetCase().getM_case_adj(i).getM_pheromone();
+		}
     	
     	//Fin
     	return direction;
