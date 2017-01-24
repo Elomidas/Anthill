@@ -57,6 +57,82 @@ public class Plateau {
     {
         this.m_tabCase = new Case[h][l];
     }
+    
+    protected boolean Correct(char src, char obs, char frm, char[][] tab)
+    {
+    	char[][] map = new char[tab.length][tab[0].length];
+    	int nbSrc = 0;
+    	int nbFrm = 0;
+    	for(int i = 0; i < tab.length; i++)
+    	{
+    		for(int j = 0; j < tab[0].length; j++)
+    		{
+    			map[i][j] = 'X';
+    			if(tab[i][j] == frm)
+    				nbFrm++;
+    			else if(tab[i][j] == src)
+    				nbSrc++;
+    		}
+    	}
+    	int frmbis = nbFrm;
+    	int srcbis = nbSrc;
+    	map = Verif(src, obs, frm, tab, map, 0, 0);
+    	//Analyse du résultat
+    	for(int i = 0; i < tab.length; i++)
+    	{
+    		for(int j = 0; j < tab[0].length; j++)
+    		{
+    			if(map[i][j] == frm)
+    				nbFrm--;
+    			else if(tab[i][j] == src)
+    				nbSrc--;
+    		}
+    	}
+    	//Conclusion
+    	if((nbSrc == 0) && (nbFrm == 0) && (frmbis == 1) && (nbSrc > 0))
+    		return true;
+    	else
+    	{
+    		if(nbSrc != 0)
+    			System.out.println("Il y a " + nbSrc + " sources inaccessibles.");
+    		if(frmbis > 1)
+    			System.out.println("Il y a " + frmbis + " fourmilières au lieu d'une seule.");
+    		if(frmbis == 0)
+    			System.out.println("Il n'y a pas de fourmilière.");
+    		if(srcbis == 0)
+    			System.out.println("Il n'y a pas de source.");
+    	}
+    	return false;
+    }
+
+    protected char[][] Verif(char src, char obs, char frm, char[][] tab, char[][] map, int x, int y)
+    {
+    	if((x >= 0) && (x < map.length) && (y >= 0) && (y < map[0].length) && (map[x][y] == 'X'))
+    	{
+    		//On ne teste cette case que si elle n'a pas déja été testée
+    		if(tab[x][y] == obs)
+    			map[x][y] = 'O';
+    		else
+    		{
+    			//Si la case n'est pas un obstacle, on traite ses voisines
+    			if(tab[x][y] == src)
+    				map[x][y] = 'S';
+    			if(tab[x][y] == frm)
+    				map[x][y] = 'F';
+    			//On vérifie toutes les cases voisines
+    			for(int i = -1; i < 2; i++)
+    			{
+    				for(int j = -1; j < 2; j++)
+    				{
+    					if((i != 2) && (j != 2))
+    						map = Verif(src, obs, frm, tab, map, x+i, y+j);
+    				}
+    			}
+    		}
+    	}
+    	return map;
+    }
+
 
     public Case[][] getM_tabCase() {
         return m_tabCase;
