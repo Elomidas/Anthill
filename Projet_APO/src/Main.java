@@ -12,8 +12,8 @@ public class Main {
         Case[] tab_case = new Case[] {new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1)};
 
     	Case case1 = new Case(1,1,2,tab_case);*/
-    	Case F = p.getM_tabCase(2,5);
-        Fourmi f = new Fourmi(F);
+    	Case F = p.getM_tabCase(5,1);
+        FourmiSenseur f = new FourmiSenseur(F);
         f.Start();
         
         System.out.println(f.GetCase());
