@@ -95,8 +95,6 @@ public class Fourmi {
     public void Bouger()
     {
     	int dir = ChoixDirection();
-		
-    	System.out.println("voisine : " + GetCase().CaseVoisine(dir));
     	if(!(this.GetCase().CaseVoisine(dir) instanceof Obstacle))
     	{
     		this.SetCase(this.GetCase().CaseVoisine(dir));
@@ -192,7 +190,7 @@ public class Fourmi {
     		{
     			random ++;
     		}
-    		return random;
+    		return random; 
     	}
     	else
     	{
@@ -249,7 +247,6 @@ public class Fourmi {
     	if(!this.FourmTrouvee())
     	{
     		int dir = - this.getM_chemin().removeLast();
-    		System.out.println(dir);
     		this.SetCase(this.GetCase().CaseVoisine(dir));
     		this.GetCase().IncrementePheromone();
     	}
@@ -257,6 +254,7 @@ public class Fourmi {
     
     public boolean FourmTrouvee()
     {
+    	
     	if(this.GetCase() instanceof Fourmiliere)
     	{
     		((Fourmiliere)this.GetCase()).IncrementerNourriture(this.DecrementeNourriture());

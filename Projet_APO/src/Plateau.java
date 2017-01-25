@@ -1,6 +1,5 @@
 import java.io.*;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+
 
 /**
  * Created by Martial TARDY on 05/01/2017.
@@ -9,13 +8,13 @@ public class Plateau {
 
     private Case[][] m_tabCase;
 
-    public Plateau()
+    public Plateau(String map)
     {
         int i = 1;
         int j = 0;
 
         try {
-            File f = new File("./data/test.txt");
+        	File f = new File("./data/" + map);
             FileReader fr = new FileReader(f);
             try {
                 int c = fr.read();
@@ -38,6 +37,7 @@ public class Plateau {
                     c = fr.read();
                 }
                 this.m_tabCase=new Case[ i ][ j ];
+                fr.close();
 
 
         } catch (IOException exception) {
@@ -60,7 +60,7 @@ public class Plateau {
     /* Teste la conformite d'une map
      * -> Une seule fourmiliere
      * -> Au moins une source
-     * -> Toutes les sources doivent �tre accessibles depuis la fourmiliere
+     * -> Toutes les sources doivent �tre accessibles depuis la fourmiliere
      * -> Toutes les cases en bordure doivent etre des obstacles ou des cases inaccessibles
      */
     protected boolean Correct(char src, char obs, char frm, char[][] tab)
@@ -100,7 +100,6 @@ public class Plateau {
             System.out.println("Il n'y a pas de source.");
             return false;
     	}
-    	int srcbis = nbSrc;
     	//On regarde quelles cases sont accessibles a partir de la fourmiliere
     	map = Verif(src, obs, frm, tab, map, x, y);
     	//Analyse du resultat
@@ -175,32 +174,12 @@ public class Plateau {
         this.m_tabCase[h][l] = m_tabCase;
     }
 
-    public void Afficher(Fourmi f)
-    {
-        Case [][] tabCase = getM_tabCase();
-        for (int i = 0; i < tabCase.length ; i++)
-        {
-            for (int j = 0; j < tabCase[i].length ; j++)
-            {
-                if ((f.GetCase().getM_abcisse() == j) && (f.GetCase().getM_ordonnee() == i))
-                {
-                    System.out.print("f");
-                }
-                else
-                {
-                    getM_tabCase(i,j).Afficher();
-                }
-            }
-            System.out.println();
-        }
-    }
-
-    public void Initialisation() {
+    public void Initialisation(String map) {
 
         int i =0, j=0;
         char[][] charTab = new char[m_tabCase.length][m_tabCase[0].length];
         try {
-            File f = new File("./data/test.txt");
+            File f = new File("./data/" + map);
             FileReader fr = new FileReader(f);
             try {
                 int c = fr.read();
@@ -210,7 +189,6 @@ public class Plateau {
                     if ((c != 13 )&& (c!= 10) )
                     {
                         charTab[i][j] = (char) c;
-
                         j++;
                         if (j == m_tabCase[i].length) {
                             i++;
@@ -220,6 +198,7 @@ public class Plateau {
                     }
                     c = fr.read();
                 }
+                fr.close();
 
             } catch (IOException exception) {
                 System.out.println("Erreur lecture caractère");
@@ -230,7 +209,6 @@ public class Plateau {
             System.out.println("Le fichier n'a pas été trouvé");
         }
         boolean b = Correct('S','#','F',charTab);
-        System.out.print(b);
         if (b) {
 
             for (i = 0 ; i<m_tabCase.length ; i++)
@@ -341,6 +319,20 @@ public class Plateau {
     	return new Fourmiliere();
     }
 
+    public void SuppSource()
+    {
+        for(int i=0;i<m_tabCase.length;i++)
+        {
+            for(int j=0;j<m_tabCase[0].length;j++)
+            {
+                if((this.getM_tabCase(i, j) instanceof Source) && (((Source) this.getM_tabCase(i,j)).getM_nourriture() == 0))
+                {
+                    this.setM_tabCase(new CaseVide(),i,j);
+                }
+            }
+        }
+
+    }
 
 
 }
