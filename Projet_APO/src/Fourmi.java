@@ -95,11 +95,13 @@ public class Fourmi {
     public void Bouger()
     {
     	int dir = ChoixDirection();
+		
+    	System.out.println("voisine : " + GetCase().CaseVoisine(dir));
     	if(!(this.GetCase().CaseVoisine(dir) instanceof Obstacle))
     	{
     		this.SetCase(this.GetCase().CaseVoisine(dir));
-        	this.getM_chemin().addLast(dir);
-    	}   	
+        	this.m_chemin.addLast(dir);
+    	}     	
     }
     
     public int[] AffectationPoids(int dir)
@@ -247,6 +249,7 @@ public class Fourmi {
     	if(!this.FourmTrouvee())
     	{
     		int dir = - this.getM_chemin().removeLast();
+    		System.out.println(dir);
     		this.SetCase(this.GetCase().CaseVoisine(dir));
     		this.GetCase().IncrementePheromone();
     	}
@@ -257,7 +260,7 @@ public class Fourmi {
     	if(this.GetCase() instanceof Fourmiliere)
     	{
     		((Fourmiliere)this.GetCase()).IncrementerNourriture(this.DecrementeNourriture());
-    		this.SetEtat(Etat.ALLER);
+    		this.SetEtat(Etat.ARRET);
     		return true;
     	}
     	else

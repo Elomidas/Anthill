@@ -8,12 +8,14 @@ public class Main {
     	p.Initialisation();
 
     	
+
     	/*Case[] tab_case1 = new Case[] {new Case(),new Case(),new Case(),new Case(),new Case(),new Case(),new Case(),new Case()};
         Case[] tab_case = new Case[] {new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1)};
 
     	Case case1 = new Case(1,1,2,tab_case);*/
     	Case F = p.GetFourmiliere();
         Fourmi f = new Fourmi(F);
+
         f.Start();
         
         System.out.println(f.GetCase());
@@ -27,15 +29,12 @@ public class Main {
             {
             	System.out.println("remond est " + e.getMessage());
             }
-            //System.out.println(f.ChoixDirection());
-            try {
-                //Runtime.getRuntime().exec("cls");
-                f.Action();
-                p.Afficher(f);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
+            //System.out.println(f.ChoixDirection());
+
+            f.Action();
+            p.Afficher(f);
+        
         }
         
     }
