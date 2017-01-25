@@ -200,7 +200,7 @@ public class Plateau {
         {
             System.out.println("Le fichier n'a pas été trouvé");
         }
-        
+
         //Pour le coin en haut à gauche, on lui attribue des cases adjacentes à droite, en bas, et en bas à droite :
         m_tabCase[0][0].setM_case_adj(getM_tabCase(0,1),4);
         m_tabCase[0][0].setM_case_adj(getM_tabCase(1,1),7);

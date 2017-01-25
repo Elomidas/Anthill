@@ -10,8 +10,10 @@ public class Main {
     	
     	/*Case[] tab_case1 = new Case[] {new Case(),new Case(),new Case(),new Case(),new Case(),new Case(),new Case(),new Case()};
         Case[] tab_case = new Case[] {new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1)};
-        Case case1 = new Case(1,1,2,tab_case);*/
-        Fourmi f = new Fourmi(case1);
+
+    	Case case1 = new Case(1,1,2,tab_case);*/
+    	Case F = p.getM_tabCase(2,5);
+        Fourmi f = new Fourmi(F);
         f.Start();
         
         System.out.println(f.GetCase());
