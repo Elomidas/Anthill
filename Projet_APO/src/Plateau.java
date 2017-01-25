@@ -15,7 +15,7 @@ public class Plateau {
         int j = 0;
 
         try {
-            File f = new File("./data/map.txt");
+            File f = new File("./data/test.txt");
             FileReader fr = new FileReader(f);
             try {
                 int c = fr.read();
@@ -162,7 +162,7 @@ public class Plateau {
 
         int i =0, j=0;
         try {
-            File f = new File("./data/map.txt");
+            File f = new File("./data/test.txt");
             FileReader fr = new FileReader(f);
             try {
                 int c = fr.read();

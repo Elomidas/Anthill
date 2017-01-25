@@ -12,7 +12,7 @@ public class Main {
         Case[] tab_case = new Case[] {new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1),new Case(0,0,1,tab_case1)};
 
     	Case case1 = new Case(1,1,2,tab_case);*/
-    	Case F = p.getM_tabCase(2,5);
+    	Case F = p.getM_tabCase(3,3);
         Fourmi f = new Fourmi(F);
         f.Start();
         
@@ -27,7 +27,6 @@ public class Main {
             {
             	System.out.println("remond est " + e.getMessage());
             }
-            System.out.println(f.ChoixDirection());
             f.Action();
             System.out.println(f.GetCase());
         }
