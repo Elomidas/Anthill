@@ -52,12 +52,24 @@ public class Plateau {
 
     }
 
+    Plateau(int h, int l)
+    {
+        this.m_tabCase = new Case[h][l];
+    }
+    
+    /* Teste la conformite d'une map
+     * -> Une seule fourmiliere
+     * -> Au moins une source
+     * -> Toutes les sources doivent �tre accessibles depuis la fourmiliere
+     * -> Toutes les cases en bordure doivent etre des obstacles ou des cases inaccessibles
+     */
     protected boolean Correct(char src, char obs, char frm, char[][] tab)
     {
     	char[][] map = new char[tab.length][tab[0].length];
     	int nbSrc = 0;
     	int nbFrm = 0;
     	int x = 0, y = 0;
+    	//On initialise map comme etant que des cases non accessibles
     	for(int i = 0; i < tab.length; i++)
     	{
     		for(int j = 0; j < tab[0].length; j++)
@@ -72,36 +84,52 @@ public class Plateau {
     				nbSrc++;
     		}
     	}
-    	int frmbis = nbFrm;
+    	//On sauvegarde le nombre total de fourmilieres et de sources sur la map
+    	if(nbFrm < 1)
+    	{
+            System.out.println("Il n'y a pas de fourmiliere.");
+    		return false;
+    	}
+    	if(nbFrm > 1)
+    	{
+    		System.out.println("Il y a " + nbFrm + " fourmilieres au lieu d'une seule.");
+    		return false;
+    	}
+    	if(nbSrc == 0)
+    	{
+            System.out.println("Il n'y a pas de source.");
+            return false;
+    	}
     	int srcbis = nbSrc;
+    	//On regarde quelles cases sont accessibles a partir de la fourmiliere
     	map = Verif(src, obs, frm, tab, map, x, y);
-    	//Analyse du r�sultat
+    	//Analyse du resultat
     	for(int i = 0; i < tab.length; i++)
     	{
     		for(int j = 0; j < tab[0].length; j++)
     		{
+    			if((i == 0) || (i == (tab.length - 1)) || (j == 0) || (j == (tab[0].length)))
+    			{
+    				//Si une case en bordure est accessible et n'est pas un obstacle, on retourne une erreur.
+    				if((map[i][j] != 'X') && (map[i][j] != 'O'))
+    				{
+    					System.out.println("Votre map n'est pas conforme : sortie possible par la case (" + i + ", " + j + ").");
+    					return false;
+    				}
+    			}
     			if(map[i][j] == frm)
     				nbFrm--;
     			else if(tab[i][j] == src)
     				nbSrc--;
     		}
     	}
-    	System.out.println(nbSrc);
-        System.out.println(frmbis);
-        System.out.println(nbFrm);
-        System.out.println(srcbis);
+    	
     	//Conclusion
-    	if((nbSrc == 0) && (nbFrm == 0) && (frmbis == 1) && (srcbis > 0))
+    	if(nbSrc == 0)
     		return true;
 
         if(nbSrc != 0)
             System.out.println("Il y a " + nbSrc + " sources inaccessibles.");
-        if(frmbis > 1)
-            System.out.println("Il y a " + frmbis + " fourmili�res au lieu d'une seule.");
-        if(frmbis == 0)
-            System.out.println("Il n'y a pas de fourmili�re.");
-        if(srcbis == 0)
-            System.out.println("Il n'y a pas de source.");
     	return false;
     }
 
@@ -109,7 +137,7 @@ public class Plateau {
     {
     	if((x >= 0) && (x < map.length) && (y >= 0) && (y < map[0].length) && (map[x][y] == 'X'))
     	{
-    		//On ne teste cette case que si elle n'a pas d�ja �t� test�e
+    		//On ne teste cette case que si elle n'a pas deja ete testee
     		if(tab[x][y] == obs)
     			map[x][y] = 'O';
     		else
@@ -120,7 +148,7 @@ public class Plateau {
     			else if(tab[x][y] == frm)
     				map[x][y] = 'F';
     			else map[x][y] = '.';
-    			//On v�rifie toutes les cases voisines
+    			//On verifie toutes les cases voisines
     			for(int i = -1; i < 2; i++)
     			{
     				for(int j = -1; j < 2; j++)
