@@ -272,18 +272,23 @@ public class Plateau {
             }
         }
         //m_tabCase[0][0].getM_case_adj(4).Afficher();
-}
-
-    public void DecrementePheroPlateau()
-    {
-        for (int i = 0; i< m_tabCase.length ;i++)
-        {
-            for (int j = 0; j< m_tabCase.length ;j++)
-            {
-
-            }
-        }
     }
+
+    public Fourmiliere GetFourmiliere()
+    {
+    	for(int i=0;i<m_tabCase.length;i++)
+    	{
+    		for(int j=0;j<m_tabCase[0].length;j++)
+    		{
+    			if(this.getM_tabCase(i, j) instanceof Fourmiliere)
+    			{
+    				return (Fourmiliere)this.getM_tabCase(i, j);
+    			}
+    		}
+    	}
+    	return new Fourmiliere();
+    }
+
 
 
 }
