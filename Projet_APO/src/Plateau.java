@@ -76,7 +76,7 @@ public class Plateau {
     	int frmbis = nbFrm;
     	int srcbis = nbSrc;
     	map = Verif(src, obs, frm, tab, map, 0, 0);
-    	//Analyse du résultat
+    	//Analyse du rï¿½sultat
     	for(int i = 0; i < tab.length; i++)
     	{
     		for(int j = 0; j < tab[0].length; j++)
@@ -95,9 +95,9 @@ public class Plateau {
     		if(nbSrc != 0)
     			System.out.println("Il y a " + nbSrc + " sources inaccessibles.");
     		if(frmbis > 1)
-    			System.out.println("Il y a " + frmbis + " fourmilières au lieu d'une seule.");
+    			System.out.println("Il y a " + frmbis + " fourmiliï¿½res au lieu d'une seule.");
     		if(frmbis == 0)
-    			System.out.println("Il n'y a pas de fourmilière.");
+    			System.out.println("Il n'y a pas de fourmiliï¿½re.");
     		if(srcbis == 0)
     			System.out.println("Il n'y a pas de source.");
     	}
@@ -108,7 +108,7 @@ public class Plateau {
     {
     	if((x >= 0) && (x < map.length) && (y >= 0) && (y < map[0].length) && (map[x][y] == 'X'))
     	{
-    		//On ne teste cette case que si elle n'a pas déja été testée
+    		//On ne teste cette case que si elle n'a pas dï¿½ja ï¿½tï¿½ testï¿½e
     		if(tab[x][y] == obs)
     			map[x][y] = 'O';
     		else
@@ -118,7 +118,7 @@ public class Plateau {
     				map[x][y] = 'S';
     			if(tab[x][y] == frm)
     				map[x][y] = 'F';
-    			//On vérifie toutes les cases voisines
+    			//On vï¿½rifie toutes les cases voisines
     			for(int i = -1; i < 2; i++)
     			{
     				for(int j = -1; j < 2; j++)
@@ -200,23 +200,23 @@ public class Plateau {
         {
             System.out.println("Le fichier n'a pas Ã©tÃ© trouvÃ©");
         }
-
+        
         //Pour le coin en haut Ã  gauche, on lui attribue des cases adjacentes Ã  droite, en bas, et en bas Ã  droite :
         m_tabCase[0][0].setM_case_adj(getM_tabCase(0,1),4);
         m_tabCase[0][0].setM_case_adj(getM_tabCase(1,1),7);
         m_tabCase[0][0].setM_case_adj(getM_tabCase(1,0),6);
         
-        //Pour le coin en haut à droite, on lui attribue des cases à gauche, en bas, et en bas à gauche
+        //Pour le coin en haut ï¿½ droite, on lui attribue des cases ï¿½ gauche, en bas, et en bas ï¿½ gauche
         m_tabCase[0][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(0,m_tabCase[0].length-2),3);
         m_tabCase[0][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(1,m_tabCase[0].length-2),5);
         m_tabCase[0][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(1,m_tabCase[0].length-1),6);
         
-        //Pour le coin en bas à gauche, ...
+        //Pour le coin en bas ï¿½ gauche, ...
         m_tabCase[m_tabCase.length-1][0].setM_case_adj(getM_tabCase(m_tabCase.length-2,0),1);
         m_tabCase[m_tabCase.length-1][0].setM_case_adj(getM_tabCase(m_tabCase.length-2,1),2);
         m_tabCase[m_tabCase.length-1][0].setM_case_adj(getM_tabCase(m_tabCase.length-1,1),4);
         
-        //Pour le coin en bas à droite, ...
+        //Pour le coin en bas ï¿½ droite, ...
         m_tabCase[m_tabCase.length-1][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(m_tabCase.length-1,m_tabCase[0].length-2),3);
         m_tabCase[m_tabCase.length-1][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(m_tabCase.length-2,m_tabCase[0].length-2),0);
         m_tabCase[m_tabCase.length-1][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(m_tabCase.length-2,m_tabCase[0].length-1),1);
