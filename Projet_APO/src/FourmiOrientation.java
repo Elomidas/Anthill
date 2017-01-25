@@ -98,6 +98,11 @@ public class FourmiOrientation extends Fourmi
 				if(m_horizontal > 0)
 				{
 					//On veut aller en haut à droite
+					/* On essaye d'aller en haut à droite
+					 * Si on n'a pas pu aller en haut à droite, on essaye d'aller en haut
+					 * Si on n'a pas pu aller en haut, on essaye d'aller à droite
+					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
+					 */
 					dir = m_r1 ? -1 : 
 							(m_r2 ? 4 : 
 								(m_r3 ? -2 : 
@@ -106,6 +111,11 @@ public class FourmiOrientation extends Fourmi
 				else if(m_horizontal < 0)
 				{
 					//On veut aller en haut à gauche
+					/* On essaye d'aller en haut à gauche
+					 * Si on n'a pas pu aller en haut à gauche, on essaye d'aller à gauche
+					 * Si on n'a pas pu aller à gauche, on essaye d'aller en haut
+					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
+					 */
 					dir = m_r1 ? 3 : 
 							(m_r2 ? 2 : 
 								(m_r3 ? 4 : 
@@ -114,6 +124,11 @@ public class FourmiOrientation extends Fourmi
 				else
 				{
 					//On veut juste aller en haut
+					/* On essaye d'aller en haut
+					 * Si on n'a pas pu aller en haut, on essaye d'aller en haut à gauche
+					 * Si on n'a pas pu aller en haut à gauche, on essaye d'aller en haut à droite
+					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
+					 */
 					dir = m_r1 ? 4 : 
 							(m_r2 ? 3 : 
 								(m_r3 ? -1 : 
@@ -126,6 +141,11 @@ public class FourmiOrientation extends Fourmi
 				if(m_horizontal > 0)
 				{
 					//On veut aller en bas à droite
+					/* On essaye d'aller en bas à droite
+					 * Si on n'a pas pu aller en bas à droite, on essaye d'aller en bas
+					 * Si on n'a pas pu aller en bas, on essaye d'aller à droite
+					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
+					 */
 					dir = m_r1 ? -3 : 
 							(m_r2 ? -4 : 
 								(m_r3 ? -2 : 
@@ -134,6 +154,11 @@ public class FourmiOrientation extends Fourmi
 				else if(m_horizontal < 0)
 				{
 					//On veut aller en bas à gauche
+					/* On essaye d'aller en bas à gauche
+					 * Si on n'a pas pu aller en bas à gauche, on essaye d'aller en bas
+					 * Si on n'a pas pu aller en bas, on essaye d'aller à gauche
+					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
+					 */
 					dir = m_r1 ? 1 : 
 							(m_r2 ? -4 : 
 								(m_r3 ? 2 : 
@@ -142,6 +167,11 @@ public class FourmiOrientation extends Fourmi
 				else
 				{
 					//On veut juste aller en bas
+					/* On essaye d'aller en bas
+					 * Si on n'a pas pu aller en bas, on essaye d'aller en bas à droite
+					 * Si on n'a pas pu aller en bas à droite, on essaye d'aller en bas à gauche
+					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
+					 */
 					dir = m_r1 ? -4 : 
 							(m_r2 ? -3 : 
 								(m_r3 ? 1 : 
@@ -154,6 +184,11 @@ public class FourmiOrientation extends Fourmi
 				if(m_horizontal > 0)
 				{
 					//On veut aller à droite
+					/* On essaye d'aller à droite
+					 * Si on n'a pas pu aller à droite, on essaye d'aller en haut à droite
+					 * Si on n'a pas pu aller en haut à droite, on essaye d'aller en bas à droite
+					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
+					 */
 					dir = m_r1 ? -2 : 
 							(m_r2 ? -1 : 
 								(m_r3 ? -3 : 
@@ -162,6 +197,11 @@ public class FourmiOrientation extends Fourmi
 				else
 				{
 					//On veut aller à gauche
+					/* On essaye d'aller à gauche
+					 * Si on n'a pas pu aller à gauche, on essaye d'aller en bas à gauche
+					 * Si on n'a pas pu aller en bas à gauche, on essaye d'aller en haut à gauche
+					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
+					 */
 					dir = m_r1 ? 2 : 
 							(m_r2 ? 1 : 
 								(m_r3 ? 3 : 
@@ -170,14 +210,14 @@ public class FourmiOrientation extends Fourmi
 			}
 			if(GetCase().CaseVoisine(dir).Penetrable())
 			{
-				//Si on peut aller sur la case choisie, on y va
+				//Si on peut aller sur la case choisie (ie si la case choisie n'est pas un obstacle), on y va
 				m_r1 = m_r2 = m_r3 = true;
 	    		this.SetCase(this.GetCase().CaseVoisine(dir));
 	    		this.GetCase().IncrementePheromone();
 			}
 			else
 			{
-				//Sinon on indique que l'essai a échoué
+				//Sinon on indique que l'essai a échoué pour essayer une direction différente la fois suivante.
 				if(m_r3)
 				{
 					if(!m_r2)
