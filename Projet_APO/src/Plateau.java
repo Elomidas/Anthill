@@ -37,7 +37,6 @@ public class Plateau {
                     }
                     c = fr.read();
                 }
-                System.out.println(i + " " + j);
                 this.m_tabCase=new Case[ i ][ j ];
 
 
@@ -77,7 +76,7 @@ public class Plateau {
     	int frmbis = nbFrm;
     	int srcbis = nbSrc;
     	map = Verif(src, obs, frm, tab, map, 0, 0);
-    	//Analyse du résultat
+    	//Analyse du rï¿½sultat
     	for(int i = 0; i < tab.length; i++)
     	{
     		for(int j = 0; j < tab[0].length; j++)
@@ -96,9 +95,9 @@ public class Plateau {
     		if(nbSrc != 0)
     			System.out.println("Il y a " + nbSrc + " sources inaccessibles.");
     		if(frmbis > 1)
-    			System.out.println("Il y a " + frmbis + " fourmilières au lieu d'une seule.");
+    			System.out.println("Il y a " + frmbis + " fourmiliï¿½res au lieu d'une seule.");
     		if(frmbis == 0)
-    			System.out.println("Il n'y a pas de fourmilière.");
+    			System.out.println("Il n'y a pas de fourmiliï¿½re.");
     		if(srcbis == 0)
     			System.out.println("Il n'y a pas de source.");
     	}
@@ -109,7 +108,7 @@ public class Plateau {
     {
     	if((x >= 0) && (x < map.length) && (y >= 0) && (y < map[0].length) && (map[x][y] == 'X'))
     	{
-    		//On ne teste cette case que si elle n'a pas déja été testée
+    		//On ne teste cette case que si elle n'a pas dï¿½ja ï¿½tï¿½ testï¿½e
     		if(tab[x][y] == obs)
     			map[x][y] = 'O';
     		else
@@ -119,7 +118,7 @@ public class Plateau {
     				map[x][y] = 'S';
     			if(tab[x][y] == frm)
     				map[x][y] = 'F';
-    			//On vérifie toutes les cases voisines
+    			//On vï¿½rifie toutes les cases voisines
     			for(int i = -1; i < 2; i++)
     			{
     				for(int j = -1; j < 2; j++)
@@ -162,8 +161,6 @@ public class Plateau {
     public void Initialisation() {
 
         int i =0, j=0;
-        Case[] caseAdj = new Case[8];
-
         try {
             File f = new File("./data/map.txt");
             FileReader fr = new FileReader(f);
@@ -176,13 +173,13 @@ public class Plateau {
                     {
 
                         switch (c){
-                            case '#' : m_tabCase[i][j] = new Obstacle();
+                            case '#' : m_tabCase[i][j] = new Obstacle(j,i);
                                 break;
-                            case 'F' : m_tabCase[i][j] = new Fourmiliere(0);
+                            case 'F' : m_tabCase[i][j] = new Fourmiliere(j,i);
                                 break;
-                            case 'S' : m_tabCase[i][j] = new Source();
+                            case 'S' : m_tabCase[i][j] = new Source(j,i,50);
                                 break;
-                            default: m_tabCase[i][j] = new CaseVide();
+                            default: m_tabCase[i][j] = new CaseVide(j,i);
 
                         }
                         j++;
@@ -209,17 +206,17 @@ public class Plateau {
         m_tabCase[0][0].setM_case_adj(getM_tabCase(1,1),7);
         m_tabCase[0][0].setM_case_adj(getM_tabCase(1,0),6);
         
-        //Pour le coin en haut à droite, on lui attribue des cases à gauche, en bas, et en bas à gauche
+        //Pour le coin en haut ï¿½ droite, on lui attribue des cases ï¿½ gauche, en bas, et en bas ï¿½ gauche
         m_tabCase[0][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(0,m_tabCase[0].length-2),3);
         m_tabCase[0][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(1,m_tabCase[0].length-2),5);
         m_tabCase[0][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(1,m_tabCase[0].length-1),6);
         
-        //Pour le coin en bas à gauche, ...
+        //Pour le coin en bas ï¿½ gauche, ...
         m_tabCase[m_tabCase.length-1][0].setM_case_adj(getM_tabCase(m_tabCase.length-2,0),1);
         m_tabCase[m_tabCase.length-1][0].setM_case_adj(getM_tabCase(m_tabCase.length-2,1),2);
         m_tabCase[m_tabCase.length-1][0].setM_case_adj(getM_tabCase(m_tabCase.length-1,1),4);
         
-        //Pour le coin en bas à droite, ...
+        //Pour le coin en bas ï¿½ droite, ...
         m_tabCase[m_tabCase.length-1][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(m_tabCase.length-1,m_tabCase[0].length-2),3);
         m_tabCase[m_tabCase.length-1][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(m_tabCase.length-2,m_tabCase[0].length-2),0);
         m_tabCase[m_tabCase.length-1][m_tabCase[0].length-1].setM_case_adj(getM_tabCase(m_tabCase.length-2,m_tabCase[0].length-1),1);
@@ -241,7 +238,7 @@ public class Plateau {
         	m_tabCase[m_tabCase.length-1][j].setM_case_adj(getM_tabCase(m_tabCase.length-2,j+1),2);
         	m_tabCase[m_tabCase.length-1][j].setM_case_adj(getM_tabCase(m_tabCase.length-1,j+1),4);
         }
-        for(i=0;i<m_tabCase.length;i++)
+        for(i=1;i<m_tabCase.length-1;i++)
         {
         	//Colonne de gauche
         	m_tabCase[i][0].setM_case_adj(getM_tabCase(i-1,0),1);
@@ -260,9 +257,9 @@ public class Plateau {
         }
         
         //Interieur du plateau
-        for (i=0 ; i < m_tabCase.length ; i++)
+        for (i=1 ; i < m_tabCase.length-1 ; i++)
         {
-            for (j=0; j < m_tabCase[i].length; j++)
+            for (j=1; j < m_tabCase[i].length-1; j++)
             {
             	m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j-1),0);
             	m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j),1);
@@ -275,18 +272,23 @@ public class Plateau {
             }
         }
         //m_tabCase[0][0].getM_case_adj(4).Afficher();
-}
-
-    public void DecrementePheroPlateau()
-    {
-        for (int i = 0; i< m_tabCase.length ;i++)
-        {
-            for (int j = 0; j< m_tabCase.length ;j++)
-            {
-
-            }
-        }
     }
+
+    public Fourmiliere GetFourmiliere()
+    {
+    	for(int i=0;i<m_tabCase.length;i++)
+    	{
+    		for(int j=0;j<m_tabCase[0].length;j++)
+    		{
+    			if(this.getM_tabCase(i, j) instanceof Fourmiliere)
+    			{
+    				return (Fourmiliere)this.getM_tabCase(i, j);
+    			}
+    		}
+    	}
+    	return new Fourmiliere();
+    }
+
 
 
 }
