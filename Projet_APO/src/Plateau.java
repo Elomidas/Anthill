@@ -15,7 +15,7 @@ public class Plateau {
         int j = 0;
 
         try {
-            File f = new File("./data/test.txt");
+            File f = new File("./data/map.txt");
             FileReader fr = new FileReader(f);
             try {
                 int c = fr.read();
@@ -162,7 +162,7 @@ public class Plateau {
 
         int i =0, j=0;
         try {
-            File f = new File("./data/test.txt");
+            File f = new File("./data/map.txt");
             FileReader fr = new FileReader(f);
             try {
                 int c = fr.read();
@@ -180,6 +180,7 @@ public class Plateau {
                             case 'S' : m_tabCase[i][j] = new Source(j,i,50);
                                 break;
                             default: m_tabCase[i][j] = new CaseVide(j,i);
+                            	
 
                         }
                         j++;
