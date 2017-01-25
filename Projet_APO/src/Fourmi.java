@@ -94,8 +94,8 @@ public class Fourmi {
     
     public void Bouger()
     {
-    	//int dir = ChoixDirection();
-		int dir =4;
+    	int dir = ChoixDirection();
+		
     	System.out.println("voisine : " + GetCase().CaseVoisine(dir));
     	if(!(this.GetCase().CaseVoisine(dir) instanceof Obstacle))
     	{
