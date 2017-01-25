@@ -14,8 +14,10 @@ public class Main {
 
     	Case case1 = new Case(1,1,2,tab_case);*/
     	Case F = p.GetFourmiliere();
-        Fourmi f = new Fourmi(F);
-
+        Fourmi f = new FourmiOrientation(F);
+        
+        
+        
         f.Start();
         
         System.out.println(f.GetCase());
@@ -34,6 +36,7 @@ public class Main {
 
             f.Action();
             p.Afficher(f);
+            
         
         }
         

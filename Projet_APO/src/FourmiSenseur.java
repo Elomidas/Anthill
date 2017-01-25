@@ -27,47 +27,61 @@ public class FourmiSenseur extends Fourmi {
         this.m_portee = (portee > 0) ? portee : m_portee;
     }
     
-    protected int[][] Senseur(int taille, int[][] map, int px, int py, Case c)
+    protected int[][] Senseur(int[][] map, Case c)
     {
     	/*On utilisera les codes suivants pour les cases :
     	 * 0 -> Inconnue
     	 * 1 -> Libre
     	 * 2 -> Source
-    	 * 3 -> maptacle
+    	 * 3 -> Obstacle
+    	 * 4 -> Fourmiliere
     	 * 
     	 * On va maperver la carte à la "façon démineur" par récursivité
     	 * Si une case n'est pas un maptacle, la fourmi peut voir les cases autour.
     	 * Si une case est un maptacle, la fourmi ne voit pas les cases autour.
     	 */
-    	
+
+    	int px = c.getM_ordonnee();
+    	int py = c.getM_abcisse();
     	//On ne traite la case que si elle ne l'a pas encore été et qu'elle est dans le tableau
-    	if((px >= 0) && (py >= 0) && (px <= taille) && (py <= taille) && (map[px][py] == 0))
+    	if((px >= 0) && (py >= 0) && (px < map.length) && (py < map[0].length) && (map[px][py] == 0))
     	{
     		//Si la case contient un maptacle, on s'arrête là
     		if(!c.Penetrable())
+    		{
     			map[px][py] = 3;
+    		}
     		else
     		{
     			if(c instanceof Source)
+    			{
     				map[px][py] = 2;
-    			else map[px][py] = 1;
+    			}
+    			else if(c instanceof Fourmiliere)
+    			{
+    				map[px][py] = 4;
+    			}
+    			else
+				{
+    				map[px][py] = 1;
+				}
     			//Sinon, on regarde une par une les cases voisines
     			//Haut gauche
-    			map = Senseur(taille, map, px-1, py-1, c.CaseVoisine(3));
+    			map = Senseur(map, c.CaseVoisine(3));
     			//Haut
-    			map = Senseur(taille, map, px-1, py, c.CaseVoisine(4));
+    			map = Senseur(map, c.CaseVoisine(4));
     			//Haut gauche
-    			map = Senseur(taille, map, px-1, py+1, c.CaseVoisine(-1));
+    			map = Senseur(map, c.CaseVoisine(-1));
     			//Gauche
-    			map = Senseur(taille, map, px, py-1, c.CaseVoisine(2));
+    			map = Senseur(map, c.CaseVoisine(2));
     			//Droite
-    			map = Senseur(taille, map, px, py+1, c.CaseVoisine(-2));
+    			map = Senseur(map, c.CaseVoisine(-2));
     			//Bas gauche
-    			map = Senseur(taille, map, px+1, py-1, c.CaseVoisine(1));
+    			map = Senseur(map, c.CaseVoisine(1));
     			//Bas
-    			map = Senseur(taille, map, px+1, py, c.CaseVoisine(-4));
+    			map = Senseur(map, c.CaseVoisine(-4));
     			//Haut gauche
-    			map = Senseur(taille, map, px+1, py+1, c.CaseVoisine(-3));
+    			map = Senseur(map, c.CaseVoisine(-3));
     		}
     	}
 		return map;
@@ -106,7 +120,7 @@ public class FourmiSenseur extends Fourmi {
 		}
 		
 		//On se sert du senseur pour completer notre tableau
-		map = Senseur(taille, map, pos[0], pos[1], GetCase());
+		map = Senseur(map, GetCase());
 		
     	//Une fois qu'on connaît les obstacles et les sources à proximité, on regarde si on a accès aux sources en fonction des obstacles.
     	for(int i = 0; i < taille; i++)
@@ -239,7 +253,16 @@ public class FourmiSenseur extends Fourmi {
     	}
     	
     	//On calcul la probabilité d'aller sur chaque case
-		int[] p = AffectationPoids(m_chemin.getLast());
+    	int[] p;
+    	if(!m_chemin.isEmpty())
+			p = AffectationPoids(m_chemin.getLast());
+    	else
+    	{
+    		int r = (int)((Math.random() * 8) - 4);
+    		if(r >= 0)
+    			r++;
+    		p = AffectationPoids(r);
+    	}
 		/* Repère sur le pavé num
 		 * p[0] -> 2
 		 * p[1] -> 1
@@ -279,7 +302,7 @@ public class FourmiSenseur extends Fourmi {
 					break;
 			}
 			//On évite d'aller en arrière et on évite les obstacles
-			proba[i] = ((poids * modif[idx][idy]) == 0) ? 0 : (p[i] * modif[idx][idy]) + GetPheroAdj(i);
+			proba[i] = ((poids * modif[idx][idy]) == 0) ? 0 : ((p[i] * modif[idx][idy]) + GetPheroAdj(i));
 			if(proba[i] != 0)
 				possible = true;
 		}
@@ -305,6 +328,8 @@ public class FourmiSenseur extends Fourmi {
     private int Navigation(int[][] map, int x, int y, int i, int j)
     {
 		int a, b;
+		if((i == x) && (j == y))
+			return 10;
 		if(x > i)
 		{
 			//On veut une ligne inférieure

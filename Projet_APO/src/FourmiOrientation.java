@@ -42,51 +42,54 @@ public class FourmiOrientation extends Fourmi
 			if((m_vertical == 0) && (m_horizontal == 0))
 			{
 				//On recherche le plus court itinéraire
-				switch(-this.getM_chemin().removeLast())
+				while(!this.getM_chemin().isEmpty())
 				{
-					case 1 :
-						//Bas Gauche
-						m_vertical--;
-						m_horizontal--;
-						break;
+					switch(-this.getM_chemin().removeLast())
+					{
+						case 1 :
+							//Bas Gauche
+							m_vertical--;
+							m_horizontal--;
+							break;
+							
+						case 2 :
+							//Gauche
+							m_horizontal--;
+							break;
 						
-					case 2 :
-						//Gauche
-						m_horizontal--;
-						break;
-					
-					case 3 :
-						//Haut Gauche
-						m_vertical++;
-						m_horizontal--;
-						break;
-					
-					case 4 :
-						//Haut
-						m_vertical++;
-						break;
-					
-					case -4 :
-						//Bas
-						m_vertical--;
-						break;
-					
-					case -3 :
-						m_vertical--;
-						m_horizontal++;
-						break;
-					
-					case -2 :
-						m_horizontal++;
-						break;
-					
-					case -1 :
-						m_vertical++;
-						m_horizontal++;
-						break;
-					
-					default:
-						break;
+						case 3 :
+							//Haut Gauche
+							m_vertical++;
+							m_horizontal--;
+							break;
+						
+						case 4 :
+							//Haut
+							m_vertical++;
+							break;
+						
+						case -4 :
+							//Bas
+							m_vertical--;
+							break;
+						
+						case -3 :
+							m_vertical--;
+							m_horizontal++;
+							break;
+						
+						case -2 :
+							m_horizontal++;
+							break;
+						
+						case -1 :
+							m_vertical++;
+							m_horizontal++;
+							break;
+						
+						default:
+							break;
+					}
 				}
 			}
 			//On regarde dans quelle direction aller.
