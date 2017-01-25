@@ -9,13 +9,13 @@ public class Plateau {
 
     private Case[][] m_tabCase;
 
-    public Plateau()
+    public Plateau(String map)
     {
         int i = 1;
         int j = 0;
 
         try {
-            File f = new File("./data/test.txt");
+            File f = new File("./data/" + map);
             FileReader fr = new FileReader(f);
             try {
                 int c = fr.read();
@@ -52,11 +52,6 @@ public class Plateau {
 
     }
 
-    Plateau(int h, int l)
-    {
-        this.m_tabCase = new Case[h][l];
-    }
-    
     protected boolean Correct(char src, char obs, char frm, char[][] tab)
     {
     	char[][] map = new char[tab.length][tab[0].length];
@@ -152,32 +147,12 @@ public class Plateau {
         this.m_tabCase[h][l] = m_tabCase;
     }
 
-    public void Afficher(Fourmi f)
-    {
-        Case [][] tabCase = getM_tabCase();
-        for (int i = 0; i < tabCase.length ; i++)
-        {
-            for (int j = 0; j < tabCase[i].length ; j++)
-            {
-                if ((f.GetCase().getM_abcisse() == j) && (f.GetCase().getM_ordonnee() == i))
-                {
-                    System.out.print("f");
-                }
-                else
-                {
-                    getM_tabCase(i,j).Afficher();
-                }
-            }
-            System.out.println();
-        }
-    }
-
-    public void Initialisation() {
+    public void Initialisation(String map) {
 
         int i =0, j=0;
         char[][] charTab = new char[m_tabCase.length][m_tabCase[0].length];
         try {
-            File f = new File("./data/test.txt");
+            File f = new File("./data/" + map);
             FileReader fr = new FileReader(f);
             try {
                 int c = fr.read();
@@ -318,6 +293,20 @@ public class Plateau {
     	return new Fourmiliere();
     }
 
+    public void SuppSource()
+    {
+        for(int i=0;i<m_tabCase.length;i++)
+        {
+            for(int j=0;j<m_tabCase[0].length;j++)
+            {
+                if((this.getM_tabCase(i, j) instanceof Source) && (((Source) this.getM_tabCase(i,j)).getM_nourriture() == 0))
+                {
+                    this.setM_tabCase(new CaseVide(),i,j);
+                }
+            }
+        }
+
+    }
 
 
 }
