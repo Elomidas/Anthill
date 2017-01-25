@@ -319,19 +319,27 @@ public class Plateau {
     	return new Fourmiliere();
     }
 
-    public void SuppSource()
+    //Supprime les sources vides et renvoie true si toutes les sources sont vides
+    public boolean SuppSource()
     {
+    	boolean b=true;
         for(int i=0;i<m_tabCase.length;i++)
         {
             for(int j=0;j<m_tabCase[0].length;j++)
             {
-                if((this.getM_tabCase(i, j) instanceof Source) && (((Source) this.getM_tabCase(i,j)).getM_nourriture() == 0))
+            	//Pour chaque source, b passe à faux tant qu'elle contient de la nourriture
+                if(this.getM_tabCase(i, j) instanceof Source)
                 {
-                    this.setM_tabCase(new CaseVide(),i,j);
+                	b= false;
+                	if(((Source)this.getM_tabCase(i,j)).getM_nourriture() == 0)
+					{
+						this.setM_tabCase(new CaseVide(),i,j);
+						b=true;
+					}                    
                 }
             }
         }
-
+        return b;
     }
 
 

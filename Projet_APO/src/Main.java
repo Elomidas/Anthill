@@ -12,8 +12,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Panneau p = new Panneau();
-
 
         String map = "map.txt";
 

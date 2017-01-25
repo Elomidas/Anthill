@@ -34,9 +34,9 @@ public class FourmiOrientation extends Fourmi
 		return 1;
 	}
 	
-	public void Retour()
+	public void Retour(boolean b)
 	{
-		if(!this.FourmTrouvee())
+		if(!this.FourmTrouvee(b))
     	{
 			int dir = 0;
 			if((m_vertical == 0) && (m_horizontal == 0))

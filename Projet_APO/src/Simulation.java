@@ -114,7 +114,7 @@ public class Simulation
 	{
 		for(int k=0;k<m_listeFourmis.size();k++)
 		{
-			m_listeFourmis.get(k).Action();
+			m_listeFourmis.get(k).Action(m_plateau.SuppSource());
 		}
 	}
 	public void DecrementerPhero()
