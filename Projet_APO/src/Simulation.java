@@ -3,6 +3,8 @@
  */
 public class Simulation 
 {
+	
+	
 	public Simulation()
 	{
 		this(2, "default.txt");

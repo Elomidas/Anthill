@@ -37,7 +37,6 @@ public class Plateau {
                     }
                     c = fr.read();
                 }
-                System.out.println(i + " " + j);
                 this.m_tabCase=new Case[ i ][ j ];
 
 
@@ -162,8 +161,6 @@ public class Plateau {
     public void Initialisation() {
 
         int i =0, j=0;
-        Case[] caseAdj = new Case[8];
-
         try {
             File f = new File("./data/map.txt");
             FileReader fr = new FileReader(f);
@@ -176,13 +173,13 @@ public class Plateau {
                     {
 
                         switch (c){
-                            case '#' : m_tabCase[i][j] = new Obstacle();
+                            case '#' : m_tabCase[i][j] = new Obstacle(j,i);
                                 break;
-                            case 'F' : m_tabCase[i][j] = new Fourmiliere(0);
+                            case 'F' : m_tabCase[i][j] = new Fourmiliere(j,i);
                                 break;
-                            case 'S' : m_tabCase[i][j] = new Source();
+                            case 'S' : m_tabCase[i][j] = new Source(j,i,50);
                                 break;
-                            default: m_tabCase[i][j] = new CaseVide();
+                            default: m_tabCase[i][j] = new CaseVide(j,i);
 
                         }
                         j++;
@@ -241,7 +238,7 @@ public class Plateau {
         	m_tabCase[m_tabCase.length-1][j].setM_case_adj(getM_tabCase(m_tabCase.length-2,j+1),2);
         	m_tabCase[m_tabCase.length-1][j].setM_case_adj(getM_tabCase(m_tabCase.length-1,j+1),4);
         }
-        for(i=0;i<m_tabCase.length;i++)
+        for(i=1;i<m_tabCase.length-1;i++)
         {
         	//Colonne de gauche
         	m_tabCase[i][0].setM_case_adj(getM_tabCase(i-1,0),1);
@@ -260,9 +257,9 @@ public class Plateau {
         }
         
         //Interieur du plateau
-        for (i=0 ; i < m_tabCase.length ; i++)
+        for (i=1 ; i < m_tabCase.length-1 ; i++)
         {
-            for (j=0; j < m_tabCase[i].length; j++)
+            for (j=1; j < m_tabCase[i].length-1; j++)
             {
             	m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j-1),0);
             	m_tabCase[i][j].setM_case_adj(getM_tabCase(i-1,j),1);

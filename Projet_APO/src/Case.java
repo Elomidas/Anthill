@@ -16,11 +16,11 @@ public class Case {
         this.m_case_adj = new Case[8];
     }
 
-    public Case(int m_abcisse, int m_ordonnee, double m_pheromone, Case[] m_case_adj) {
+    public Case(int m_abcisse, int m_ordonnee) {
         this.m_abcisse = m_abcisse;
         this.m_ordonnee = m_ordonnee;
-        this.m_pheromone = m_pheromone;
-        this.m_case_adj = m_case_adj;
+        this.m_pheromone = 0;
+        this.m_case_adj = new Case[8];
         // [0] : NW, [1]: N, [2]: NE, [3]: W,[4]:  E,[5]: SW,[6]:  S,[7]:  SE
     }
 
