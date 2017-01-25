@@ -3,7 +3,7 @@
  */
 public class FourmiSenseur extends Fourmi {
 
-    private int m_portee;
+    protected int m_portee;
     
     public FourmiSenseur()
     {
@@ -14,6 +14,7 @@ public class FourmiSenseur extends Fourmi {
     public FourmiSenseur(Case c)
     {
     	super(c);
+    	m_portee = 2;
     }
 
     public int getPortee() 
@@ -21,12 +22,12 @@ public class FourmiSenseur extends Fourmi {
         return m_portee;
     }
 
-    public void setPortee(int m_portee) 
+    public void setPortee(int portee) 
     {
-        this.m_portee = m_portee;
+        this.m_portee = (portee > 0) ? portee : m_portee;
     }
     
-    private int[][] Senseur(int taille, int[][] map, int px, int py, Case c)
+    protected int[][] Senseur(int taille, int[][] map, int px, int py, Case c)
     {
     	/*On utilisera les codes suivants pour les cases :
     	 * 0 -> Inconnue
@@ -103,6 +104,9 @@ public class FourmiSenseur extends Fourmi {
 				map[i][j] = 0;
 			}
 		}
+		
+		//On se sert du senseur pour completer notre tableau
+		map = Senseur(taille, map, pos[0], pos[1], GetCase());
 		
     	//Une fois qu'on connaît les obstacles et les sources à proximité, on regarde si on a accès aux sources en fonction des obstacles.
     	for(int i = 0; i < taille; i++)
@@ -236,15 +240,46 @@ public class FourmiSenseur extends Fourmi {
     	
     	//On calcul la probabilité d'aller sur chaque case
 		int[] p = AffectationPoids(m_chemin.getLast());
+		/* Repère sur le pavé num
+		 * p[0] -> 2
+		 * p[1] -> 1
+		 * etc...
+		 */
 		boolean possible = false;
 		for(int i = 0; i < 8; i++)
 		{
 			//On adapte les index pour passer des tableaux 3D aux tableaux 2D
+			//On fait correspondre les poids aux directions
 			int idg = (i < 4) ? i : i + 1;
 			int idx = idg / 3;
 			int idy = idg % 3;
+			int poids = 0;
+			switch(i)
+			{
+				case 1 :
+					poids = p[3];
+					break;
+				case 2 :
+					poids = p[4];
+					break;
+				case 3 :
+					poids = p[5];
+					break;
+				case 4 :
+					poids = p[2];
+					break;
+				case 5 :
+					poids = p[6];
+					break;
+				case 6 :
+					poids = p[7];
+					break;
+				case 8 :
+					poids = p[0];
+					break;
+			}
 			//On évite d'aller en arrière et on évite les obstacles
-			proba[i] = ((p[i] * modif[idx][idy]) == 0) ? 0 : (p[i] * modif[idx][idy]) + GetPheroAdj(i);
+			proba[i] = ((poids * modif[idx][idy]) == 0) ? 0 : (p[i] * modif[idx][idy]) + GetPheroAdj(i);
 			if(proba[i] != 0)
 				possible = true;
 		}
