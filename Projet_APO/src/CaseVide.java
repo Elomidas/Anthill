@@ -16,6 +16,6 @@ public class CaseVide extends Case {
 
     @Override
     public void Afficher() {
-        super.Afficher();
+        System.out.print((int)m_pheromone);
     }
 }

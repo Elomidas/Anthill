@@ -117,6 +117,22 @@ public class Simulation
 			m_listeFourmis.get(k).Action();
 		}
 	}
+	public void DecrementerPhero()
+	{
+		Plateau p = getM_plateau();
+		for (int i = 0; i < p.getM_tabCase().length ; i++)
+		{
+			for (int j = 0; j < p.getM_tabCase()[i].length; j++)
+			{
+				if (( p.getM_tabCase()[i][j] instanceof CaseVide) && (p.getM_tabCase()[i][j].getM_pheromone() > 0))
+				{
+					p.getM_tabCase()[i][j].setM_pheromone(p.getM_tabCase()[i][j].getM_pheromone() - 0.1);
+				}
+			}
+
+		}
+
+	}
 
 	public void FourmiSimulation()
 	{
@@ -135,7 +151,9 @@ public class Simulation
 			//System.out.println(f.ChoixDirection());
 			ActionSimul();
 			Afficher();
+			DecrementerPhero();
 
 		}
 	}
+
 }
