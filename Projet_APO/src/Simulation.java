@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Simulation 
 {
@@ -153,7 +152,7 @@ public class Simulation
 	public void FourmiSimulation()
 	{
 		StartSimulation();
-		while(!Thread.interrupted())
+		while((!Thread.interrupted()) && (!Fini()))
 		{
 			
 			try
