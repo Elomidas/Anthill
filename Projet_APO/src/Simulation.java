@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Simulation 
 {
@@ -31,7 +32,19 @@ public class Simulation
 		{
 			m_listeFourmis.add(new FourmiOrientation(m_plateau.GetFourmiliere()));
 		}
-		
+	}
+	
+
+	public Simulation(int nbFourmis, String map, boolean b)
+	{
+		this.m_plateau = new Plateau(map);
+		this.m_listeFourmis = new ArrayList<Fourmi>();
+		m_fini=false;
+		this.m_plateau.Initialisation(map);
+		for(int i = 0; i < nbFourmis; i++)
+		{
+			m_listeFourmis.add(new FourmiOrientation(m_plateau.GetFourmiliere()));
+		}
 	}
 
 	public Plateau getM_plateau() {
@@ -99,6 +112,7 @@ public class Simulation
 			}
 			System.out.println();
 		}
+		System.out.println("\n\n");
 	}
 
 	public void ActionSimul()
@@ -139,8 +153,9 @@ public class Simulation
 	public void FourmiSimulation()
 	{
 		StartSimulation();
-		while((!Thread.interrupted()) && (!Fini()))
+		while(!Thread.interrupted())
 		{
+			
 			try
 			{
 				Thread.sleep(500);
@@ -149,6 +164,8 @@ public class Simulation
 			{
 				System.out.println("remond est " + e.getMessage());
 			}
+			
+			//str = sc.next();
 
 			//System.out.println(f.ChoixDirection());
 			ActionSimul();

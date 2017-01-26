@@ -18,7 +18,7 @@ public class FourmiOrientation extends Fourmi
 		super(c);
 	}
 	
-	//Retourne un entier entre -4 et 4, en dehors de 0 et des valeurs passées en paramètres
+	//Retourne un entier entre -4 et 4, en dehors de 0 et des valeurs passees en parametres
 	private int rand(int a, int b, int c)
 	{
 		//Donne un nombre entre 0 et 4
@@ -74,15 +74,18 @@ public class FourmiOrientation extends Fourmi
 							break;
 						
 						case -3 :
+							//Bas Droite
 							m_vertical--;
 							m_horizontal++;
 							break;
 						
 						case -2 :
+							//Droite
 							m_horizontal++;
 							break;
 						
 						case -1 :
+							//Haut Droite
 							m_vertical++;
 							m_horizontal++;
 							break;
