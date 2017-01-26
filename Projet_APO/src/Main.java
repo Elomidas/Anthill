@@ -15,7 +15,8 @@ public class Main {
 
         String map = "map.txt";
 
-    	Simulation simu = new Simulation(3,map);
+        //Simulation simu = new Simulation(3,map);
+        Simulation simu = new Simulation(1, map, false);
 
         simu.FourmiSimulation();
         

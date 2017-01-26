@@ -27,7 +27,7 @@ public class FourmiSenseur extends Fourmi {
         this.m_portee = (portee > 0) ? portee : m_portee;
     }
     
-    protected int[][] Senseur(int[][] map, Case c)
+    protected int[][] Senseur(int[][] map, Case c, int x, int y)
     {
     	/*On utilisera les codes suivants pour les cases :
     	 * 0 -> Inconnue
@@ -40,48 +40,47 @@ public class FourmiSenseur extends Fourmi {
     	 * Si une case n'est pas un maptacle, la fourmi peut voir les cases autour.
     	 * Si une case est un maptacle, la fourmi ne voit pas les cases autour.
     	 */
-
-    	int px = c.getM_ordonnee();
-    	int py = c.getM_abcisse();
+    	
     	//On ne traite la case que si elle ne l'a pas encore été et qu'elle est dans le tableau
-    	if((px >= 0) && (py >= 0) && (px < map.length) && (py < map[0].length) && (map[px][py] == 0))
+    	if((x >= 0) && (y >= 0) && (x < map.length) && (y < map[0].length) && (map[x][y] == 0))
     	{
     		//Si la case contient un maptacle, on s'arrête là
     		if(!c.Penetrable())
     		{
-    			map[px][py] = 3;
+    			map[x][y] = 3;
     		}
     		else
     		{
     			if(c instanceof Source)
     			{
-    				map[px][py] = 2;
+    				map[x][y] = 2;
+    				System.out.println("Source en ("  + x + ", " + y + ").");
     			}
     			else if(c instanceof Fourmiliere)
     			{
-    				map[px][py] = 4;
+    				map[x][y] = 4;
     			}
     			else
 				{
-    				map[px][py] = 1;
+    				map[x][y] = 1;
 				}
     			//Sinon, on regarde une par une les cases voisines
     			//Haut gauche
-    			map = Senseur(map, c.CaseVoisine(3));
+    			map = Senseur(map, c.CaseVoisine(3), x-1, y-1);
     			//Haut
-    			map = Senseur(map, c.CaseVoisine(4));
-    			//Haut gauche
-    			map = Senseur(map, c.CaseVoisine(-1));
+    			map = Senseur(map, c.CaseVoisine(4), x-1, y);
+    			//Haut droite
+    			map = Senseur(map, c.CaseVoisine(-1), x-1, y+1);
     			//Gauche
-    			map = Senseur(map, c.CaseVoisine(2));
+    			map = Senseur(map, c.CaseVoisine(2), x, y-1);
     			//Droite
-    			map = Senseur(map, c.CaseVoisine(-2));
+    			map = Senseur(map, c.CaseVoisine(-2), x, y+1);
     			//Bas gauche
-    			map = Senseur(map, c.CaseVoisine(1));
+    			map = Senseur(map, c.CaseVoisine(1), x+1, y-1);
     			//Bas
-    			map = Senseur(map, c.CaseVoisine(-4));
+    			map = Senseur(map, c.CaseVoisine(-4), x+1, y);
     			//Haut gauche
-    			map = Senseur(map, c.CaseVoisine(-3));
+    			map = Senseur(map, c.CaseVoisine(-3), x+1, y+1);
     		}
     	}
 		return map;
@@ -120,7 +119,7 @@ public class FourmiSenseur extends Fourmi {
 		}
 		
 		//On se sert du senseur pour completer notre tableau
-		map = Senseur(map, GetCase());
+		map = Senseur(map, GetCase(), m_portee, m_portee);
 		
     	//Une fois qu'on connaît les obstacles et les sources à proximité, on regarde si on a accès aux sources en fonction des obstacles.
     	for(int i = 0; i < taille; i++)
@@ -245,76 +244,96 @@ public class FourmiSenseur extends Fourmi {
     	for(int i = 0; i < 9; i++)
     	{
     		if(i == 4)
+    		{
     			i++;
+    		}
     		int x = (i / 3) - 1;
     		int y = (i % 3) - 1;
+    		//Si la case est un obstacle, on evite d'y aller
     		if(map[pos[0]+x][pos[1]+y] == 3)
-    			modif[1+x][x+y] = 0;
+    			modif[1+x][1+y] = 0;
     	}
     	
     	//On calcul la probabilité d'aller sur chaque case
     	int[] p;
+    	int prec = 0;
     	if(!m_chemin.isEmpty())
-			p = AffectationPoids(m_chemin.getLast());
+    	{
+			prec = m_chemin.getLast();
+    	}
     	else
     	{
     		int r = (int)((Math.random() * 8) - 4);
     		if(r >= 0)
     			r++;
-    		p = AffectationPoids(r);
+    		prec = r;
     	}
+		p = AffectationPoids(prec);
 		/* Repère sur le pavé num
 		 * p[0] -> 2
 		 * p[1] -> 1
 		 * etc...
+		 * On tourne dans le sense des aiguilles d'une montre.
 		 */
 		boolean possible = false;
 		for(int i = 0; i < 8; i++)
 		{
 			//On adapte les index pour passer des tableaux 3D aux tableaux 2D
 			//On fait correspondre les poids aux directions
-			int idg = (i < 4) ? i : i + 1;
-			int idx = idg / 3;
-			int idy = idg % 3;
-			int poids = 0;
+			int idx = 0, idy = 0;
 			switch(i)
 			{
+				case 0 :
+					idx = 2;
+					idy = 1;
+					break;
 				case 1 :
-					poids = p[3];
+					idx = 2;
+					idy = 0;
 					break;
 				case 2 :
-					poids = p[4];
+					idx = 1;
+					idy = 0;
 					break;
 				case 3 :
-					poids = p[5];
+					idx = 0;
+					idy = 0;
 					break;
 				case 4 :
-					poids = p[2];
+					idx = 0;
+					idy = 1;
 					break;
 				case 5 :
-					poids = p[6];
+					idx = 0;
+					idy = 2;
 					break;
 				case 6 :
-					poids = p[7];
+					idx = 1;
+					idy = 2;
 					break;
 				case 8 :
-					poids = p[0];
+					idx = 2;
+					idy = 2;
 					break;
 			}
 			//On évite d'aller en arrière et on évite les obstacles
-			proba[i] = ((poids * modif[idx][idy]) == 0) ? 0 : ((p[i] * modif[idx][idy]) + GetPheroAdj(i));
+			if((p[i] == 0) || (modif[idx][idy] == 0))
+				proba[i] = 0;
+			else proba[i] = (p[i] * modif[idx][idy]) + GetPheroAdj(i);
 			if(proba[i] != 0)
 				possible = true;
 		}
 		//Si et seulement si on est dans une impasse, on fait demi-tour
 		if(!possible)
-			return -m_chemin.getLast();
+			return -prec;
     	
 		double somme = 0;
 		for(int i = 0; i < 8; i++)
 			somme += proba[i];
 		for(int i = 0; i < 8; i++)
+		{
 			proba[i] /= somme;
+		}
 		
     	//Fin
     	return GetProba(proba);
