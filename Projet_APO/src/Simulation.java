@@ -11,6 +11,13 @@ public class Simulation
 		this.m_listeFourmis = new ArrayList<Fourmi>();
 	}
 	
+	public Simulation(String map)
+	{
+		this.m_plateau = new Plateau(map);
+		this.m_plateau.Initialisation(map);
+		this.m_listeFourmis = new ArrayList<Fourmi>();
+	}
+	
 	public Simulation(int nbFourmis,int nbFourmisSenseur, int nbFourmisOrientation, String map)
 	{
 		this.m_plateau = new Plateau(map);

@@ -6,14 +6,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-        String map = "map.txt";
-
-        //Simulation simu = new Simulation(3,map);
-        Simulation simu = new Simulation(3, 2, 0, map);
+    	Menu m = new Menu();
+    	m.AffMenu();
+    	
+        Simulation simu = new Simulation(m.GetFourm(), m.GetFourmS(), m.GetFourmO(), m.GetMap());
 
         simu.FourmiSimulation();
         
+    	
     }
 
 }
