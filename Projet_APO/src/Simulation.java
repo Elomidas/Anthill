@@ -159,9 +159,6 @@ public class Simulation
 				System.out.println("remond est " + e.getMessage());
 			}
 			
-			//str = sc.next();
-
-			//System.out.println(f.ChoixDirection());
 			ActionSimul();
 			Afficher();
 			DecrementerPhero();
