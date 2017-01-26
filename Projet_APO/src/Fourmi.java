@@ -260,7 +260,7 @@ public class Fourmi {
     	{
     		((Fourmiliere)this.GetCase()).IncrementerNourriture(this.DecrementeNourriture());
     		if(b)
-    			this.SetEtat(Etat.ARRET);
+    			this.Stop();
     		else
     			this.SetEtat(Etat.ALLER);
     		
@@ -285,6 +285,14 @@ public class Fourmi {
     	else if(this.GetEtat() == Etat.RETOUR)
     		this.Retour(b);
     	
+    }
+    
+    public boolean Fini()
+    {
+    	if(this.GetEtat() == Etat.ARRET)
+    		return true;
+    	else
+    		return false;
     }
     
     public void Start()
