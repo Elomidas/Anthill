@@ -1,20 +1,23 @@
 /**
  * Created by Martial TARDY on 05/01/2017.
  */
-public class FourmiSenseur extends Fourmi {
+public class FourmiSenseur extends Fourmi 
+{
 
     protected int m_portee;
+    //Portee par defaut d'une fourmi avec senseur
+    protected static final int PORTEE = 2;
     
     public FourmiSenseur()
     {
     	super();
-    	m_portee = 2;
+    	m_portee = PORTEE;
     }
     
     public FourmiSenseur(Case c)
     {
     	super(c);
-    	m_portee = 2;
+    	m_portee = PORTEE;
     }
 
     public int getPortee() 
