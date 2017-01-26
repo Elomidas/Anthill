@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Simulation 
 {
@@ -81,13 +80,6 @@ public class Simulation
 
 		}
 	}
-	public void StopSimulation()
-	{
-		for(int k=0;k<m_listeFourmis.size();k++)
-		{
-			m_listeFourmis.get(k).Stop();
-		}
-	}
 
 	public void Afficher()
 	{
@@ -145,15 +137,22 @@ public class Simulation
 		}
 
 	}
+	
+	public boolean Fini()
+	{
+		boolean b=true;
+		for(int i=0;i<m_listeFourmis.size();i++)
+		{
+			if(!m_listeFourmis.get(i).Fini())
+				b=false;
+		}
+		return b;
+	}
 
 	public void FourmiSimulation()
 	{
 		StartSimulation();
-		/*
-		String str = "";
-		Scanner sc = new Scanner(System.in);
-		*/
-		while(!Thread.interrupted())
+		while((!Thread.interrupted()) && (!Fini()))
 		{
 			
 			try
@@ -171,7 +170,6 @@ public class Simulation
 			ActionSimul();
 			Afficher();
 			DecrementerPhero();
-
 		}
 	}
 
