@@ -7,6 +7,11 @@ import java.io.*;
 public class Plateau {
 
     private Case[][] m_tabCase;
+    
+    public Plateau()
+    {
+    	
+    }
 
     public Plateau(String map)
     {
