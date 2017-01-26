@@ -17,7 +17,11 @@ public class FourmiOrientation extends Fourmi
 		m_vertical = m_horizontal = 0;
 		m_r1 = m_r2 = m_r3 = true;
 	}
-	
+
+    /* Constructeur surcharge
+     * parametres :
+     *  > Case : Case de départ de la fourmi
+     */
 	public FourmiOrientation(Case c)
 	{
 		super(c);
@@ -26,6 +30,14 @@ public class FourmiOrientation extends Fourmi
 	}
 	
 	//Retourne un entier entre -4 et 4, en dehors de 0 et des valeurs passees en parametres
+	/* Retourne un nombre aleatoire entre -4 et 4 compris, hors 0 et 0 a 3 autres valeurs
+	 * parametres :
+	 *  > int : premier nombre a ne pas retourner
+	 *  > int : second nombre a ne pas retourner
+	 *  > int : troisieme nombre a ne pas retourner
+	 * retour :
+	 *  > int : entier entre -4 et 4 compris, hors 0 et les entiers passes en parametres
+	 */
 	private int rand(int a, int b, int c)
 	{
 		//Donne un nombre entre 0 et 4
@@ -41,6 +53,10 @@ public class FourmiOrientation extends Fourmi
 		return 1;
 	}
 	
+	/* Redefinition de la fonction Retour() de la Fourmi classique
+	 * parametres :
+	 *  > boolean : indique a la Fourmi si elle doit s'arreter a la foumiliere a son arrivee ou si elle doit retourner chercher une source
+	 */
 	public void Retour(boolean b)
 	{
 		if(!this.FourmTrouvee(b))
