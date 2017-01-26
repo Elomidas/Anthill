@@ -5,25 +5,31 @@ public class Simulation
 	private Plateau m_plateau;
 	private ArrayList<Fourmi> m_listeFourmis;
 	private boolean m_fini;
-	private String m_niveau;
 	
 	public Simulation(String map)
 	{
 		this.m_plateau = new Plateau(map);
 		this.m_listeFourmis = new ArrayList<Fourmi>();
 		m_fini=false;
-		m_niveau = map;
 	}
 	
-	public Simulation(int nbFourmis, String map)
+	public Simulation(int nbFourmis,int nbFourmisSenseur, int nbFourmisOrientation, String map)
 	{
 		this.m_plateau = new Plateau(map);
-		this.m_listeFourmis = new ArrayList<Fourmi>();
-		m_fini=false;
 		this.m_plateau.Initialisation(map);
+		this.m_listeFourmis = new ArrayList<Fourmi>();
+		m_fini=false;		
 		for(int i=0;i<nbFourmis;i++)
 		{
 			m_listeFourmis.add(new Fourmi(m_plateau.GetFourmiliere()));
+		}
+		for(int i=0;i<nbFourmisSenseur;i++)
+		{
+			m_listeFourmis.add(new FourmiSenseur(m_plateau.GetFourmiliere()));
+		}
+		for(int i=0;i<nbFourmisOrientation;i++)
+		{
+			m_listeFourmis.add(new FourmiOrientation(m_plateau.GetFourmiliere()));
 		}
 		
 	}
@@ -50,14 +56,6 @@ public class Simulation
 
 	public void setM_fini(boolean m_fini) {
 		this.m_fini = m_fini;
-	}
-
-	public String getM_niveau() {
-		return m_niveau;
-	}
-
-	public void setM_niveau(String m_niveau) {
-		this.m_niveau = m_niveau;
 	}
 
 	public void StartSimulation()
