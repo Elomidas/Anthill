@@ -19,37 +19,55 @@ public class FourmiSenseur extends Fourmi
     	m_portee = PORTEE;
     }
     
+    /* Constructeur surcharge
+     * parametres :
+     *  > Case : Case de départ de la fourmi
+     */
     public FourmiSenseur(Case c)
     {
     	super(c);
     	m_portee = PORTEE;
     }
 
+    /* Accesseur de la portee du senseur
+     * retour :
+     *  > int : portee actuelle du senseur
+     */
     public int getPortee() 
     {
         return m_portee;
     }
 
+    /* Mutateur de la portee du senseur
+     * parametres :
+     *  > int portee : nouvelle portee, doit etre superieure a 0
+     */
     public void setPortee(int portee) 
     {
         this.m_portee = (portee > 0) ? portee : m_portee;
     }
     
+    /* Fonction d'utilisation du senseur
+	 * On va observer la carte à la "façon d'un demineur" par recursivite
+	 * Si la case a deja ete observee, on s'arrete la.
+	 * Si une case n'est pas un obstacle, la fourmi peut voir les cases autour, si elle sont dans le champ du senseur.
+	 * Si une case est un onstacle, la fourmi ne voit pas les cases autour.
+	 * parametres :
+	 *  > int[][] 	: carte des cases qui ont deja ete traitees par le senseur
+	 *  > Case 		: Case a traiter dans cette fonction
+	 *  > int		: ligne dans laquelle dera la representation de la case dans notre resultat
+	 *  > int		: colonne dans laquelle dera la representation de la case dans notre resultat
+	 * retour :
+	 *  > int[][]	: tableau contenant les representations de toutes les cases analysees
+	 *    --> On utilisera les codes suivants pour les cases :
+	 * 		0 -> Inconnue
+	 * 		1 -> Libre
+	 * 		2 -> Source
+	 * 		3 -> Obstacle
+	 * 		4 -> Fourmiliere
+     */
     protected int[][] Senseur(int[][] map, Case c, int x, int y)
     {
-    	/*On utilisera les codes suivants pour les cases :
-    	 * 0 -> Inconnue
-    	 * 1 -> Libre
-    	 * 2 -> Source
-    	 * 3 -> Obstacle
-    	 * 4 -> Fourmiliere
-    	 * 
-    	 * On va observer la carte à la "façon d'un demineur" par recursivite
-    	 * Si la case a deja ete observee, on s'arrete la.
-    	 * Si une case n'est pas un obstacle, la fourmi peut voir les cases autour, si elle sont dans le champ du senseur.
-    	 * Si une case est un onstacle, la fourmi ne voit pas les cases autour.
-    	 */
-    	
     	//On ne traite la case que si elle ne l'a pas encore ete et qu'elle est dans le champs d'action du senseur (ie les dimmensions du tableau)
     	if((x >= 0) && (y >= 0) && (x < map.length) && (y < map[0].length) && (map[x][y] == 0))
     	{
@@ -94,6 +112,11 @@ public class FourmiSenseur extends Fourmi
 		return map;
     }
     
+    /* Redefinition de la fonction ChoixDirection() de la Fourmi classique
+     * Choisi la direction de la Fourmi en analysant les environs grace au senseur de celle-ci
+     * retour :
+     *  > int : direction choisie par la Fourmi
+     */
     public int ChoixDirection()
     {
     	int taille = 1 + (2 * m_portee);
@@ -342,6 +365,16 @@ public class FourmiSenseur extends Fourmi
      * x, y : coordonnees que l'on veut atteindre
      * i, j : position de la fourmi
      * return d : direction dans laquelle aller (0 si innaccessible)
+     */
+    /* Regarde si une case est accessible depuis notre position actuelle en prenant en compte les obstacles
+     * parametres :
+     *  > int[][]	: tableau representant les environs, meme code que le resultat du senseur pour les elements
+     *  > int		: ligne contenant la case que nous voulons atteindre
+     *  > int		: colonne contenant la case que nous voulons atteindre
+     *  > int		: ligne sur laquelle nous sommes
+     *  > int		: colonne sur laquelle nous sommes
+     * retour :
+     *  > int : direction dans laquelle aller pour atteindre la case voulue, 0 si la case est innaccessible
      */
     private int Navigation(int[][] map, int x, int y, int i, int j)
     {
