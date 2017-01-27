@@ -7,12 +7,17 @@ import java.io.*;
 public class Plateau {
 
     private Case[][] m_tabCase;
-    
-    public Plateau()
+
+    //Constructeur
+    public Plateau ()
     {
-    	
+        this.m_tabCase = new Case[60][60];
     }
 
+    /* Constructeur surcharge
+     * parametres :
+     *  > String : nom du fichier de la carte à charger
+     */
     public Plateau(String map)
     {
         int i = 1;
@@ -56,7 +61,11 @@ public class Plateau {
 
 
     }
-
+    /* Constructeur surcharge
+     * parametres :
+     *  > int : hauteur
+     *  > int : largeur
+     */
     Plateau(int h, int l)
     {
         this.m_tabCase = new Case[h][l];
@@ -179,30 +188,45 @@ public class Plateau {
         this.m_tabCase[h][l] = m_tabCase;
     }
 
+    /* Initialise le plateau à partir d'un fichier txt
+	 * parametres :
+	 *  > String : nom du fichier plateau
+	 */
     public void Initialisation(String map) {
 
         int i =0, j=0;
+        //création d'un tableau 2D de caratères de la taille du tableau de case du plateau
         char[][] charTab = new char[m_tabCase.length][m_tabCase[0].length];
         try {
+            //ouverture du fichier
             File f = new File("./data/" + map);
             FileReader fr = new FileReader(f);
             try {
+                //lecture du premier cractère
                 int c = fr.read();
-                //System.out.print(c);
+
+                //tant que l'on est pas à la fin du fichier
                 while ((c != -1) && (i < m_tabCase.length))
                 {
+                    // si on ne lit pas le caractère retour charriot (13 et 10)
                     if ((c != 13 )&& (c!= 10) )
                     {
                         charTab[i][j] = (char) c;
+                        //on incrémente les colonnes
                         j++;
+                        //si on est à la fin de la ligne
                         if (j == m_tabCase[i].length) {
+                            //on incremente la ligne
                             i++;
+                            //on reinitialise l'index de la colonne
                             j = 0;
                         }
 
                     }
+                    //on lit le caractère
                     c = fr.read();
                 }
+                //fermeture du fichier
                 fr.close();
 
             } catch (IOException exception) {
@@ -213,14 +237,18 @@ public class Plateau {
         {
             System.out.println("Le fichier n'a pas été trouvé");
         }
+        //on verifie que le tableau de caractère est valide et suit toutes les conditions requises pour etre un plateau
         boolean b = Correct('S','#','F',charTab);
+        //si oui alors on le rentre case par case dans le tableau 2D de cases du plateau (m_tabCase)
         if (b) {
 
             for (i = 0 ; i<m_tabCase.length ; i++)
             {
                 for (j = 0 ;j < m_tabCase[i].length; j++)
                 {
+                    //on lit le caractère du tableau
                     char c2 = charTab[i][j];
+                    //en fonction du caractère lu
                     switch (c2)
                     {
                         case '#' : m_tabCase[i][j] = new Obstacle(j,i);
@@ -234,6 +262,8 @@ public class Plateau {
                     }
                 }
             }
+
+            //Initialisation du tableau de case adjacentes de chaque case.
 
             //Pour le coin en haut à gauche, on lui attribue des cases adjacentes à droite, en bas, et en bas à droite :
             m_tabCase[0][0].setM_case_adj(getM_tabCase(0, 1), 4);
@@ -306,15 +336,19 @@ public class Plateau {
         {
             System.out.println("erreur de initialisation carte");
         }
-        //m_tabCase[0][0].getM_case_adj(4).Afficher();
     }
 
+    /* Retourne la case Fourmilière du plateau
+	 * retour :
+	 *  > Fourmilière
+	 */
     public Fourmiliere GetFourmiliere()
     {
     	for(int i=0;i<m_tabCase.length;i++)
     	{
     		for(int j=0;j<m_tabCase[0].length;j++)
     		{
+    		    //On verifie chaque case du plateau et si une case est de type fourmilière on la retourne
     			if(this.getM_tabCase(i, j) instanceof Fourmiliere)
     			{
     				return (Fourmiliere)this.getM_tabCase(i, j);
@@ -332,7 +366,7 @@ public class Plateau {
         {
             for(int j=0;j<m_tabCase[0].length;j++)
             {
-            	//Pour chaque source, b passe � faux tant qu'elle contient de la nourriture
+            	//Pour chaque source, b passe � faux tant qu'elle contient de la nourriture
                 if(this.getM_tabCase(i, j) instanceof Source)
                 {
                 	b= false;

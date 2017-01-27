@@ -9,6 +9,7 @@ public class Case {
 
     final double PHERO = 1;
 
+
     public Case() {
         this.m_abcisse = 0;
         this.m_ordonnee = 0;
@@ -16,6 +17,11 @@ public class Case {
         this.m_case_adj = new Case[8];
     }
 
+    /* Constructeur surcharge
+     * parametres :
+     *  > int : coordonnée des abcisses de la case
+     *  > int : coordonnée des ordonnées de la case
+     */
     public Case(int m_abcisse, int m_ordonnee) {
         this.m_abcisse = m_abcisse;
         this.m_ordonnee = m_ordonnee;
@@ -56,51 +62,61 @@ public class Case {
         this.m_case_adj[i] = case_adj;
     }
 
-
+    //Incrémentation des phéromones de la case
     public void IncrementePheromone(){
         setM_pheromone(this.m_pheromone + PHERO);
     }
 
+    //Décrémentation des phéromones de la case
     public void DecrementePheromone(){
         setM_pheromone(this.m_pheromone - PHERO);
     }
 
+    // Par défaut une case est pénétrable
     public boolean Penetrable() {
         return true;
     }
 
+    //
+	/* Retourne la case voisine correspondant à la direction entrée en paramètre
+	 * parametres :
+	 *  > int : direction donnée
+	 * retour :
+	 *  > Case : retourne la case correspondante du tableau des cases adjacentes
+	 */
     public Case CaseVoisine(int direc)
     {
         switch(direc)
         {
             case 1:
-                return m_case_adj[5];
+                return m_case_adj[5];// SW
 
             case 2:
-                return m_case_adj[3];
+                return m_case_adj[3];// W
 
             case 3:
-                return m_case_adj[0];
+                return m_case_adj[0];// NW
 
             case 4:
-                return m_case_adj[1];
+                return m_case_adj[1];// N
 
             case -1:
-                return m_case_adj[2];
+                return m_case_adj[2];// NE
 
             case -2:
-                return m_case_adj[4];
+                return m_case_adj[4]; // E
 
             case -3:
-                return m_case_adj[7];
+                return m_case_adj[7]; // SE
 
             case -4:
-                return m_case_adj[6];
+                return m_case_adj[6]; // S
 
             default: return this;
         }
     }
 
+    //Affiche la case par un espace.
     public void Afficher ()
     {
         System.out.print(" ");
