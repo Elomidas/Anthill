@@ -83,6 +83,7 @@ public class Fourmi {
     public void IncrementeNourriture(double nbr)
     {
     	this.setM_nourr_transp(nbr + this.getM_nourr_transp() );
+    	System.out.println("La fourmi vient de récupérer " + nbr + " nourriture.");
     }
     
     public double DecrementeNourriture()
@@ -255,8 +256,7 @@ public class Fourmi {
     
     public boolean FourmTrouvee(boolean b)
     {
-    	
-    	if(this.GetCase() instanceof Fourmiliere)
+    	if(this.GetCase() instanceof Fourmiliere && this.GetEtat() != Etat.ARRET)
     	{
     		((Fourmiliere)this.GetCase()).IncrementerNourriture(this.DecrementeNourriture());
     		if(b)
@@ -275,7 +275,7 @@ public class Fourmi {
     public void Action(boolean b)
     {
     	//S'il n'y a plus de sources, les fourmis retournent à la fourmiliere
-    	if(b)
+    	if(b && GetEtat() != Etat.ARRET)
     	{
     		this.SetEtat(Etat.RETOUR);
     	}

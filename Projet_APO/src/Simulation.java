@@ -87,7 +87,6 @@ public class Simulation
 			}
 			System.out.println();
 		}
-		System.out.println("\n\n");
 	}
 
 	public void ActionSimul()

@@ -30,11 +30,13 @@ public class Source extends Case {
         if (d >= nourr)
         {
             this.setM_nourriture(0);
+            System.out.println("Il ne reste plus de nourriture dans la source, elle va être supprimée.");
             return nourr;
         }
         else
         {
             this.setM_nourriture(nourr - d);
+            System.out.println("Il reste " + this.getM_nourriture() + " nourriture dans la source.");
             return d;
         }
 
