@@ -209,7 +209,6 @@ public class FourmiOrientation extends Fourmi
 								(m_r3 ? 1 : 
 									rand(-4, -3, 1)));
 				}
-				
 			}
 			else
 			{
