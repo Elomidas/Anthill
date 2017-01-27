@@ -7,7 +7,7 @@ public class Case {
     protected double m_pheromone;
     protected Case[] m_case_adj;
 
-    final double PHERO = 1;
+    final double PHERO = 10;
 
 
     public Case() {
@@ -69,7 +69,7 @@ public class Case {
 
     //Décrémentation des phéromones de la case
     public void DecrementePheromone(){
-        setM_pheromone(this.m_pheromone - PHERO);
+        setM_pheromone(this.m_pheromone - 0.01*PHERO);
     }
 
     // Par défaut une case est pénétrable
