@@ -98,6 +98,8 @@ public class Fourmi {
     	if(!(this.GetCase().CaseVoisine(dir) instanceof Obstacle))
     	{
     		this.SetCase(this.GetCase().CaseVoisine(dir));
+    		//Incrémente la phéromone dans la nouvelle case UNIQUEMENT si la fourmi a bougé
+    		this.GetCase().IncrementePheromone();
         	this.m_chemin.addLast(dir);
     	}     	
     }
@@ -224,7 +226,6 @@ public class Fourmi {
     	if(!SourceTrouvee())
     	{
     		this.Bouger();
-    		this.GetCase().IncrementePheromone();
     	}
     }
     
@@ -242,9 +243,9 @@ public class Fourmi {
     	}
     }
     
-    public void Retour()
+    public void Retour(boolean b)
     {
-    	if(!this.FourmTrouvee())
+    	if(!this.FourmTrouvee(b))
     	{
     		int dir = - this.getM_chemin().removeLast();
     		this.SetCase(this.GetCase().CaseVoisine(dir));
@@ -252,13 +253,17 @@ public class Fourmi {
     	}
     }
     
-    public boolean FourmTrouvee()
+    public boolean FourmTrouvee(boolean b)
     {
     	
     	if(this.GetCase() instanceof Fourmiliere)
     	{
     		((Fourmiliere)this.GetCase()).IncrementerNourriture(this.DecrementeNourriture());
-    		this.SetEtat(Etat.ARRET);
+    		if(b)
+    			this.Stop();
+    		else
+    			this.SetEtat(Etat.ALLER);
+    		
     		return true;
     	}
     	else
@@ -267,13 +272,27 @@ public class Fourmi {
     	}
     }
     
-    public void Action()
+    public void Action(boolean b)
     {
+    	//S'il n'y a plus de sources, les fourmis retournent à la fourmiliere
+    	if(b)
+    	{
+    		this.SetEtat(Etat.RETOUR);
+    	}
+    	
     	if(this.GetEtat() == Etat.ALLER)
     		this.ChercheSource();
     	else if(this.GetEtat() == Etat.RETOUR)
-    		this.Retour();
+    		this.Retour(b);
     	
+    }
+    
+    public boolean Fini()
+    {
+    	if(this.GetEtat() == Etat.ARRET)
+    		return true;
+    	else
+    		return false;
     }
     
     public void Start()

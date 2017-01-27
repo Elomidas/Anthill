@@ -4,28 +4,49 @@ public class Simulation
 {
 	private Plateau m_plateau;
 	private ArrayList<Fourmi> m_listeFourmis;
-	private boolean m_fini;
-	private String m_niveau;
+	
+	public Simulation()
+	{
+		this.m_plateau = new Plateau();
+		this.m_listeFourmis = new ArrayList<Fourmi>();
+	}
 	
 	public Simulation(String map)
 	{
 		this.m_plateau = new Plateau(map);
+		this.m_plateau.Initialisation(map);
 		this.m_listeFourmis = new ArrayList<Fourmi>();
-		m_fini=false;
-		m_niveau = map;
 	}
 	
-	public Simulation(int nbFourmis, String map)
+	public Simulation(int nbFourmis,int nbFourmisSenseur, int nbFourmisOrientation, String map)
 	{
 		this.m_plateau = new Plateau(map);
-		this.m_listeFourmis = new ArrayList<Fourmi>();
-		m_fini=false;
 		this.m_plateau.Initialisation(map);
+		this.m_listeFourmis = new ArrayList<Fourmi>();
 		for(int i=0;i<nbFourmis;i++)
 		{
 			m_listeFourmis.add(new Fourmi(m_plateau.GetFourmiliere()));
 		}
-		
+		for(int i=0;i<nbFourmisSenseur;i++)
+		{
+			m_listeFourmis.add(new FourmiSenseur(m_plateau.GetFourmiliere()));
+		}
+		for(int i=0;i<nbFourmisOrientation;i++)
+		{
+			m_listeFourmis.add(new FourmiOrientation(m_plateau.GetFourmiliere()));
+		}
+	}
+	
+
+	public Simulation(int nbFourmis, String map, boolean b)
+	{
+		this.m_plateau = new Plateau(map);
+		this.m_listeFourmis = new ArrayList<Fourmi>();
+		this.m_plateau.Initialisation(map);
+		for(int i = 0; i < nbFourmis; i++)
+		{
+			m_listeFourmis.add(new FourmiOrientation(m_plateau.GetFourmiliere()));
+		}
 	}
 
 	public Plateau getM_plateau() {
@@ -44,22 +65,6 @@ public class Simulation
 		this.m_listeFourmis = m_listeFourmis;
 	}
 
-	public boolean isM_fini() {
-		return m_fini;
-	}
-
-	public void setM_fini(boolean m_fini) {
-		this.m_fini = m_fini;
-	}
-
-	public String getM_niveau() {
-		return m_niveau;
-	}
-
-	public void setM_niveau(String m_niveau) {
-		this.m_niveau = m_niveau;
-	}
-
 	public void StartSimulation()
 	{
 
@@ -68,13 +73,6 @@ public class Simulation
 			m_listeFourmis.get(k).Start();
 
 
-		}
-	}
-	public void StopSimulation()
-	{
-		for(int k=0;k<m_listeFourmis.size();k++)
-		{
-			m_listeFourmis.get(k).Stop();
 		}
 	}
 
@@ -108,13 +106,14 @@ public class Simulation
 			}
 			System.out.println();
 		}
+		System.out.println("\n\n");
 	}
 
 	public void ActionSimul()
 	{
 		for(int k=0;k<m_listeFourmis.size();k++)
 		{
-			m_listeFourmis.get(k).Action();
+			m_listeFourmis.get(k).Action(m_plateau.SuppSource());
 		}
 	}
 	public void DecrementerPhero()
@@ -133,12 +132,24 @@ public class Simulation
 		}
 
 	}
+	
+	public boolean Fini()
+	{
+		boolean b=true;
+		for(int i=0;i<m_listeFourmis.size();i++)
+		{
+			if(!m_listeFourmis.get(i).Fini())
+				b=false;
+		}
+		return b;
+	}
 
 	public void FourmiSimulation()
 	{
 		StartSimulation();
-		while(!Thread.interrupted())
+		while((!Thread.interrupted()) && (!Fini()))
 		{
+			
 			try
 			{
 				Thread.sleep(500);
@@ -147,12 +158,10 @@ public class Simulation
 			{
 				System.out.println("remond est " + e.getMessage());
 			}
-
-			//System.out.println(f.ChoixDirection());
+			
 			ActionSimul();
 			Afficher();
 			DecrementerPhero();
-
 		}
 	}
 
