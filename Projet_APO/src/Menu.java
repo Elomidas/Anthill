@@ -1,6 +1,9 @@
 import java.util.Iterator;
 import java.util.Scanner;
 import java.nio.file.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -79,7 +82,7 @@ public class Menu {
 		System.out.println("Voici la liste de toutes les cartes disponibles pour la simulation :");
 		try
 		{			
-			Menu.testDirectoryStream();
+			Menu.ChercheFichier();
 		}
 		catch(IOException e)
 		{
@@ -88,6 +91,7 @@ public class Menu {
 		for(int i=0;i<m_maps.size();i++)
 		{
 			System.out.println(i+1 +" : "+ m_maps.get(i));
+			Menu.AffCarte(i);
 		}
 		System.out.println("S�lectionnez le num�ro de la carte");
 		int numMap = sc.nextInt();
@@ -108,24 +112,72 @@ public class Menu {
 		sc.close();
 	}
 	
-	public static void testDirectoryStream() throws IOException 
+	public static void AffCarte(int num)
 	{
-		Path jdkPath = Paths.get("C:/documents/travail/info/Anthill/Projet_APO/data");
-		DirectoryStream<Path> stream = Files.newDirectoryStream(jdkPath);
+		//int i =0, j=0;
+        try {
+            File f = new File("./data/" + m_maps.get(num));
+            FileReader fr = new FileReader(f);
+            try 
+            {
+                int c = fr.read();
+                //System.out.print(c);
+                while (c != -1)
+                {
+                	
+                	
+                    if ((c == 13 )&& (c == 10))
+                    {
+                    	System.out.println( (char)c );
+                    	c = fr.read();
+                    	/*
+                        j++;
+                        if (j == m_tabCase[i].length) {
+                            i++;
+                            j = 0;
+                        }
+						*/
+                    }
+                    else
+                    	System.out.print( (char)c );
+                    c = fr.read();
+                    
+                }
+                fr.close();
+
+            } catch (IOException exception) {
+                System.out.println("Erreur lecture caractère");
+            }
+	        }
+	        catch (FileNotFoundException exception)
+	        {
+            System.out.println("Le fichier n'a pas été trouvé");
+	        }
+        	finally
+        	{
+        		System.out.println("");
+        		System.out.println("");
+        	}
+	}
+	
+	public static void ChercheFichier() throws IOException 
+	{
+		Path repertoire = Paths.get("./data/");
+		DirectoryStream<Path> lect = Files.newDirectoryStream(repertoire);
 		try 
 		{
-			Iterator<Path> iterator = stream.iterator();
+			Iterator<Path> iterator = lect.iterator();
 			while(iterator.hasNext()) 
 			{
 				Path p = iterator.next();
 				String map = p.toString();
-				map = map.replace("C:\\documents\\travail\\info\\Anthill\\Projet_APO\\data\\","");
+				map = map.replace(".\\data\\","");
 				m_maps.add(map);
 			}
 		} 
 		finally 
 		{
-			stream.close();
+			lect.close();
 		}
 	}
 }
