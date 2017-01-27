@@ -114,14 +114,12 @@ public class Menu {
 	
 	public static void AffCarte(int num)
 	{
-		//int i =0, j=0;
         try {
             File f = new File("./data/" + m_maps.get(num));
             FileReader fr = new FileReader(f);
             try 
             {
                 int c = fr.read();
-                //System.out.print(c);
                 while (c != -1)
                 {
                 	
@@ -130,13 +128,6 @@ public class Menu {
                     {
                     	System.out.println( (char)c );
                     	c = fr.read();
-                    	/*
-                        j++;
-                        if (j == m_tabCase[i].length) {
-                            i++;
-                            j = 0;
-                        }
-						*/
                     }
                     else
                     	System.out.print( (char)c );
@@ -163,21 +154,25 @@ public class Menu {
 	public static void ChercheFichier() throws IOException 
 	{
 		Path repertoire = Paths.get("./data/");
-		DirectoryStream<Path> lect = Files.newDirectoryStream(repertoire);
-		try 
+		//if(repertoire.endsWith(".txt"))
 		{
-			Iterator<Path> iterator = lect.iterator();
-			while(iterator.hasNext()) 
+			DirectoryStream<Path> lect = Files.newDirectoryStream(repertoire);
+			try 
 			{
-				Path p = iterator.next();
-				String map = p.toString();
-				map = map.replace(".\\data\\","");
-				m_maps.add(map);
+				Iterator<Path> iterator = lect.iterator();
+				while(iterator.hasNext()) 
+				{
+					Path p = iterator.next();
+					String map = p.toString();
+					map = map.replace(".\\data\\","");
+					m_maps.add(map);
+				}
+			} 
+			finally 
+			{
+				lect.close();
 			}
-		} 
-		finally 
-		{
-			lect.close();
 		}
+		
 	}
 }

@@ -36,18 +36,6 @@ public class Simulation
 			m_listeFourmis.add(new FourmiOrientation(m_plateau.GetFourmiliere()));
 		}
 	}
-	
-
-	public Simulation(int nbFourmis, String map, boolean b)
-	{
-		this.m_plateau = new Plateau(map);
-		this.m_listeFourmis = new ArrayList<Fourmi>();
-		this.m_plateau.Initialisation(map);
-		for(int i = 0; i < nbFourmis; i++)
-		{
-			m_listeFourmis.add(new FourmiOrientation(m_plateau.GetFourmiliere()));
-		}
-	}
 
 	public Plateau getM_plateau() {
 		return m_plateau;

@@ -9,7 +9,7 @@ public class Main {
     	Menu m = new Menu();
     	m.AffMenu();
     	
-        Simulation simu = new Simulation(m.GetFourm(), m.GetFourmS(), m.GetFourmO(), m.GetMap());
+    	Simulation simu = new Simulation(m.GetFourm(), m.GetFourmS(), m.GetFourmO(), m.GetMap());
 
         simu.FourmiSimulation();
         
