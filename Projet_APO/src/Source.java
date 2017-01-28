@@ -46,7 +46,7 @@ public class Source extends Case {
             // On met la quantitÃ© de la source Ã  0
             this.setM_nourriture(0);
             // On dit comme quoi il n'y a plus de nourriture dans la source
-            System.out.println("Il ne reste plus de nourriture dans la source, elle va ï¿½tre supprimï¿½e.");
+            System.out.println("Il ne reste plus de nourriture dans la source, elle va être supprimée.");
             //On retourne 0
             return nourr;
         }

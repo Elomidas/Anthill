@@ -13,6 +13,7 @@ public class Menu {
 	private String m_map_choisie;
 	private int m_nbFourmis;
 	private int m_nbFourmisSenseurs;
+	private int m_porteeSenseur;
 	private int m_nbFourmisOrientation;
 	
 	public Menu()
@@ -21,8 +22,19 @@ public class Menu {
 		m_map_choisie = new String();
 		m_nbFourmis = 0;
 		m_nbFourmisSenseurs = 0;
+		m_porteeSenseur = 0;
 		m_nbFourmisOrientation = 0;
 		
+	}
+	
+	public int GetPorteeSenseur()
+	{
+		return m_porteeSenseur;
+	}
+	
+	public void SetPorteeSenseur(int portee)
+	{
+		m_porteeSenseur = portee;
 	}
 	
 	public ArrayList<String> GetMaps()
@@ -106,6 +118,11 @@ public class Menu {
 		
 		System.out.println("Combien de fourmis avec senseur voulez-vous?");
 		m_nbFourmisSenseurs = sc.nextInt();
+		if(m_nbFourmisSenseurs > 0)
+		{
+			System.out.println("Quelle portée désirez-vous pour les senseurs  de vos fourmis?");
+			m_porteeSenseur = sc.nextInt();
+		}
 		
 		System.out.println("Combien de fourmis avec orientation voulez-vous?");
 		m_nbFourmisOrientation = sc.nextInt();
@@ -137,12 +154,12 @@ public class Menu {
                 fr.close();
 
             } catch (IOException exception) {
-                System.out.println("Erreur lecture caractÃ¨re");
+                System.out.println("Erreur lecture caractère");
             }
 	        }
 	        catch (FileNotFoundException exception)
 	        {
-            System.out.println("Le fichier n'a pas Ã©tÃ© trouvÃ©");
+            System.out.println("Le fichier n'a pas été trouvé");
 	        }
         	finally
         	{
@@ -154,8 +171,6 @@ public class Menu {
 	public static void ChercheFichier() throws IOException 
 	{
 		Path repertoire = Paths.get("./data/");
-		//if(repertoire.endsWith(".txt"))
-		{
 			DirectoryStream<Path> lect = Files.newDirectoryStream(repertoire);
 			try 
 			{
@@ -165,14 +180,14 @@ public class Menu {
 					Path p = iterator.next();
 					String map = p.toString();
 					map = map.replace(".\\data\\","");
-					m_maps.add(map);
+					if(map.endsWith(".txt"))
+						m_maps.add(map);
 				}
 			} 
 			finally 
 			{
 				lect.close();
 			}
-		}
 		
 	}
 }

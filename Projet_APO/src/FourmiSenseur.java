@@ -28,6 +28,17 @@ public class FourmiSenseur extends Fourmi
     	super(c);
     	m_portee = PORTEE;
     }
+    
+    /* Constructeur surcharge
+     * parametres :
+     *  > Case : Case de départ de la fourmi
+     *  > portee : entier représentant la portée du senseur
+     */
+    public FourmiSenseur(Case c, int portee)
+    {
+    	super(c);
+    	m_portee = portee;
+    }
 
     /* Accesseur de la portee du senseur
      * retour :

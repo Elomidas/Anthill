@@ -19,7 +19,7 @@ public class Simulation
      *  > int : nombre de fourmis Orientation demandées
      *  > String : nom du fichier du plateau
      */
-	public Simulation(int nbFourmis,int nbFourmisSenseur, int nbFourmisOrientation, String map)
+	public Simulation(int nbFourmis,int nbFourmisSenseur, int nbFourmisOrientation, int porteeSenseur, String map)
 	{
 		this.m_plateau = new Plateau(map);
 		this.m_plateau.Initialisation(map);
@@ -30,7 +30,7 @@ public class Simulation
 		}
 		for(int i=0;i<nbFourmisSenseur;i++)
 		{
-			m_listeFourmis.add(new FourmiSenseur(m_plateau.GetFourmiliere()));
+			m_listeFourmis.add(new FourmiSenseur(m_plateau.GetFourmiliere(),porteeSenseur));
 		}
 		for(int i=0;i<nbFourmisOrientation;i++)
 		{
@@ -147,11 +147,11 @@ public class Simulation
 			
 			try
 			{
-				Thread.sleep(100);
+				Thread.sleep(1000);
 			}
 			catch(Exception e)
 			{
-				System.out.println("remond est " + e.getMessage());
+				System.out.println("Erreur : " + e.getMessage());
 			}
 			
 			ActionSimul();
