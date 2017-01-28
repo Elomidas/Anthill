@@ -173,12 +173,6 @@ public class Plateau {
     		System.out.println("Erreur : " + e.getMessage());
     	}
     	
-    	//On verifie la conformite de la carte
-        if(!Correct('o', '#', 'x', tab))
-        {
-        	System.out.println("La carte n'est pas correcte.");
-        	return new char[0][0];
-        }
     	return tab;
     }
     
@@ -270,7 +264,16 @@ public class Plateau {
             	//Affichage des resultats
             	System.out.println("H = " + d[0] + "\nL = " + d[1] + "\nS = " + nbsrc);
             	
-                return Tableau(fr, d[0], d[1]);
+                char[][] tab = Tableau(fr, d[0], d[1]);
+
+            	//On verifie la conformite de la carte
+                if(!Correct('o', '#', 'x', tab, nbsrc))
+                {
+                	System.out.println("La carte n'est pas correcte.");
+                	return new char[0][0];
+                }
+                
+                return tab;
 	        }
 	        catch (IOException exception)
             {
