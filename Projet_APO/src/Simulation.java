@@ -118,7 +118,6 @@ public class Simulation
 			{
 				if (( p.getM_tabCase()[i][j] instanceof CaseVide) && (p.getM_tabCase()[i][j].getM_pheromone() > 0))
 				{
-					p.getM_tabCase()[i][j].setM_pheromone(p.getM_tabCase()[i][j].getM_pheromone() - 0.1);
 					p.getM_tabCase()[i][j].DecrementePheromone();
 				}
 			}
