@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Created by Martial TARDY on 05/01/2017.
  */
@@ -131,9 +133,8 @@ public class FourmiSenseur extends Fourmi
     public int ChoixDirection()
     {
     	int taille = 1 + (2 * m_portee);
-    	int direction = 0;
     	double[] proba = new double[8];
-    	double[][] modif = new double[3][3];
+    	int[][] modif = new int[3][3];
     	
     	//Tableau resultat du scan effectue par le senseur
     	int[][] map = new int[taille][taille];
@@ -153,124 +154,20 @@ public class FourmiSenseur extends Fourmi
 		map = Senseur(map, GetCase(), m_portee, m_portee);
 		
     	//Une fois qu'on connait les obstacles et les sources a proximite, on regarde si on a acces aux sources en fonction des obstacles.
-    	for(int i = 0; i < taille; i++)
+		int dir = 0;
+		for(int i = 0; i < taille; i++)
     	{
     		for(int j = 0; j < taille; j++)
     		{
     			if(map[i][j] == 2)
     			{
-    				//Si il y a une source, on regarde si elle est accessible
-    				if((direction = Navigation(map, i, j, m_portee, m_portee)) != 0)
-    				{
-    					/* On augmente la probabilite d'aller en direction de la source.
-    					 * On considere que si une source est accessible, la probabilite d'aller dans sa direction est multipliee par 2.
-    					 * On multiplie aussi la probabilite d'aller dans les direction adjacentes par 1.5 s'il n'y a pas d'obstacle.
-    					 * Par exemple si une source est disponnible en haut, la fourmi a 2 fois plus de chances d'aller en haut et 1.5 fois 
-    					 * plus de chances d'aller en haut a droite et en haut a gauche, sous reserve qu'il n'y ait pas d'obstacle.
-    					 */
-    					
-    					//On effectue un changement d'index afin de deduire de la direction les cases à modifier
-    					int ix, iy, ixa, ixb, iya, iyb;
-    					switch(direction)
-    					{
-    						case 1 :
-    							ix = 2;
-    							iy = 0;
-    							ixa = 1;
-    							iya = 0;
-    							ixb = 2;
-    							iyb = 1;
-    							break;
-    							
-    						case 2 :
-    							ix = 1;
-    							iy = 0;
-    							ixa = 0;
-    							iya = 0;
-    							ixb = 2;
-    							iyb = 0;
-    							break;
-    							
-    						case 3 :
-    							ix = 0;
-    							iy = 0;
-    							ixa = 1;
-    							iya = 0;
-    							ixb = 0;
-    							iyb = 1;
-    							break;
-    							
-    						case 4 :
-    							ix = 0;
-    							iy = 1;
-    							ixa = 0;
-    							iya = 0;
-    							ixb = 0;
-    							iyb = 2;
-    							break;
-    							
-    						case -1 :
-    							ix = 0;
-    							iy = 2;
-    							ixa = 0;
-    							iya = 1;
-    							ixb = 1;
-    							iyb = 1;
-    							break;
-    							
-    						case -2 :
-    							ix = 1;
-    							iy = 2;
-    							ixa = 0;
-    							iya = 2;
-    							ixb = 2;
-    							iyb = 2;
-    							break;
-    							
-    						case -3:
-    							ix = 2;
-    							iy = 2;
-    							ixa = 1;
-    							iya = 2;
-    							ixb = 2;
-    							iyb = 1;
-    							break;
-    							
-    						case -4 :
-    							ix = 2;
-    							iy = 1;
-    							ixa = 2;
-    							iya = 0;
-    							ixb = 2;
-    							iyb = 2;
-    							break;
-    							
-							default :
-    							ix = 0;
-    							iy = 0;
-    							ixa = 0;
-    							iya = 0;
-    							ixb = 0;
-    							iyb = 0;
-    							break;
-    					}
-    					if(map[m_portee + ix - 1][m_portee + iy - 1] != 3)
-    					{
-    						modif[ix][iy] *= 2.0;
-    					}
-    					if(map[m_portee + ixa - 1][m_portee + iya - 1] != 3)
-    					{
-    						modif[ixa][iya] *= 1.5;
-    					}
-    					if(map[m_portee + ixb - 1][m_portee + iyb - 1] != 3)
-    					{
-    						modif[ixb][iyb] *= 1.5;
-    					}
-    				}
+    				if((dir = Navigation(map, i, j, m_portee, m_portee)) != 0)
+    					return dir;
     			}
     		}
     	}
     	
+		//Si aucune n'est accessible, on ameliore le deplacement standard de la fourmi
     	//On evite d'aller sur les obstacles
     	for(int i = 0; i < 9; i++)
     	{
@@ -313,46 +210,53 @@ public class FourmiSenseur extends Fourmi
 		{
 			//On adapte les index pour passer des tableaux 3D aux tableaux 2D
 			//On fait correspondre les poids aux directions
-			int idx = 0, idy = 0;
+			int idx = 0, idy = 0, id = 0;
 			switch(i)
 			{
 				case 0 :
 					idx = 2;
 					idy = 1;
+					id = 6;
 					break;
 				case 1 :
 					idx = 2;
 					idy = 0;
+					id = 5;
 					break;
 				case 2 :
 					idx = 1;
 					idy = 0;
+					id = 3;
 					break;
 				case 3 :
 					idx = 0;
 					idy = 0;
+					id = 0;
 					break;
 				case 4 :
 					idx = 0;
 					idy = 1;
+					id = 1;
 					break;
 				case 5 :
 					idx = 0;
 					idy = 2;
+					id = 2;
 					break;
 				case 6 :
 					idx = 1;
 					idy = 2;
+					id = 4;
 					break;
-				case 8 :
+				case 7 :
 					idx = 2;
 					idy = 2;
+					id = 7;
 					break;
 			}
 			//On ignore les pheromones sur certaines cases pour ne pas aller en arriere ni sur le obstacles
-			if((p[i] == 0) || (modif[idx][idy] == 0))
-				proba[i] = 0;
-			else proba[i] = (p[i] * modif[idx][idy]) + GetPheroAdj(i);
+			proba[i] = (p[i] + GetPheroAdj(id)) * (double)(modif[idx][idy]);
+			//System.out.println(i + " : " + proba[i]);
 			if(proba[i] != 0)
 				possible = true;
 		}
@@ -360,6 +264,7 @@ public class FourmiSenseur extends Fourmi
 		if(!possible)
 			return -prec;
     	
+		//On fait en sorte que la somme de nos proba fasse 1
 		double somme = 0;
 		for(int i = 0; i < 8; i++)
 			somme += proba[i];
@@ -371,7 +276,7 @@ public class FourmiSenseur extends Fourmi
     	//On retourne la direction choisie
     	return GetProba(proba);
     }
-    
+
     /*
      * x, y : coordonnees que l'on veut atteindre
      * i, j : position de la fourmi
@@ -384,8 +289,9 @@ public class FourmiSenseur extends Fourmi
      *  > int		: colonne contenant la case que nous voulons atteindre
      *  > int		: ligne sur laquelle nous sommes
      *  > int		: colonne sur laquelle nous sommes
+     *  > int		: derniere direction empruntee
      * retour :
-     *  > int : direction dans laquelle aller pour atteindre la case voulue, 0 si la case est innaccessible
+     *  > int[] : direction dans laquelle aller pour atteindre la case voulue (0 si la case est innaccessible) et nombre de tours avant de l'atteindre
      */
     private int Navigation(int[][] map, int x, int y, int i, int j)
     {
@@ -661,5 +567,5 @@ public class FourmiSenseur extends Fourmi
 			}
 		}
 		return 0;
-    }
+   }
 }

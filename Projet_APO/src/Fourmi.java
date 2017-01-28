@@ -102,7 +102,8 @@ public class Fourmi {
     		//Incrémente la phéromone dans la nouvelle case UNIQUEMENT si la fourmi a bougé
     		this.GetCase().IncrementePheromone();
         	this.m_chemin.addLast(dir);
-    	}     	
+    	}
+    	else System.out.println("Obstacle, dir : " + dir);
     }
     
     public int[] AffectationPoids(int dir)
