@@ -72,14 +72,162 @@ public class Plateau {
         this.m_tabCase = new Case[h][l];
     }
     
-    protected char[][] Lecture(ArrayList<Integer> listeSrc, String map)
+    /* Retourne le tableau de caracteres representant la carte contenue dans le fichier.
+     * parametres :
+     *  > String : nom du fichier a lire dans le repertoire "data"
+     * retour :
+     *  > char[][] : tableau 2D de caracteres representant la carte
+     */
+    public static char[][] Tableau(String map)
     {
-    	int i = 0;
-        int j = 0;
-        int hauteur = 0, largeur = 0, nbsrc = 0;
-        char[][] tab;
-
         try 
+        {
+        	File f = new File("./data/" + map);
+            FileReader fr = new FileReader(f);
+            try 
+            {
+            	//Lecture du fichier
+            	
+            	//Recuperation des dimmensions de la carte
+            	int[] d = Dimensions(fr);
+            	
+            	//Nombre de sources
+            	while(fr.read() != 10)
+            	{
+            		//On passe le nombre de sources
+            	}
+            	
+            	//Quantite de nourriture par source
+            	while(fr.read() != 10)
+            	{
+            		//On passe la ligne contenant la quantite de nourriture dans chaque source
+            	}
+                char[][] tab = Tableau(fr, d[0], d[1]);
+                fr.close();
+                return tab;
+	        }
+	        catch (IOException exception)
+            {
+	        	System.out.println("Erreur lecture caractere");
+            }
+        }
+        catch (FileNotFoundException exception)
+        {
+            System.out.println ("Impossible de trouver le fichier");
+        }
+        return new char[0][0];
+    }
+
+    /* Retourne le tableau de caracteres representant la carte contenue dans le fichier.
+     * parametres :
+     *  > FileReader 	: FileReader representant le fichier a lire dans le repertoire "data"
+     *  > int			: hauteur de la carte
+     *  > int			: largeur de la carte
+     * retour :
+     *  > char[][] : tableau 2D de caracteres representant la carte
+     */
+    protected static char[][] Tableau(FileReader fr, int h, int l)
+    {
+    	char[][] tab = new char[h][l];
+    	try
+    	{
+    		int i = 0, j = 0;
+        	char ch;
+        	//Lecture de la carte
+        	char obs = '#', src = 'o', vide = ' ', fourm = 'x';
+            //System.out.print(c);
+            while ((ch = (char)(fr.read())) != -1)
+            {
+                if (ch == 13) 
+                {
+                    ch = (char)(fr.read());
+                    if (ch == 10)
+                    {
+                    	//Retour a la ligne CRLF
+                        i++;
+                        j = 0;
+                    }
+                }
+                else if(ch == 10)
+                {
+                	//Retour a la ligne LF
+                    i++;
+                    j = 0;
+                }
+                else
+                {
+                	//Ajout du caractere
+                	if((ch == obs) || (ch == src) || (ch == vide) || (ch == fourm))
+                		tab[i][j] = ch;
+                	else
+                	{
+                		System.out.println("Caractere errone : '" + ch + "' (ASCII : " + ((int)ch) + ") ligne " + i + " colonne " + j + " considere comme un obstacle.");
+                		tab[i][j] = obs;
+                	}
+                    j++;
+                }
+            }
+    	}
+    	catch(Exception e)
+    	{
+    		System.out.println("Erreur : " + e.getMessage());
+    	}
+    	
+    	//On verifie la conformite de la carte
+        if(!Correct('o', '#', 'x', tab))
+        {
+        	System.out.println("La carte n'est pas correcte.");
+        	return new char[0][0];
+        }
+    	return tab;
+    }
+    
+    /* Retourne les dimensions la carte contenue dans le fichier.
+     * parametres :
+     *  > FileReader : FileReader representant le fichier a lire dans le repertoire "data"
+     * retour :
+     *  > char[] : tableau de 2 entiers contenant la hauteur et la largeur de la carte
+     */
+    protected static int[] Dimensions(FileReader fr)
+    {
+    	//Lecture du fichier
+    	char ch;
+    	int hauteur = 0, largeur = 0;
+    	try
+    	{
+	    	//Hauteur
+	    	while((ch = (char)(fr.read())) != 10)
+	    	{
+	    		if((ch >= '0') && (ch <= '9'))
+	    			hauteur = (10 * hauteur) + (ch - '0');
+	    	}
+	    	
+	    	//Largeur
+	    	while((ch = (char)(fr.read())) != 10)
+	    	{
+	    		if((ch >= '0') && (ch <= '9'))
+	    			largeur = (10 * largeur) + (ch - '0');
+	    	}
+    	}
+    	catch(Exception e)
+    	{
+    		System.out.println("Erreur : " + e.getMessage());
+    	}
+    	
+    	return new int[] {hauteur, largeur};
+    }
+    
+    /* Fontion de lecture d'un fichier fichier.
+     * parametres :
+     *  > ArrayList<Integer>	: ArrayListe d'entiers vide
+     *  > String 				: nom du fichier a lire dans le repertoire "data"
+     * retour :
+     *  > char[][] 				: tableau 2D de caracteres representant la carte
+     *  > ArrayList<Integer>	: contiendra la quantite de nourriture a mettre dans chaque source
+     */
+    protected static char[][] Lecture(ArrayList<Integer> listeSrc, String map)
+    {
+    	try 
         {
         	File f = new File("./data/" + map);
             FileReader fr = new FileReader(f);
@@ -90,21 +238,11 @@ public class Plateau {
             	 */
             	
             	//Lecture du fichier
+            	int nbsrc = 0;
             	char ch;
             	
-            	//Hauteur
-            	while((ch = (char)(fr.read())) != 10)
-            	{
-            		if((ch >= '0') && (ch <= '9'))
-            			hauteur = (10 * hauteur) + (ch - '0');
-            	}
-            	
-            	//Largeur
-            	while((ch = (char)(fr.read())) != 10)
-            	{
-            		if((ch >= '0') && (ch <= '9'))
-            			largeur = (10 * largeur) + (ch - '0');
-            	}
+            	//Recuperation des dimensions de la carte
+            	int[] d = Dimensions(fr);
             	
             	//Nombre de sources
             	while((ch = (char)(fr.read())) != 10)
@@ -129,47 +267,10 @@ public class Plateau {
             		}
             	}
             	
-            	//Resultats
-            	System.out.println("H = " + hauteur + "\nL = " + largeur + "\nS = " + nbsrc);
-            	m_tabCase = new Case[hauteur][largeur];
-            	tab = new char[hauteur][largeur];
+            	//Affichage des resultats
+            	System.out.println("H = " + d[0] + "\nL = " + d[1] + "\nS = " + nbsrc);
             	
-            	//Lecture de la carte
-            	char obs = '#', src = 'o', vide = ' ', fourm = 'x';
-                //System.out.print(c);
-                while ((ch = (char)(fr.read())) != -1)
-                {
-                    if (ch == 13) 
-                    {
-                        ch = (char)(fr.read());
-                        if (ch == 10)
-                        {
-                        	//Retour a la ligne CRLF
-                            i++;
-                            j = 0;
-                        }
-                    }
-                    else if(ch == 10)
-                    {
-                    	//Retour a la ligne LF
-                        i++;
-                        j = 0;
-                    }
-                    else
-                    {
-                    	//Ajout du caractere
-                    	if((ch == obs) || (ch == src) || (ch == vide) || (ch == fourm))
-                    		tab[i][j] = ch;
-                    	else
-                    	{
-                    		System.out.println("Caractere errone : '" + ch + "' (ASCII : " + ((int)ch) + ") ligne " + i + " colonne " + j + " considere comme un obstacle.");
-                    		tab[i][j] = obs;
-                    	}
-                        j++;
-                    }
-                }
-                fr.close();
-                return tab;
+                return Tableau(fr, d[0], d[1]);
 	        }
 	        catch (IOException exception)
             {
@@ -186,10 +287,16 @@ public class Plateau {
     /* Teste la conformite d'une map
      * -> Une seule fourmiliere
      * -> Au moins une source
-     * -> Toutes les sources doivent �tre accessibles depuis la fourmiliere
+     * -> Toutes les sources doivent etre accessibles depuis la fourmiliere
      * -> Toutes les cases en bordure doivent etre des obstacles ou des cases inaccessibles
+     * parametres :
+     *  > char		: caractere representant une source
+     *  > char		: caractere representant un obstacle
+     *  > char		: caractere representant une fourmiliere
+     *  > char[][]	: tableau de caracteres representant la carte
+     *  > int		: nombre de sources attendues (la carte ne sera pas fausse, affichera une alerte)
      */
-    protected boolean Correct(char src, char obs, char frm, char[][] tab)
+    protected static boolean Correct(char src, char obs, char frm, char[][] tab, int sources)
     {
     	char[][] map = new char[tab.length][tab[0].length];
     	int nbSrc = 0;
@@ -226,6 +333,8 @@ public class Plateau {
             System.out.println("Il n'y a pas de source.");
             return false;
     	}
+    	if(nbSrc != sources)
+    		System.out.println("Attention : " + nbSrc + " source(s) trouvee(s) contre " + sources + " attendue(s).");
     	//On regarde quelles cases sont accessibles a partir de la fourmiliere
     	map = Verif(src, obs, frm, tab, map, x, y);
     	//Analyse du resultat
@@ -258,7 +367,7 @@ public class Plateau {
     	return false;
     }
 
-    protected char[][] Verif(char src, char obs, char frm, char[][] tab, char[][] map, int x, int y)
+    protected static char[][] Verif(char src, char obs, char frm, char[][] tab, char[][] map, int x, int y)
     {
     	if((x >= 0) && (x < map.length) && (y >= 0) && (y < map[0].length) && (map[x][y] == 'X'))
     	{
@@ -300,159 +409,123 @@ public class Plateau {
         this.m_tabCase[h][l] = m_tabCase;
     }
 
-    /* Initialise le plateau à partir d'un fichier txt
+    /* Initialise le plateau a� partir d'un fichier txt
 	 * parametres :
 	 *  > String : nom du fichier plateau
 	 */
-    public void Initialisation(String map) {
+    public void Initialisation(String map) 
+    {
 
-        int i =0, j=0;
-        //création d'un tableau 2D de caratères de la taille du tableau de case du plateau
-        char[][] charTab = new char[m_tabCase.length][m_tabCase[0].length];
-        try {
-            //ouverture du fichier
-            File f = new File("./data/" + map);
-            FileReader fr = new FileReader(f);
-            try {
-                //lecture du premier cractère
-                int c = fr.read();
-
-                //tant que l'on est pas à la fin du fichier
-                while ((c != -1) && (i < m_tabCase.length))
-                {
-                    // si on ne lit pas le caractère retour charriot (13 et 10)
-                    if ((c != 13 )&& (c!= 10) )
-                    {
-                        charTab[i][j] = (char) c;
-                        //on incrémente les colonnes
-                        j++;
-                        //si on est à la fin de la ligne
-                        if (j == m_tabCase[i].length) {
-                            //on incremente la ligne
-                            i++;
-                            //on reinitialise l'index de la colonne
-                            j = 0;
-                        }
-
-                    }
-                    //on lit le caractère
-                    c = fr.read();
-                }
-                //fermeture du fichier
-                fr.close();
-
-            } catch (IOException exception) {
-                System.out.println("Erreur lecture caractère");
-            }
-        }
-        catch (FileNotFoundException exception)
+        ArrayList<Integer> liste = new ArrayList<Integer>();
+        char[][] charTab = Lecture(liste, map);
+        int h = charTab.length, l = charTab[0].length;
+        
+        //Arrive ici, on a la carte et on sait qu'elle est valide, on peut donc initialiser le tableau
+        int k = 0;
+        for (int i = 0; i < h ; i++)
         {
-            System.out.println("Le fichier n'a pas été trouvé");
-        }
-        //on verifie que le tableau de caractère est valide et suit toutes les conditions requises pour etre un plateau
-        boolean b = Correct('S','#','F',charTab);
-        //si oui alors on le rentre case par case dans le tableau 2D de cases du plateau (m_tabCase)
-        if (b) {
-
-            for (i = 0 ; i<m_tabCase.length ; i++)
+            for (int j = 0; j < l; j++)
             {
-                for (j = 0 ;j < m_tabCase[i].length; j++)
+                //on lit le caractère du tableau
+                char c2 = charTab[i][j];
+                //en fonction du caractère lu
+                switch (c2)
                 {
-                    //on lit le caractère du tableau
-                    char c2 = charTab[i][j];
-                    //en fonction du caractère lu
-                    switch (c2)
-                    {
-                        case '#' : m_tabCase[i][j] = new Obstacle(j,i);
-                            break;
-                        case 'F' : m_tabCase[i][j] = new Fourmiliere(j,i);
-                            break;
-                        case 'S' : m_tabCase[i][j] = new Source(j,i,50);
-                            break;
-                        default: m_tabCase[i][j] = new CaseVide(j,i);
-
-                    }
-                }
-            }
-
-            //Initialisation du tableau de case adjacentes de chaque case.
-
-            //Pour le coin en haut à gauche, on lui attribue des cases adjacentes à droite, en bas, et en bas à droite :
-            m_tabCase[0][0].setM_case_adj(getM_tabCase(0, 1), 4);
-            m_tabCase[0][0].setM_case_adj(getM_tabCase(1, 1), 7);
-            m_tabCase[0][0].setM_case_adj(getM_tabCase(1, 0), 6);
-
-            //Pour le coin en haut � droite, on lui attribue des cases � gauche, en bas, et en bas � gauche
-            m_tabCase[0][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(0, m_tabCase[0].length - 2), 3);
-            m_tabCase[0][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(1, m_tabCase[0].length - 2), 5);
-            m_tabCase[0][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(1, m_tabCase[0].length - 1), 6);
-
-            //Pour le coin en bas � gauche, ...
-            m_tabCase[m_tabCase.length - 1][0].setM_case_adj(getM_tabCase(m_tabCase.length - 2, 0), 1);
-            m_tabCase[m_tabCase.length - 1][0].setM_case_adj(getM_tabCase(m_tabCase.length - 2, 1), 2);
-            m_tabCase[m_tabCase.length - 1][0].setM_case_adj(getM_tabCase(m_tabCase.length - 1, 1), 4);
-
-            //Pour le coin en bas � droite, ...
-            m_tabCase[m_tabCase.length - 1][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(m_tabCase.length - 1, m_tabCase[0].length - 2), 3);
-            m_tabCase[m_tabCase.length - 1][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(m_tabCase.length - 2, m_tabCase[0].length - 2), 0);
-            m_tabCase[m_tabCase.length - 1][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(m_tabCase.length - 2, m_tabCase[0].length - 1), 1);
-
-            //Les lignes
-            for (j = 1; j < m_tabCase[0].length - 1; j++) {
-                //Ligne du haut
-                m_tabCase[0][j].setM_case_adj(getM_tabCase(0, j - 1), 3);
-                m_tabCase[0][j].setM_case_adj(getM_tabCase(1, j - 1), 5);
-                m_tabCase[0][j].setM_case_adj(getM_tabCase(1, j), 6);
-                m_tabCase[0][j].setM_case_adj(getM_tabCase(1, j + 1), 7);
-                m_tabCase[0][j].setM_case_adj(getM_tabCase(0, j + 1), 4);
-
-                //Ligne du bas
-                m_tabCase[m_tabCase.length - 1][j].setM_case_adj(getM_tabCase(m_tabCase.length - 1, j - 1), 3);
-                m_tabCase[m_tabCase.length - 1][j].setM_case_adj(getM_tabCase(m_tabCase.length - 2, j - 1), 0);
-                m_tabCase[m_tabCase.length - 1][j].setM_case_adj(getM_tabCase(m_tabCase.length - 2, j), 1);
-                m_tabCase[m_tabCase.length - 1][j].setM_case_adj(getM_tabCase(m_tabCase.length - 2, j + 1), 2);
-                m_tabCase[m_tabCase.length - 1][j].setM_case_adj(getM_tabCase(m_tabCase.length - 1, j + 1), 4);
-            }
-            for (i = 1; i < m_tabCase.length - 1; i++) {
-                //Colonne de gauche
-                m_tabCase[i][0].setM_case_adj(getM_tabCase(i - 1, 0), 1);
-                m_tabCase[i][0].setM_case_adj(getM_tabCase(i - 1, 1), 2);
-                m_tabCase[i][0].setM_case_adj(getM_tabCase(i, 1), 4);
-                m_tabCase[i][0].setM_case_adj(getM_tabCase(i + 1, 1), 7);
-                m_tabCase[i][0].setM_case_adj(getM_tabCase(i + 1, 0), 6);
-
-
-                //Colonne de droite
-                m_tabCase[i][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(i - 1, m_tabCase[0].length - 1), 1);
-                m_tabCase[i][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(i - 1, m_tabCase[0].length - 2), 0);
-                m_tabCase[i][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(i, m_tabCase[0].length - 2), 3);
-                m_tabCase[i][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(i + 1, m_tabCase[0].length - 2), 5);
-                m_tabCase[i][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(i + 1, m_tabCase[0].length - 1), 6);
-            }
-
-            //Interieur du plateau
-            for (i = 1; i < m_tabCase.length - 1; i++) {
-                for (j = 1; j < m_tabCase[i].length - 1; j++) {
-                    m_tabCase[i][j].setM_case_adj(getM_tabCase(i - 1, j - 1), 0);
-                    m_tabCase[i][j].setM_case_adj(getM_tabCase(i - 1, j), 1);
-                    m_tabCase[i][j].setM_case_adj(getM_tabCase(i - 1, j + 1), 2);
-                    m_tabCase[i][j].setM_case_adj(getM_tabCase(i, j - 1), 3);
-                    m_tabCase[i][j].setM_case_adj(getM_tabCase(i, j + 1), 4);
-                    m_tabCase[i][j].setM_case_adj(getM_tabCase(i + 1, j - 1), 5);
-                    m_tabCase[i][j].setM_case_adj(getM_tabCase(i + 1, j), 6);
-                    m_tabCase[i][j].setM_case_adj(getM_tabCase(i + 1, j + 1), 7);
+                    case '#' : 
+                    	m_tabCase[i][j] = new Obstacle(j,i);
+                        break;
+                    case 'x' : 
+                    	m_tabCase[i][j] = new Fourmiliere(j,i);
+                        break;
+                    case 'o' : 
+                    	int q = 50;
+                    	if(k < liste.size())
+                    		q = liste.get(k);
+                    	m_tabCase[i][j] = new Source(j, i, q);
+                        break;
+                    default: 
+                    	m_tabCase[i][j] = new CaseVide(j,i);
                 }
             }
         }
-        else
+
+        //Initialisation du tableau de case adjacentes de chaque case.
+
+        //Pour le coin en haut à gauche, on lui attribue des cases adjacentes à droite, en bas, et en bas à droite :
+        m_tabCase[0][0].setM_case_adj(getM_tabCase(0, 1), 4);
+        m_tabCase[0][0].setM_case_adj(getM_tabCase(1, 1), 7);
+        m_tabCase[0][0].setM_case_adj(getM_tabCase(1, 0), 6);
+
+        //Pour le coin en haut � droite, on lui attribue des cases � gauche, en bas, et en bas � gauche
+        m_tabCase[0][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(0, m_tabCase[0].length - 2), 3);
+        m_tabCase[0][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(1, m_tabCase[0].length - 2), 5);
+        m_tabCase[0][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(1, m_tabCase[0].length - 1), 6);
+
+        //Pour le coin en bas � gauche, ...
+        m_tabCase[m_tabCase.length - 1][0].setM_case_adj(getM_tabCase(m_tabCase.length - 2, 0), 1);
+        m_tabCase[m_tabCase.length - 1][0].setM_case_adj(getM_tabCase(m_tabCase.length - 2, 1), 2);
+        m_tabCase[m_tabCase.length - 1][0].setM_case_adj(getM_tabCase(m_tabCase.length - 1, 1), 4);
+
+        //Pour le coin en bas � droite, ...
+        m_tabCase[m_tabCase.length - 1][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(m_tabCase.length - 1, m_tabCase[0].length - 2), 3);
+        m_tabCase[m_tabCase.length - 1][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(m_tabCase.length - 2, m_tabCase[0].length - 2), 0);
+        m_tabCase[m_tabCase.length - 1][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(m_tabCase.length - 2, m_tabCase[0].length - 1), 1);
+
+        //Les lignes
+        for (int j = 1; j < l - 1; j++) 
         {
-            System.out.println("erreur de initialisation carte");
+            //Ligne du haut
+            m_tabCase[0][j].setM_case_adj(getM_tabCase(0, j - 1), 3);
+            m_tabCase[0][j].setM_case_adj(getM_tabCase(1, j - 1), 5);
+            m_tabCase[0][j].setM_case_adj(getM_tabCase(1, j), 6);
+            m_tabCase[0][j].setM_case_adj(getM_tabCase(1, j + 1), 7);
+            m_tabCase[0][j].setM_case_adj(getM_tabCase(0, j + 1), 4);
+
+            //Ligne du bas
+            m_tabCase[m_tabCase.length - 1][j].setM_case_adj(getM_tabCase(m_tabCase.length - 1, j - 1), 3);
+            m_tabCase[m_tabCase.length - 1][j].setM_case_adj(getM_tabCase(m_tabCase.length - 2, j - 1), 0);
+            m_tabCase[m_tabCase.length - 1][j].setM_case_adj(getM_tabCase(m_tabCase.length - 2, j), 1);
+            m_tabCase[m_tabCase.length - 1][j].setM_case_adj(getM_tabCase(m_tabCase.length - 2, j + 1), 2);
+            m_tabCase[m_tabCase.length - 1][j].setM_case_adj(getM_tabCase(m_tabCase.length - 1, j + 1), 4);
+        }
+        for (int i = 1; i < h - 1; i++) 
+        {
+            //Colonne de gauche
+            m_tabCase[i][0].setM_case_adj(getM_tabCase(i - 1, 0), 1);
+            m_tabCase[i][0].setM_case_adj(getM_tabCase(i - 1, 1), 2);
+            m_tabCase[i][0].setM_case_adj(getM_tabCase(i, 1), 4);
+            m_tabCase[i][0].setM_case_adj(getM_tabCase(i + 1, 1), 7);
+            m_tabCase[i][0].setM_case_adj(getM_tabCase(i + 1, 0), 6);
+
+
+            //Colonne de droite
+            m_tabCase[i][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(i - 1, m_tabCase[0].length - 1), 1);
+            m_tabCase[i][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(i - 1, m_tabCase[0].length - 2), 0);
+            m_tabCase[i][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(i, m_tabCase[0].length - 2), 3);
+            m_tabCase[i][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(i + 1, m_tabCase[0].length - 2), 5);
+            m_tabCase[i][m_tabCase[0].length - 1].setM_case_adj(getM_tabCase(i + 1, m_tabCase[0].length - 1), 6);
+        }
+
+        //Interieur du plateau
+        for (int i = 1; i < h - 1; i++) 
+        {
+            for (int j = 1; j < l - 1; j++) 
+            {
+                m_tabCase[i][j].setM_case_adj(getM_tabCase(i - 1, j - 1), 0);
+                m_tabCase[i][j].setM_case_adj(getM_tabCase(i - 1, j), 1);
+                m_tabCase[i][j].setM_case_adj(getM_tabCase(i - 1, j + 1), 2);
+                m_tabCase[i][j].setM_case_adj(getM_tabCase(i, j - 1), 3);
+                m_tabCase[i][j].setM_case_adj(getM_tabCase(i, j + 1), 4);
+                m_tabCase[i][j].setM_case_adj(getM_tabCase(i + 1, j - 1), 5);
+                m_tabCase[i][j].setM_case_adj(getM_tabCase(i + 1, j), 6);
+                m_tabCase[i][j].setM_case_adj(getM_tabCase(i + 1, j + 1), 7);
+            }
         }
     }
 
-    /* Retourne la case Fourmilière du plateau
+    /* Retourne la case Fourmiliere du plateau
 	 * retour :
-	 *  > Fourmilière
+	 *  > Fourmiliere
 	 */
     public Fourmiliere GetFourmiliere()
     {
