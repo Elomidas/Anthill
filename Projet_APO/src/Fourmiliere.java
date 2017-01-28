@@ -29,11 +29,11 @@ public class Fourmiliere extends Case{
     public void IncrementerNourriture(double d)
     {
         setM_nourr(getM_nourr() + d);
-        System.out.println("La fourmi vient de déposer " + d +" nourriture dans la source.");
+        System.out.println("La fourmi vient de dï¿½poser " + d +" nourriture dans la source.");
     }
 
     @Override
     public void Afficher() {
-        System.out.print("F");
+        System.out.print(" F ");
     }
 }

@@ -24,6 +24,14 @@ public class CaseVide extends Case {
     //On affiche le nombre de phéromones da la case vide.
     @Override
     public void Afficher() {
-        System.out.print((int)m_pheromone);
+        if (m_pheromone >=10 ){
+            System.out.print(" ");
+            System.out.print((int)m_pheromone);
+        }
+        else {
+            System.out.print(" ");
+            System.out.print((int) m_pheromone);
+            System.out.print(" ");
+        }
     }
 }

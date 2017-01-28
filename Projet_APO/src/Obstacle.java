@@ -25,6 +25,6 @@ public class Obstacle extends Case {
     //Affiche le caractère # pour un obstacle
     @Override
     public void Afficher() {
-        System.out.print("#");
+        System.out.print(" # ");
     }
 }

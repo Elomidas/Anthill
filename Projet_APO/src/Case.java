@@ -119,7 +119,7 @@ public class Case {
     //Affiche la case par un espace.
     public void Afficher ()
     {
-        System.out.print(" ");
+        System.out.print("  ");
     }
 
 

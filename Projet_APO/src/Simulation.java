@@ -88,7 +88,7 @@ public class Simulation
 				// si il y a une fourmi on affiche f sinon on affiche la case
 				if(b)
 				{
-					System.out.print("f");
+					System.out.print(" f ");
 				}
 				else
 				{
@@ -97,6 +97,7 @@ public class Simulation
 			}
 			System.out.println();
 		}
+		System.out.println();
 	}
 
 	// Lance la fonction action pour chaque fourmi de la liste
@@ -146,7 +147,7 @@ public class Simulation
 			
 			try
 			{
-				Thread.sleep(500);
+				Thread.sleep(100);
 			}
 			catch(Exception e)
 			{

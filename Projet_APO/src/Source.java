@@ -69,6 +69,6 @@ public class Source extends Case {
     //Affiche la source par un S
     @Override
     public void Afficher() {
-        System.out.print("S");
+        System.out.print(" S ");
     }
 }
