@@ -94,15 +94,15 @@ public class Plateau {
     	try
     	{
     		int i = 0, j = 0;
-        	char ch;
+        	int ch;
         	//Lecture de la carte
         	char obs = '#', src = 'o', vide = ' ', fourm = 'x';
             //System.out.print(c);
-            while ((ch = (char)(fr.read())) != -1)
+            while ((ch = fr.read()) != -1)
             {
                 if (ch == 13) 
                 {
-                    ch = (char)(fr.read());
+                    ch = fr.read();
                     if (ch == 10)
                     {
                     	//Retour a la ligne CRLF
@@ -120,7 +120,7 @@ public class Plateau {
                 {
                 	//Ajout du caractere
                 	if((ch == obs) || (ch == src) || (ch == vide) || (ch == fourm))
-                		tab[i][j] = ch;
+                		tab[i][j] = (char)ch;
                 	else
                 	{
                 		System.out.println("Caractere errone : '" + ch + "' (ASCII : " + ((int)ch) + ") ligne " + i + " colonne " + j + " considere comme un obstacle.");
@@ -195,13 +195,13 @@ public class Plateau {
             	
             	//Lecture du fichier
             	int nbsrc = 0;
-            	char ch;
+            	int ch;
             	
             	//Recuperation des dimensions de la carte
             	int[] d = Dimensions(fr);
             	
             	//Nombre de sources
-            	while((ch = (char)(fr.read())) != 10)
+            	while((ch = fr.read()) != 10)
             	{
             		if((ch >= '0') && (ch <= '9'))
             			nbsrc = (10 * nbsrc) + (ch - '0');
@@ -209,7 +209,7 @@ public class Plateau {
             	
             	//Quantite de nourriture par source
             	int nour = 0;
-            	while((ch = (char)(fr.read())) != 10)
+            	while((ch = fr.read()) != 10)
             	{
             		if((ch >= '0') && (ch <= '9'))
             			nour = (10 * nour) + (ch - '0');
@@ -384,6 +384,7 @@ public class Plateau {
         ArrayList<Integer> liste = new ArrayList<Integer>();
         char[][] charTab = Lecture(liste, map);
         int h = charTab.length, l = charTab[0].length;
+        m_tabCase = new Case[h][l];
         
         //Arrive ici, on a la carte et on sait qu'elle est valide, on peut donc initialiser le tableau
         int k = 0;
