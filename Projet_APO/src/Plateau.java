@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 
 /**
@@ -59,8 +60,8 @@ public class Plateau {
             System.out.println ("Le fichier n'a pas été trouvé");
         }
 
-
     }
+    
     /* Constructeur surcharge
      * parametres :
      *  > int : hauteur
@@ -69,6 +70,117 @@ public class Plateau {
     Plateau(int h, int l)
     {
         this.m_tabCase = new Case[h][l];
+    }
+    
+    protected char[][] Lecture(ArrayList<Integer> listeSrc, String map)
+    {
+    	int i = 0;
+        int j = 0;
+        int hauteur = 0, largeur = 0, nbsrc = 0;
+        char[][] tab;
+
+        try 
+        {
+        	File f = new File("./data/" + map);
+            FileReader fr = new FileReader(f);
+            try 
+            {
+            	/* Pour les retour � la ligne on charche le caractere ASCII 10 (LF) et on ignore le caractere ASCII 13 (CR)
+            	 * Ainsi le code fonctionne pour les retour a la ligne LF mais aussi pour les CRLF
+            	 */
+            	
+            	//Lecture du fichier
+            	char ch;
+            	
+            	//Hauteur
+            	while((ch = (char)(fr.read())) != 10)
+            	{
+            		if((ch >= '0') && (ch <= '9'))
+            			hauteur = (10 * hauteur) + (ch - '0');
+            	}
+            	
+            	//Largeur
+            	while((ch = (char)(fr.read())) != 10)
+            	{
+            		if((ch >= '0') && (ch <= '9'))
+            			largeur = (10 * largeur) + (ch - '0');
+            	}
+            	
+            	//Nombre de sources
+            	while((ch = (char)(fr.read())) != 10)
+            	{
+            		if((ch >= '0') && (ch <= '9'))
+            			nbsrc = (10 * nbsrc) + (ch - '0');
+            	}
+            	
+            	//Quantite de nourriture par source
+            	int nour = 0;
+            	while((ch = (char)(fr.read())) != 10)
+            	{
+            		if((ch >= '0') && (ch <= '9'))
+            			nour = (10 * nour) + (ch - '0');
+            		if(ch == ' ')
+            		{
+            			//On change de nombre
+            			//On l'ajoute au tableau
+            			listeSrc.add(nour);
+            			//On remet la quantite a 0
+            			nour = 0;
+            		}
+            	}
+            	
+            	//Resultats
+            	System.out.println("H = " + hauteur + "\nL = " + largeur + "\nS = " + nbsrc);
+            	m_tabCase = new Case[hauteur][largeur];
+            	tab = new char[hauteur][largeur];
+            	
+            	//Lecture de la carte
+            	char obs = '#', src = 'o', vide = ' ', fourm = 'x';
+                //System.out.print(c);
+                while ((ch = (char)(fr.read())) != -1)
+                {
+                    if (ch == 13) 
+                    {
+                        ch = (char)(fr.read());
+                        if (ch == 10)
+                        {
+                        	//Retour a la ligne CRLF
+                            i++;
+                            j = 0;
+                        }
+                    }
+                    else if(ch == 10)
+                    {
+                    	//Retour a la ligne LF
+                        i++;
+                        j = 0;
+                    }
+                    else
+                    {
+                    	//Ajout du caractere
+                    	if((ch == obs) || (ch == src) || (ch == vide) || (ch == fourm))
+                    		tab[i][j] = ch;
+                    	else
+                    	{
+                    		System.out.println("Caractere errone : '" + ch + "' (ASCII : " + ((int)ch) + ") ligne " + i + " colonne " + j + " considere comme un obstacle.");
+                    		tab[i][j] = obs;
+                    	}
+                        j++;
+                    }
+                }
+                fr.close();
+                return tab;
+	        }
+	        catch (IOException exception)
+            {
+	        	System.out.println("Erreur lecture caractere");
+            }
+        }
+        catch (FileNotFoundException exception)
+        {
+            System.out.println ("Impossible de trouver le fichier");
+        }
+        return new char[0][0];
     }
     
     /* Teste la conformite d'une map
