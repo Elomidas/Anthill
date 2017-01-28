@@ -1,9 +1,6 @@
 import java.util.Iterator;
 import java.util.Scanner;
 import java.nio.file.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -103,7 +100,7 @@ public class Menu {
 		for(int i=0;i<m_maps.size();i++)
 		{
 			System.out.println(i+1 +" : "+ m_maps.get(i));
-			Menu.AffCarte(i);
+			Menu.AffCarte(m_maps.get(i));
 		}
 		System.out.println("Sélectionnez le numéro de la carte");
 		int numMap = sc.nextInt();
@@ -129,43 +126,20 @@ public class Menu {
 		sc.close();
 	}
 	
-	public static void AffCarte(int num)
+	public static void AffCarte(String map)
 	{
-        try {
-            File f = new File("./data/" + m_maps.get(num));
-            FileReader fr = new FileReader(f);
-            try 
-            {
-                int c = fr.read();
-                while (c != -1)
-                {
-                	
-                	
-                    if ((c == 13 )&& (c == 10))
-                    {
-                    	System.out.println( (char)c );
-                    	c = fr.read();
-                    }
-                    else
-                    	System.out.print( (char)c );
-                    c = fr.read();
-                    
-                }
-                fr.close();
-
-            } catch (IOException exception) {
-                System.out.println("Erreur lecture caractère");
-            }
-	        }
-	        catch (FileNotFoundException exception)
-	        {
-            System.out.println("Le fichier n'a pas été trouvé");
-	        }
-        	finally
-        	{
-        		System.out.println("");
-        		System.out.println("");
-        	}
+       char[][] carte = Plateau.Tableau(map);
+       for(int i=0;i<carte.length;i++)
+       {
+    	   for(int j=0;j<carte[i].length;j++)
+    	   {
+    		   System.out.print(carte[i][j]);
+    	   }
+    	   System.out.println("");
+       }
+       System.out.println("");
+    	   
+    		   
 	}
 	
 	public static void ChercheFichier() throws IOException 
