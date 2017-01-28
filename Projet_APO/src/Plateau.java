@@ -17,49 +17,11 @@ public class Plateau {
 
     /* Constructeur surcharge
      * parametres :
-     *  > String : nom du fichier de la carte à charger
+     *  > String : nom du fichier de la carte a charger
      */
     public Plateau(String map)
     {
-        int i = 1;
-        int j = 0;
-
-        try {
-        	File f = new File("./data/" + map);
-            FileReader fr = new FileReader(f);
-            try {
-                int c = fr.read();
-                //System.out.print(c);
-                while (c != -1)
-                {
-                    if (c == 13 ) {
-                        c = fr.read();
-                        if (c== 10)
-                        {
-                            i++;
-                            j = 0;
-                        }
-
-                    }
-                    else
-                    {
-                        j++;
-                    }
-                    c = fr.read();
-                }
-                this.m_tabCase=new Case[ i ][ j ];
-                fr.close();
-
-
-        } catch (IOException exception) {
-            System.out.println("Erreur lecture caractère");
-        }
-        }
-        catch (FileNotFoundException exception)
-        {
-            System.out.println ("Le fichier n'a pas été trouvé");
-        }
-
+        Initialisation(map);
     }
     
     /* Constructeur surcharge

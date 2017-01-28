@@ -22,7 +22,6 @@ public class Simulation
 	public Simulation(int nbFourmis,int nbFourmisSenseur, int nbFourmisOrientation, int porteeSenseur, String map)
 	{
 		this.m_plateau = new Plateau(map);
-		this.m_plateau.Initialisation(map);
 		this.m_listeFourmis = new ArrayList<Fourmi>();
 		for(int i=0;i<nbFourmis;i++)
 		{
