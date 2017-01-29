@@ -43,6 +43,9 @@ public class FourmiOrientation extends Fourmi
 		else m_traite = false;
 	}
 	
+	/* Optimise le chemin de retour de la fourmi
+	 * Permet a la fourmi d'eviter de faire des boucles lors de son retour a la fourmiliere
+	 */
 	private void CheminOpti()
 	{
 		//Pour chaque case sur laquelle on a ete, on va verifie que nous ne somme pas a cote d'une case vue plus tôt dans le trajet
