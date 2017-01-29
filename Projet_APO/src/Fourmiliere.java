@@ -39,6 +39,6 @@ public class Fourmiliere extends Case{
     //Affichage de la fourmilière
     @Override
     public void Afficher() {
-        System.out.print(" F ");
+        System.out.print(" x ");
     }
 }

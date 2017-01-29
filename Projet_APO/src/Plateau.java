@@ -223,9 +223,6 @@ public class Plateau {
             		}
             	}
             	
-            	//Affichage des resultats
-            	System.out.println("H = " + d[0] + "\nL = " + d[1] + "\nS = " + nbsrc);
-            	
                 char[][] tab = Tableau(fr, d[0], d[1]);
 
             	//On verifie la conformite de la carte

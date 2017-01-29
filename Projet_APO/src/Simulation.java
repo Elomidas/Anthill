@@ -142,9 +142,11 @@ public class Simulation
 	public void FourmiSimulation()
 	{
 		StartSimulation();
+		//Affichage de la carte au départ de la simulation
+		Afficher();
 		while((!Thread.interrupted()) && (!Fini()))
 		{
-			
+			//Pause entre chaque boucle
 			try
 			{
 				Thread.sleep(1000);
@@ -153,7 +155,7 @@ public class Simulation
 			{
 				System.out.println("Erreur : " + e.getMessage());
 			}
-			
+			//Actions et affichage
 			ActionSimul();
 			Afficher();
 			DecrementerPhero();
