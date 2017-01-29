@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Created by Martial TARDY on 05/01/2017.
  */
@@ -8,14 +10,12 @@
 
 public class FourmiOrientation extends Fourmi 
 {
-	private int m_vertical, m_horizontal;
-	private boolean m_r1, m_r2, m_r3;
+	private boolean m_traite;
 	
 	public FourmiOrientation()
 	{
 		super();
-		m_vertical = m_horizontal = 0;
-		m_r1 = m_r2 = m_r3 = true;
+		m_traite = false;
 	}
 
     /* Constructeur surcharge
@@ -25,32 +25,7 @@ public class FourmiOrientation extends Fourmi
 	public FourmiOrientation(Case c)
 	{
 		super(c);
-		m_vertical = m_horizontal = 0;
-		m_r1 = m_r2 = m_r3 = true;
-	}
-	
-	//Retourne un entier entre -4 et 4, en dehors de 0 et des valeurs passees en parametres
-	/* Retourne un nombre aleatoire entre -4 et 4 compris, hors 0 et 0 a 3 autres valeurs
-	 * parametres :
-	 *  > int : premier nombre a ne pas retourner
-	 *  > int : second nombre a ne pas retourner
-	 *  > int : troisieme nombre a ne pas retourner
-	 * retour :
-	 *  > int : entier entre -4 et 4 compris, hors 0 et les entiers passes en parametres
-	 */
-	private int rand(int a, int b, int c)
-	{
-		//Donne un nombre entre 0 et 4
-		int r = 0 + (int)(Math.random() * 5);
-		for(int i = -4; i < 5; i++)
-		{
-			while((i == 0) || (i == a) || (i == b) || (i == c))
-				i++;
-			if(r == 0)
-				return i;
-			else r--;
-		}
-		return 1;
+		m_traite = false;
 	}
 	
 	/* Redefinition de la fonction Retour() de la Fourmi classique
@@ -61,203 +36,127 @@ public class FourmiOrientation extends Fourmi
 	{
 		if(!this.FourmTrouvee(b))
     	{
-			int dir = 0;
-			if((m_vertical == 0) && (m_horizontal == 0))
-			{
-				//On recherche l'itineraire le plus direct
-				while(!this.getM_chemin().isEmpty())
-				{
-					switch(-this.getM_chemin().removeLast())
-					{
-						case 1 :
-							//Bas Gauche
-							m_vertical--;
-							m_horizontal--;
-							break;
-							
-						case 2 :
-							//Gauche
-							m_horizontal--;
-							break;
-						
-						case 3 :
-							//Haut Gauche
-							m_vertical++;
-							m_horizontal--;
-							break;
-						
-						case 4 :
-							//Haut
-							m_vertical++;
-							break;
-						
-						case -4 :
-							//Bas
-							m_vertical--;
-							break;
-						
-						case -3 :
-							//Bas Droite
-							m_vertical--;
-							m_horizontal++;
-							break;
-						
-						case -2 :
-							//Droite
-							m_horizontal++;
-							break;
-						
-						case -1 :
-							//Haut Droite
-							m_vertical++;
-							m_horizontal++;
-							break;
-						
-						default:
-							break;
-					}
-				}
-				System.out.println("Constat :");
-				System.out.println(" > Vertical : " + m_vertical);
-				System.out.println(" > Horizontal : " + m_horizontal);
-			}
-			//On regarde dans quelle direction aller.
-			//En fonction du nombre d'échecs prealables, on fait varier la direction
-			// -> Hasard si on est bloque
-			if(m_vertical > 0)
-			{
-				//On veut aller en haut
-				if(m_horizontal > 0)
-				{
-					//On veut aller en haut a droite
-					/* On essaye d'aller en haut à droite
-					 * Si on n'a pas pu aller en haut a droite, on essaye d'aller en haut
-					 * Si on n'a pas pu aller en haut, on essaye d'aller a droite
-					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
-					 */
-					dir = m_r1 ? -1 : 
-							(m_r2 ? 4 : 
-								(m_r3 ? -2 : 
-									rand(-1, 4, -2)));
-				}
-				else if(m_horizontal < 0)
-				{
-					//On veut aller en haut à gauche
-					/* On essaye d'aller en haut a gauche
-					 * Si on n'a pas pu aller en haut a gauche, on essaye d'aller a gauche
-					 * Si on n'a pas pu aller a gauche, on essaye d'aller en haut
-					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
-					 */
-					dir = m_r1 ? 3 : 
-							(m_r2 ? 2 : 
-								(m_r3 ? 4 : 
-									rand(3, 2, 4)));
-				}
-				else
-				{
-					//On veut juste aller en haut
-					/* On essaye d'aller en haut
-					 * Si on n'a pas pu aller en haut, on essaye d'aller en haut a gauche
-					 * Si on n'a pas pu aller en haut a gauche, on essaye d'aller en haut a droite
-					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
-					 */
-					dir = m_r1 ? 4 : 
-							(m_r2 ? 3 : 
-								(m_r3 ? -1 : 
-									rand(4, 3, -1)));
-				}
-			}
-			else if(m_vertical < 0)
-			{
-				//On cherche à aller en bas
-				if(m_horizontal > 0)
-				{
-					//On veut aller en bas a droite
-					/* On essaye d'aller en bas a droite
-					 * Si on n'a pas pu aller en bas à droite, on essaye d'aller en bas
-					 * Si on n'a pas pu aller en bas, on essaye d'aller a droite
-					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
-					 */
-					dir = m_r1 ? -3 : 
-							(m_r2 ? -4 : 
-								(m_r3 ? -2 : 
-									rand(-3, -4, -2)));
-				}
-				else if(m_horizontal < 0)
-				{
-					//On veut aller en bas a gauche
-					/* On essaye d'aller en bas à gauche
-					 * Si on n'a pas pu aller en bas a gauche, on essaye d'aller en bas
-					 * Si on n'a pas pu aller en bas, on essaye d'aller a gauche
-					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
-					 */
-					dir = m_r1 ? 1 : 
-							(m_r2 ? -4 : 
-								(m_r3 ? 2 : 
-									rand(1, -4, 2)));
-				}
-				else
-				{
-					//On veut juste aller en bas
-					/* On essaye d'aller en bas
-					 * Si on n'a pas pu aller en bas, on essaye d'aller en bas a droite
-					 * Si on n'a pas pu aller en bas a droite, on essaye d'aller en bas a gauche
-					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
-					 */
-					dir = m_r1 ? -4 : 
-							(m_r2 ? -3 : 
-								(m_r3 ? 1 : 
-									rand(-4, -3, 1)));
-				}
-			}
-			else
-			{
-				if(m_horizontal > 0)
-				{
-					//On veut aller à droite
-					/* On essaye d'aller a droite
-					 * Si on n'a pas pu aller a droite, on essaye d'aller en haut a droite
-					 * Si on n'a pas pu aller en haut a droite, on essaye d'aller en bas a droite
-					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
-					 */
-					dir = m_r1 ? -2 : 
-							(m_r2 ? -1 : 
-								(m_r3 ? -3 : 
-									rand(-2, -1, -3)));
-				}
-				else
-				{
-					//On veut aller a gauche
-					/* On essaye d'aller a gauche
-					 * Si on n'a pas pu aller a gauche, on essaye d'aller en bas a gauche
-					 * Si on n'a pas pu aller en bas a gauche, on essaye d'aller en haut a gauche
-					 * Si on n'a pu aller dans aucune de ces trois directions, on en choisi une autre au hasard, en dehors de celles-ci
-					 */
-					dir = m_r1 ? 2 : 
-							(m_r2 ? 1 : 
-								(m_r3 ? 3 : 
-									rand(2, 1, 3)));
-				}
-			}
-			if(GetCase().CaseVoisine(dir).Penetrable())
-			{
-				//Si on peut aller sur la case choisie (ie si la case choisie n'est pas un obstacle), on y va
-				m_r1 = m_r2 = m_r3 = true;
-	    		this.SetCase(this.GetCase().CaseVoisine(dir));
-	    		this.GetCase().IncrementePheromone();
-			}
-			else
-			{
-				//Sinon on indique que l'essai a echoue pour essayer une direction differente la fois suivante.
-				if(m_r3)
-				{
-					if(!m_r2)
-						m_r3 = false;
-					else if(!m_r1)
-						m_r2 = false;
-					else m_r1 = false;
-				}
-			}
+			if(!m_traite)
+				CheminOpti();
+			super.Retour(b);
     	}
+		else m_traite = false;
+	}
+	
+	private void CheminOpti()
+	{
+		//Pour chaque case sur laquelle on a ete, on va verifie que nous ne somme pas a cote d'une case vue plus tôt dans le trajet
+		//Si on remarque que la fourmi a ete sur deux cases adjacentes durant son parcours, on elimine tout le chemin effectue entre les deux
+		int s = m_chemin.size() + 1;
+		int[] dir = new int[s - 1];
+		int[][] pos = new int[s][2];
+		pos[0] = new int[] {0, 0};
+		for(int i = 0; !m_chemin.isEmpty(); i++)
+		{
+			dir[i] = m_chemin.removeFirst();
+			pos[i+1] = Dep(dir[i], pos[i]);
+		}
+		for(int a = 1; a <= pos.length; a++)
+		{
+			int i = pos.length - a;
+			for(int j = 0; j < (i - 1); j++)
+			{
+				int diffX = Math.abs(pos[i][0] - pos[j][0]);
+				int diffY = Math.abs(pos[i][1] - pos[j][1]);
+				if(Math.max(diffX, diffY) <= 1)
+				{
+					s = (s - i) + j + 1;
+					int[][] ptemp = new int[s][2];
+					for(int k = 0; k < s; k++)
+					{
+						ptemp[k][0] = (k <= j) ? pos[k][0] : pos[(k - j) + i - 1][0];
+						ptemp[k][1] = (k <= j) ? pos[k][1] : pos[(k - j) + i - 1][1];
+					}
+					pos = ptemp;
+					//On recommence la boucle avec les nouveaux indices
+					a--;
+					j = i;
+				}
+			}
+		}
+		for(int i = 1; i < pos.length; i++)
+		{
+			int d = InvDep(pos[i-1], pos[i]);
+			m_chemin.add(d);
+		}
+		m_traite = true;
+	}
+	
+	//Retourne la nouvelle position de la fourmi grace a son ancienne position et la direction qu'elle a prise
+	private int[] Dep(int dir, int[] pos)
+	{
+		int[] p = new int[] {pos[0], pos[1]};
+		switch(dir)
+		{
+			case -4:
+				p[0]++;
+				break;
+			case -3:
+				p[0]++;
+				p[1]++;
+				break;
+			case -2:
+				p[1]++;
+				break;
+			case -1:
+				p[0]--;
+				p[1]++;
+				break;
+			case 4:
+				p[0]--;
+				break;
+			case 3:
+				p[0]--;
+				p[1]--;
+				break;
+			case 2:
+				p[1]--;
+				break;
+			case 1:
+				p[0]++;
+				p[1]--;
+				break;
+			default:
+				break;
+		}
+		return p;
+	}
+	
+	/* Donne la direction prise par la fourmi entre deux positions
+	 * parametres
+	 *  > int[] : position a l'instant t0
+	 *  > int[] : position a l'instant t1
+	 * retour :
+	 *  > int : direction choisie par la fourmi
+	 */
+	private int InvDep(int[] p0, int[] p1)
+	{
+		int x = p1[0] - p0[0];
+		int y = p1[1] - p0[1];
+		if(x == -1)
+		{
+			//La fourmi est allee vers le haut
+			if(y == -1)
+				return 3;
+			if(y == 0)
+				return 4;
+			return -1;
+		}
+		if(x == 0)
+		{
+			if(y == -1)
+				return 2;
+			return -2;
+		}
+		if(y == -1)
+			return 1;
+		if(y == 0)
+			return -4;
+		return -3;
 	}
 }
