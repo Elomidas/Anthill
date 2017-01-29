@@ -277,11 +277,6 @@ public class FourmiSenseur extends Fourmi
     	return GetProba(proba);
     }
 
-    /*
-     * x, y : coordonnees que l'on veut atteindre
-     * i, j : position de la fourmi
-     * return d : direction dans laquelle aller (0 si innaccessible)
-     */
     /* Regarde si une case est accessible depuis notre position actuelle en prenant en compte les obstacles
      * parametres :
      *  > int[][]	: tableau representant les environs, meme code que le resultat du senseur pour les elements
