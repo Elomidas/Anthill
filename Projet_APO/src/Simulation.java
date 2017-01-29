@@ -126,6 +126,7 @@ public class Simulation
 
 	}
 	
+	//Teste si la simulation est terminée
 	public boolean Fini()
 	{
 		boolean b=true;
@@ -137,6 +138,7 @@ public class Simulation
 		return b;
 	}
 
+	//Simulation permettant de répéter en boucle le déplacement de chaque fourmi
 	public void FourmiSimulation()
 	{
 		StartSimulation();

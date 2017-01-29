@@ -13,6 +13,7 @@ public class Menu {
 	private int m_porteeSenseur;
 	private int m_nbFourmisOrientation;
 	
+	//Constructeur de base
 	public Menu()
 	{
 		m_maps = new ArrayList<String>();
@@ -24,6 +25,7 @@ public class Menu {
 		
 	}
 	
+	//Setter et getter
 	public int GetPorteeSenseur()
 	{
 		return m_porteeSenseur;
@@ -84,6 +86,7 @@ public class Menu {
 		this.m_nbFourmisOrientation = nb;
 	}
 	
+	//Fonction affichant le menu
 	public void AffMenu()
 	{
 		Scanner sc = new Scanner(System.in);
@@ -126,6 +129,7 @@ public class Menu {
 		sc.close();
 	}
 	
+	//Fonction affichant une carte 
 	public static void AffCarte(String map)
 	{
        char[][] carte = Plateau.Tableau(map);
@@ -142,6 +146,7 @@ public class Menu {
     		   
 	}
 	
+	//Fonction permettant de rechercher toutes les cartes contenues dans le dossier data
 	public static void ChercheFichier() throws IOException 
 	{
 		Path repertoire = Paths.get("./data/");

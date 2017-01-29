@@ -15,6 +15,7 @@ public class Fourmi {
     protected final static int[] M_POIDS = new int[] {50, 20, 10, 5, 0};
     protected Case m_case;
     
+    //Constructeur de base
     public Fourmi()
     {
     	this.m_chemin = new LinkedList<Integer>();
@@ -23,6 +24,7 @@ public class Fourmi {
         this.m_case = new Case();
     }
     
+    //Constructeur surchargé
     public Fourmi(Case _case)
     {
     	this();
@@ -30,6 +32,7 @@ public class Fourmi {
     		this.m_case=_case;
     }
 
+    //Setter et getter
     public LinkedList<Integer> getM_chemin() 
     {
         return m_chemin;
@@ -80,12 +83,14 @@ public class Fourmi {
     	this.m_case = caseF;
     }
     
+    //Fonction permettant d'incrémenter la nourriture transportée par la fourmi
     public void IncrementeNourriture(double nbr)
     {
     	this.setM_nourr_transp(nbr + this.getM_nourr_transp() );
     	System.out.println("La fourmi vient de récupérer " + nbr + " nourriture.");
     }
     
+    //Fonction permettant de décrémenter la nourriture de la fourmi lorsqu'elle arrive à la fourmillière
     public double DecrementeNourriture()
     {
     	double nourr = this.getM_nourr_transp();
@@ -93,6 +98,7 @@ public class Fourmi {
     	return nourr;
     }
     
+    //Fonction permettant le changement de case de la fourmi , à l'aller UNIQUEMENT
     public void Bouger()
     {
     	int dir = ChoixDirection();
@@ -105,6 +111,7 @@ public class Fourmi {
     	}
     }
     
+    //Affectation des poids des possibles directtions de la fourmi afin de calculer la probabilité de chaque direction
     public int[] AffectationPoids(int dir)
     {
     	int[] c;
@@ -141,11 +148,13 @@ public class Fourmi {
     	return c;
     }
     
+    //Quantité de phéromone de la case adjacente pour la proba de choisir cette direction
     public double GetPheroAdj(int i)
     {
     	return this.GetCase().getM_case_adj(i).getM_pheromone();
     }
     
+    //Choisi la direction en fonction des différentes probabilités
     public int GetProba(double[] proba)
     {
     	int h=0;
@@ -179,6 +188,8 @@ public class Fourmi {
 		}
     }
     
+    //Fonction qui fait appel aux fonctions précédentes : affectation des poids, calcul des probabilités,
+    //et choix de la direction finale
     public int ChoixDirection()
     {
 
@@ -222,6 +233,7 @@ public class Fourmi {
     	}
     }
     
+    //Fonction qui demande à la fourmi de chercher une source de nourriture
     public void ChercheSource()
     {
     	if(!SourceTrouvee())
@@ -230,6 +242,7 @@ public class Fourmi {
     	}
     }
     
+    //fonction qui teste si la source à été trouvée
     public boolean SourceTrouvee()
     {
     	if(this.GetCase() instanceof Source)
@@ -244,6 +257,8 @@ public class Fourmi {
     	}
     }
     
+    //Fonction qui demande à la fourmi de retourner à la fourmilière(b est vrai si la simulation se 
+    //termine après le retour des la fourmis, dans ce cas la fourmi reste à la fourmilière)
     public void Retour(boolean b)
     {
     	if(!this.FourmTrouvee(b))
@@ -254,6 +269,7 @@ public class Fourmi {
     	}
     }
     
+    //Fonction qui teste si la fourmilière à été touvée
     public boolean FourmTrouvee(boolean b)
     {
     	if(this.GetCase() instanceof Fourmiliere && this.GetEtat() != Etat.ARRET)
@@ -272,6 +288,7 @@ public class Fourmi {
     	}
     }
     
+    //Fonction demandant à la fourmi de bouger ou non, suivant l'état dans lequel elle se trouve
     public void Action(boolean b)
     {
     	//S'il n'y a plus de sources, les fourmis retournent à la fourmiliere
@@ -287,6 +304,7 @@ public class Fourmi {
     	
     }
     
+    //Teste si la fourmi a fini son travail, c'est à dire si elle est à l'arret dans la fourmilière
     public boolean Fini()
     {
     	if(this.GetEtat() == Etat.ARRET)
@@ -295,11 +313,13 @@ public class Fourmi {
     		return false;
     }
     
+    //Fonction permettant à la fourmi de commencer la simulation
     public void Start()
     {
     	this.m_etat = Etat.ALLER;
     }
     
+    //Fonction permettant à la fourmi de terminer la simulation
     public void Stop()
     {
     	this.m_etat = Etat.ARRET;
